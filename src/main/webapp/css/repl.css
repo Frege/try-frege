@@ -1,0 +1,78 @@
+div.console {
+	font-size: 12px;
+	margin-top: 4px;
+	color: #444;
+	font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
+		Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+		 "Lucida Console", "Bitstream Vera Sans Mono",
+		Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+		Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+		"Courier New", Terminal, monospace;
+		overflow: auto;
+		background:#99CCFF;
+}
+
+div.console div.jquery-console-welcome {
+	padding: 0.2em;
+}
+
+div.console div.jquery-console-inner {
+	overflow: auto;
+}
+
+div.console div.jquery-console-prompt-box {
+	color: #444;
+	padding: 0.3em;
+}
+
+div.console div.jquery-console-focus span.jquery-console-cursor {
+	background: #333;
+	color: #eee;
+	font-weight: bold
+}
+
+div.console div.jquery-console-message-error {
+	color: #ef0505;
+	font-weight: bold;
+	padding: 0.2em;
+}
+
+div.console div.jquery-console-message-success {
+	color: #3333FF;
+	padding: 0.2em;
+	font-weight: bold;
+}
+
+div.console div.jquery-console-message-info {
+  color: #187718;
+  padding: 0.2em;
+  font-weight: bold;
+}
+
+div.console span.jquery-console-prompt-label {
+	font-weight: bold
+}
+
+.footer {
+	font-weight: italic;
+	text-align: right;
+	font-size: 10px;
+	color: #444;
+	font-family: Terminus, Consolas, Profont, "Andale Mono", Monaco,
+    Inconsolata, Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+    "DejaVu Sans Mono", "Lucida Console", "Bitstream Vera Sans Mono",
+    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+    "Courier New", Terminal, monospace;
+}
+​
+div.morefrege {
+	font-size: 12px;
+	font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
+    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+     "Lucida Console", "Bitstream Vera Sans Mono",
+    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+    "Courier New", Terminal, monospace;
+	
+}
