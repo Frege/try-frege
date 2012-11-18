@@ -22,6 +22,9 @@
 		<servlet-name>repl</servlet-name>
 		<url-pattern>/exec</url-pattern>
 	</servlet-mapping>
+	<listener>
+	  <listener-class>tryfrege.ContextListener</listener-class>
+	</listener>
 	<session-config>
 		<session-timeout>15</session-timeout>
 	</session-config>

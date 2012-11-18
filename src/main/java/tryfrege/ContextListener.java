@@ -1,9 +1,13 @@
 package tryfrege;
 
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import frege.script.JFregeInterpreter;
 
 public class ContextListener implements ServletContextListener {
 
@@ -13,15 +17,16 @@ public class ContextListener implements ServletContextListener {
 	}
 
 	@Override
-	public void contextInitialized(final ServletContextEvent arg0) {
-		//warmupInterpreter();
-	}
-
-	public void warmupInterpreter() {
-		try {
-			JFregeInterpreter.interpret("1", "");
-		} catch (final Exception e) {
-		}
+	public void contextInitialized(final ServletContextEvent event) {
+		final ServletContext context = event.getServletContext();
+		context.setAttribute("preludeScripts", preludeScripts(context));
 	}
 	
+	private List<String> preludeScripts(final ServletContext context) {
+		final InputStream ioScriptStream = context
+				.getResourceAsStream("/WEB-INF/fregescripts/PreludeScripting.fr");
+		final String preludeScript = new Scanner(ioScriptStream).useDelimiter("\\Z").next();
+		return Arrays.asList(preludeScript);
+	}
+
 }
