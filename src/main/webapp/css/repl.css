@@ -1,6 +1,5 @@
 div.console {
 	font-size: 12px;
-	margin-top: 4px;
 	color: #444;
 	font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
 		Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
@@ -9,7 +8,6 @@ div.console {
 		Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
 		"Courier New", Terminal, monospace;
 		overflow: auto;
-		background:#99CCFF;
 }
 
 div.console div.jquery-console-welcome {
@@ -76,3 +74,17 @@ div.morefrege {
     "Courier New", Terminal, monospace;
 	
 }
+
+#tutorial {
+  border-left: 1px solid #6EA7D1;
+  font-size: 12px;
+  padding: 5px;
+  font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
+    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+      "Lucida Console", "Bitstream Vera Sans Mono",
+    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+    "Courier New", Terminal, monospace;
+  overflow: auto;
+}
+

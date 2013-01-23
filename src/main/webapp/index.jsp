@@ -16,12 +16,16 @@
 	href="${pageContext.request.contextPath}/jquery-ui-1.9.0.custom/css/redmond/jquery-ui-1.9.0.custom.min.css" />
 <script src="${pageContext.request.contextPath}/jquery-ui-1.9.0.custom/js/jquery-ui-1.9.0.custom.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/repl.js"></script>
+<script src="${pageContext.request.contextPath}/js/underscore-min.js"></script>
+<script src="${pageContext.request.contextPath}/js/base64.js"></script>
+<script src="${pageContext.request.contextPath}/js/github.js"></script>
+<script src="${pageContext.request.contextPath}/js/showdown.js"></script>
 <script type="text/javascript">
-	setup('${replurl}')
+  replurl = '${replurl}';
 </script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/repl.css" />
 </head>
-<body style="margin-left: 150px; margin-right: 150px;margin-top:15px;margin-bottom:10px;">
+<body style="margin-left: 50px; margin-right: 50px;margin-top:15px;margin-bottom:10px;">
 	<noscript>
 		<p>
 			<strong>Please enable JavaScript or upgrade your browser.</strong>
@@ -33,8 +37,22 @@
 			<li><a href="#tryfrege">Try Frege</a></li>
 			<li><a href="#morefrege">About Frege</a></li>
 		</ul>
-		<div id="tryfrege" class="console"></div>
-		<div id="morefrege" class="morefrege" style="font-family: Consolas,Inconsolata, Profont, Terminus;font-size:12px;">
+		<div id="tryfrege">
+		<table>
+		<tr>
+		<td width="100%">
+		<div class=" console"></div>
+		</td>
+		<td>
+		<div class="draggable " id="tutorial" 
+		  style="display:none">
+                </div>
+		</td>
+		</tr>
+		</table>
+		</div>
+		<div id="morefrege" style="font-family: Consolas,Inconsolata, Profont, Terminus;font-size:12px;">
+		<div class="morefrege">
 		<h3>What is Frege?</h3>
 		<p><a target="_blank" href="https://github.com/Frege/frege#readme">Frege</a>
 		 is a non-strict, pure functional programming language in the spirit of Haskell. It enjoys a strong static type system with type inference. Higher rank types are supported, though type annotations are required for that.
@@ -49,6 +67,7 @@ The Frege programming language is named after and in honor of Gottlob Frege.</p>
 		<a target="_blank" href="https://github.com/Frege/frege/wiki/Differences-between-Frege-and-Haskell">Differences between Frege and Haskell</a></br>
 		<a target="_blank" href="https://github.com/downloads/Frege/frege/Language.pdf">Frege Language Reference</a></br>
 		</p>
+		</div>
 		</div>
 	</div>
 	<div class="footer">
