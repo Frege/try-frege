@@ -5,13 +5,11 @@ $(document).ready(function(){
   $("div.draggable").height($("#tabs").height() * 0.8);
   var pasteMode = false;
   var tutorialMode = false;
-        var tutPage = 1;
+  var tutPage = 1;
   var console = $('div.console');
-  var state = {history: ''};
   function successHandler(report) {
     return function(data) {
       document.body.style.cursor = 'default';
-      state.history = $(data).find("history").text();
         report([{msg:$(data).find("result").text(),
             className: ($(data).find("type").text() == "SUCCESS" ?
                 "jquery-console-message-success" : 
@@ -31,7 +29,7 @@ $(document).ready(function(){
       report("");
     } else {
       document.body.style.cursor = 'wait';
-      $.post(replurl, {"snippet": line, "history": state.history},
+      $.post(replurl, {"cmd": line},
           successHandler(report), "xml")
       .error(failureHandler(report))
     }
@@ -62,16 +60,8 @@ $(document).ready(function(){
      } else if (line.match(/^:p/i)) {
        pasteMode = true;
        controller.continuedPrompt = true;
-     } else if (line.match(/^:help/i)) {
-       report (helpMessage);
      } else if (line.match(/^:c/i)) {
        controller.reset();
-     } else if (line.match(/^:r/i)) {
-       state.history = '';
-       report([{msg: ''}]);
-     } else if (line.match(/^:h/i)) {
-       report([{msg: $.trim(state.history), 
-                          className: 'jquery-console-message-info'}]);
      } else if (tutorialMode && line.match(/^:.*/)) {
        if (line.match(/:q.*/i)) {
           tutorialMode = false;
@@ -111,33 +101,6 @@ $(document).ready(function(){
      'to get them evaluated.\nType ":help" for more information.'
  });
  controller.promptText('');
- var helpMessage = [
-    {msg: 'At the prompt, you can enter any Frege code to get ' +
-        'them evaluated.', 
-      className: 'jquery-console-message-info'},
-    {msg: 'The output or compilation errors are printed below the prompt.', 
-      className: 'jquery-console-message-info'},
-    {msg: 'In addition to Frege code, the following commands are supported:', 
-      className: 'jquery-console-message-info'},
-    {msg: ':t <expression> - To print the type of an expression', 
-      className: 'jquery-console-message-info'},
-    {msg: ':p              - To enter paste mode, for multi-line/multiple definitions', 
-      className: 'jquery-console-message-info'},
-    {msg: ':q              - To quit paste mode', 
-      className: 'jquery-console-message-info'},
-    {msg: ':l              - To list the identifiers along with types', 
-      className: 'jquery-console-message-info'},
-    {msg: ':h              - To display the scripts evaluated so far', 
-      className: 'jquery-console-message-info'},
-    {msg: ':version        - To display Frege version', 
-          className: 'jquery-console-message-info'},
-    {msg: ':c              - To clear the console. The session will continue ' +
-            'to be active.', 
-      className: 'jquery-console-message-info'},
-    {msg: ':r              - To reset the session discarding all evaluated scripts', 
-      className: 'jquery-console-message-info'},
-    {msg: ':help           - To display this help message', 
-      className: 'jquery-console-message-info'}];
       
   window.github = new Github({
          token: "2cfc111c560520c526f7f7aa3f280bffa5fe1a12",

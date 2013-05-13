@@ -1,0 +1,30 @@
+module tryfrege.repl.ServletSupport where
+
+data ServletRequest = mutable native javax.servlet.ServletRequest where
+    native getRequestDispatcher :: ServletRequest -> String -> IO RequestDispatcher
+    
+data ServletResponse = mutable native javax.servlet.ServletResponse
+
+data HttpServletRequest = mutable native javax.servlet.http.HttpServletRequest where
+    native getParameter :: HttpServletRequest -> String -> IO (Maybe String)
+    native setAttribute :: HttpServletRequest -> String -> Object -> IO ()
+    native getSession :: HttpServletRequest -> IO HttpSession
+    native getContextPath :: HttpServletRequest -> IO String
+    
+data HttpServletResponse = mutable native javax.servlet.http.HttpServletResponse
+
+data HttpServlet = mutable native javax.servlet.http.HttpServlet
+
+data HttpSession = mutable native javax.servlet.http.HttpSession where
+	native getAttribute :: HttpSession -> String -> IO (Maybe Object)
+	native setAttribute :: HttpSession -> String -> Object -> IO ()
+
+data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
+    native forward :: RequestDispatcher -> ServletRequest -> ServletResponse -> IO () throws ServletException, IOException
+    native include :: RequestDispatcher -> ServletRequest -> ServletResponse -> IO () throws ServletException, IOException
+    
+data ServletException = mutable native javax.servlet.ServletException
+
+derive Exceptional ServletException
+    
+data Object = mutable native java.lang.Object

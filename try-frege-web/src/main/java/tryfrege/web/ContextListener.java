@@ -1,4 +1,4 @@
-package tryfrege;
+package tryfrege.web;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -25,8 +25,11 @@ public class ContextListener implements ServletContextListener {
 	private List<String> preludeScripts(final ServletContext context) {
 		final InputStream ioScriptStream = context
 				.getResourceAsStream("/WEB-INF/fregescripts/PreludeScripting.fr");
-		final String preludeScript = new Scanner(ioScriptStream).useDelimiter("\\Z").next();
-		return Arrays.asList(preludeScript);
+		try(Scanner scanner = new Scanner(ioScriptStream)) {
+			final String preludeScript = scanner.useDelimiter("\\Z").next();
+			return Arrays.asList(preludeScript);
+		}
+		
 	}
 
 }

@@ -1,5 +1,4 @@
 module scripting.PreludeScripting where
-import frege.IO
 
 native getEnv System.getProperty :: String -> IO String
 newLine = getEnv "line.separator" 
@@ -27,7 +26,7 @@ traceLn :: String -> Bool
 traceLn str = IO.performUnsafe (traceStrLn str >> IO.return false)
   
 printStr :: String -> IO ()
-printStr str = (stdout.append $ display str) >> return ()
+printStr str = stdout.write str
   
 printStrLn :: String -> IO ()
 printStrLn str = do
@@ -37,7 +36,7 @@ printStrLn str = do
   return ()
   
 traceStr :: String -> IO ()
-traceStr str = stderr.append str >> return ()
+traceStr str = stderr.write str
   
 traceStrLn :: String -> IO ()
 traceStrLn str = do

@@ -1,0 +1,88 @@
+module tryfrege.repl.FregeReplServlet where
+
+import Data.List
+import frege.interpreter.FregeInterpreter
+import frege.interpreter.FregeScriptCompiler
+import frege.repl.FregeRepl
+import tryfrege.repl.ServletSupport
+import frege.java.Net
+
+initInterpreterState :: HttpSession -> IO InterpreterState 
+initInterpreterState session = do
+  urlarr <- URLArray.new 0
+  loader <- ClassLoader.current >>= URLClassLoader.new urlarr
+  classesMaybe <- session.getAttribute "classes" 
+  classes <- maybe (HashMap.new () :: IO (JMap String ByteArr)) asClassesMap classesMaybe
+  strMaybe <- session.getAttribute "script"
+  currentScript <-  maybe (return "") asString strMaybe
+  let options = Options {moduleName = "script.Main"}
+  let interpreterState = InterpreterState {
+      loader = loader,
+      classes = classes,
+      options = options,
+      history = [],
+      currentScript = currentScript
+  }
+  return interpreterState
+
+putSession :: HttpSession -> String -> a -> IO a
+putSession session name value = do
+	obj <- asObject value
+	session.setAttribute name obj
+	return value
+
+doGet :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+doGet = doPost
+
+doPost :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+doPost !servlet !request !response = do
+  input <- request.getParameter "cmd"
+  case input of
+    Nothing -> sendError servlet request response "Invalid Script!"
+    Just cmdStr -> do
+       let c = Command.parse cmdStr
+       case c of
+         Left err -> sendError servlet request response err
+         Right cmd -> processCommand servlet request response cmd
+
+processCommand :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> Command -> IO ()
+processCommand servlet request response cmd = interpreterState >>= runInterpreter interpreter where
+    interpreter = runRepl repl initReplState
+    interpreterState = request.getSession >>= initInterpreterState
+    repl  = do
+        res <- evalScript cmd
+        session <- liftIO $ request.getSession
+        interpreterState <- Repl . lift $ Interpreter.get
+        case res of
+            ReplError errs -> liftIO $ sendError servlet request response $ intercalate newLine errs
+            replRes -> do
+                liftIO $ putSession session "script" interpreterState.currentScript
+                let message = case replRes of{ ReplSuccess msg -> msg; _ -> "" }
+                liftIO $ putSession session "classes" interpreterState.classes 
+                liftIO $ sendMessage servlet request response message
+
+sendError :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> String -> IO ()            
+sendError servlet request response error = do
+    msgType <- asObject "ERROR"
+    msg <- asObject error
+    request.setAttribute "msgType" msgType
+    request.setAttribute "msg" msg
+    forwardRequest request response
+
+sendMessage :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> String -> IO ()   
+sendMessage servlet request response message = do
+    msgType <-  asObject "SUCCESS"
+    msg <- asObject message
+    request.setAttribute "msgType" msgType
+    request.setAttribute "msg" msg
+    forwardRequest request response
+
+forwardRequest :: HttpServletRequest -> HttpServletResponse -> IO ()
+forwardRequest request response = do
+    contextPath <- request.getContextPath
+    dispatcher <- request.getRequestDispatcher $  contextPath ++ "/WEB-INF/pages/replResponse.jsp"
+    dispatcher.forward request response
+    
+native asClassesMap "(java.util.Map)" :: Object -> IO (JMap String ByteArr)
+native asString "(java.lang.String)" :: Object -> IO String     
+ 
