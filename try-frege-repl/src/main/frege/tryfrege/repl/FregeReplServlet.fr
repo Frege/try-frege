@@ -2,8 +2,8 @@ module tryfrege.repl.FregeReplServlet where
 
 import Data.List
 import frege.interpreter.FregeInterpreter
-import frege.interpreter.FregeScriptCompiler
-import frege.repl.FregeRepl
+import frege.interpreter.FregeScriptCompiler hiding(compile)
+import tryfrege.repl.FregeSandboxRepl
 import tryfrege.repl.ServletSupport
 import frege.java.Net
 
@@ -20,7 +20,6 @@ initInterpreterState session = do
       loader = loader,
       classes = classes,
       options = options,
-      history = [],
       currentScript = currentScript
   }
   return interpreterState

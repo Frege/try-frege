@@ -5,7 +5,7 @@
           "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<c:url var="replurl" value="/exec" />
+<c:url var="replurl" value="/eval" />
 <title>Frege REPL</title>
 <meta name="Content-Type" content="text/html; charset=UTF-8">
 <link rel="icon" type="image/png"

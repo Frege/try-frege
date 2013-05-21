@@ -19,6 +19,10 @@ data HttpSession = mutable native javax.servlet.http.HttpSession where
 	native getAttribute :: HttpSession -> String -> IO (Maybe Object)
 	native setAttribute :: HttpSession -> String -> Object -> IO ()
 
+data ServletContext = mutable native javax.servlet.ServletContext where
+	native getAttribute :: ServletContext -> String -> IO (Maybe Object)
+	native setAttribute :: ServletContext -> String -> Object -> IO ()
+
 data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
     native forward :: RequestDispatcher -> ServletRequest -> ServletResponse -> IO () throws ServletException, IOException
     native include :: RequestDispatcher -> ServletRequest -> ServletResponse -> IO () throws ServletException, IOException
