@@ -31,6 +31,7 @@ data ReplResult = ReplError [String] | ReplSuccess String | NoOutput
 
 evalScript :: Command -> Repl ReplResult
 evalScript (Eval line) = do
+    oldInterpState <- Repl . lift $ Interpreter.get
     fregecRes <- Repl . lift $ compile line
     case fregecRes of
         CompilationSuccess (c@CompilationInfo{sourceInfo=sourceInfo,state=g}) ->
@@ -44,6 +45,7 @@ evalScript (Eval line) = do
                     return NoOutput
                 Expression{variableName=var} -> do
                     res <- Repl . lift $ evalShow line
+                    Repl . lift $ Interpreter.put oldInterpState
                     case res of
                         Left err -> return $ ReplError err
                         Right str -> return $ ReplSuccess str
@@ -67,7 +69,9 @@ evalScript List = do
 
 evalScript (Type expr) = Repl.get >>= Repl . lift . interpret where
   interpret replState = do
+        oldState <- Interpreter.get
         typeOfExpression <- typeOfExpression expr
+        Interpreter.put oldState
         case typeOfExpression of
             Right typ -> return $ ReplSuccess typ
             Left errs -> return $ ReplError errs
@@ -227,28 +231,6 @@ initInterpreterState = do
   }
   return interpreterState
   
-data ProcessBuilder = mutable native java.lang.ProcessBuilder where
-    native new :: MutableIO StringArr -> IO ProcessBuilder
-    native redirectErrorStream :: ProcessBuilder -> Bool -> IO ()
-    native start :: ProcessBuilder -> IO Process throws IOException
-    native directory :: ProcessBuilder -> MutableIO File -> IO ProcessBuilder
-    
-data Process = mutable native java.lang.Process where
-    native getOutputStream :: Process -> IO OutputStream
-    native getInputStream :: Process -> IO InputStream
-    
-fromListST :: [String] -> STMutable u StringArr
-fromListST strings = (StringArr.new strings.length >>= loop 0 strings) where
-    loop j (x:xs) arr = do StringArr.setAt arr j x; loop (j+1) xs arr
-    loop j []     arr = return arr
-fromList strings = ST.run (fromListST strings >>= readonly id) 
-
-getOut :: InputStream -> IO [String]
-getOut ins = do
-    isr <- InputStreamReader.new ins "utf-8"
-    br <- BufferedReader.new isr
-    br.getLines
-    
 evalShow :: Script -> Interpreter (Either [String] String)
 evalShow source = do
   fregecRes <- compile source
@@ -281,10 +263,8 @@ showSymbol source var symbol g | isVariable g symbol = do
                 s <- liftIO $ obj.toString
                 return $ Right s
     else do
-        let originalScript = state.currentScript
         Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
         let showScript = buildShowScript var g symbol
         showResult <- evalShow showScript
-        Interpreter.put $ state.{currentScript = originalScript}
         return showResult
 showSymbol _ _ symbol g = return . Right $ getSymbolType symbol g
