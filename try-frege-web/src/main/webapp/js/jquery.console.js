@@ -226,7 +226,7 @@
 			inner.addClass('jquery-console-focus');
 			inner.removeClass('jquery-console-nofocus');
 			if (isWebkit) {
-				typer.focusWithoutScrolling();
+				container.focusWithoutScrolling(typer);
 			} else {
 				typer.css('position', 'fixed').focus();
 			}
@@ -705,9 +705,8 @@
 	};
 
 	// Alternative method for focus without scrolling
-	$.fn.focusWithoutScrolling = function(){
-		var x = window.scrollX, y = window.scrollY;
-		$(this).focus();
-		window.scrollTo(x, y);
+	$.fn.focusWithoutScrolling = function(typer){
+		$(typer).focus();
+		$(this).scrollTop($(this).prop("scrollHeight"));
 	};
 })(jQuery);
