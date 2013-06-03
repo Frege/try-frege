@@ -66,7 +66,7 @@ sendError servlet request response error = do
     msg <- asObject error
     request.setAttribute "msgType" msgType
     request.setAttribute "msg" msg
-    forwardRequest request response
+    forwardRequest servlet request response
 
 sendMessage :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> String -> IO ()   
 sendMessage servlet request response message = do
@@ -74,12 +74,11 @@ sendMessage servlet request response message = do
     msg <- asObject message
     request.setAttribute "msgType" msgType
     request.setAttribute "msg" msg
-    forwardRequest request response
+    forwardRequest servlet request response
 
-forwardRequest :: HttpServletRequest -> HttpServletResponse -> IO ()
-forwardRequest request response = do
-    contextPath <- request.getContextPath
-    dispatcher <- request.getRequestDispatcher $  contextPath ++ "/WEB-INF/pages/replResponse.jsp"
+forwardRequest :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+forwardRequest servlet request response = do
+    dispatcher <- request.getRequestDispatcher $ "/WEB-INF/pages/replResponse.jsp"
     dispatcher.forward request response
     
 native asClassesMap "(java.util.Map)" :: Object -> IO (JMap String ByteArr)

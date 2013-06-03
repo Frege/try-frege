@@ -6,7 +6,7 @@ import frege.Version
 import frege.java.Net 
 import Data.List
 import frege.interpreter.FregeScriptCompiler hiding(compile)
-import frege.interpreter.FregeInterpreter hiding(evalShow)
+import frege.interpreter.FregeInterpreter
 import frege.compiler.Data(Global)
 import frege.compiler.EclipseUtil as EU()
 import frege.List as FL (Tree, values)
@@ -51,7 +51,7 @@ evalScript (Eval line) = do
                         Right str -> return $ ReplSuccess str
         CompilationFailure err -> return $ ReplError err
 
-evalScript (ListModule m) = do
+evalScript (BrowseModule m) = do
     let moduleName = trim m
     replState <- Repl.get
     state <- Repl . lift $ Interpreter.get
@@ -59,13 +59,13 @@ evalScript (ListModule m) = do
     let res = outlineModule moduleName global
     return . ReplSuccess $ intercalate newLine res
     
-evalScript List = do
+evalScript Browse = do
     state <- Repl . lift $ Interpreter.get
     interpreterState <- Repl . lift $ Interpreter.get
     if isEmpty . trim $ interpreterState.currentScript then
         return NoOutput
     else
-        evalScript $ ListModule state.options.moduleName
+        evalScript $ BrowseModule state.options.moduleName
 
 evalScript (Type expr) = Repl.get >>= Repl . lift . interpret where
   interpret replState = do
@@ -104,8 +104,6 @@ evalScript Reset = do
 evalScript Skip = return NoOutput
 evalScript Help = return $ ReplSuccess help
 evalScript Version = Repl.get >>= (\s -> return $ ReplSuccess version)
-evalScript Paste = return NoOutput  
-evalScript Quit = return NoOutput
 
 ioException :: IOException -> Repl ReplResult    
 ioException e = return $ ReplError [Throwable.getMessage e]
@@ -142,29 +140,36 @@ outlineModule pack g = fst $ State.run (outlineModule' pack)  g where
             Just env -> return $ map (EU.label g) $ EU.symbols env
         
 positionAndName a b = case Symbol.pos a <=> Symbol.pos b of
-                                    Eq -> comparing (QName.base • Symbol.name) a b
+                                    Eq -> comparing (QName.base . Symbol.name) a b
                                     ne -> ne 
-        
-help = intercalate newLine [
-            "At the prompt, you can enter Frege code snippets to get them evaluated.",
-            "The output or compilation errors will be printed below the prompt.",
-            "In addition to Frege code, the following commands are supported:",
-            indentHelp ":type <expression>" "To print the type of an expression",
-            indentHelp  ":p" "To enter paste mode, for multi-line/multiple definitions",
-            indentHelp  ":q" "To quit REPL or paste mode",
-            indentHelp ":list" "To list the identifiers along with types",
-            indentHelp ":history" "To display the scripts evaluated so far",
-            indentHelp ":version" "To display Frege version",
-            indentHelp  ":load url" "To load Frege code snippets from an URL",
-            indentHelp ":r" "To reload the last script file",
-            indentHelp ":reset" "To reset the session discarding all evaluated scripts",
-            indentHelp ":help" "To display this help message"]
+                                    
+cmdHelp = [(":type <expression>", "Display the type of an expression"),
+            (":{", "Start multiline definitions"),
+            (":}", "End multiline defintions"),
+            (":browse <module name>", "Display the names in a module if " ++
+                "a module name is provided otherwise display the names in the default REPL module"),
+            (":load <url>", "Load Frege code snippets from an URL"),
+            (":r", "Reload the last URL script"),
+            (":history", "Display the source history for definitions in the default REPL module"),
+            (":reset", "Reset the session discarding all evaluated scripts"),
+            (":clear", "Clear the REPL window. The session continues to be active."),
+            (":version", "Display Frege version"),
+            (":help", "Display this help message")]
+            
+f `on` g = \x \y -> f (g x) (g y)
 
-indentHelp :: String -> String -> String
-indentHelp cmd desc = 
-    let fmtcmd = cmd ++ (concat $ replicate (20 - cmd.length) " ")
-    in fmtcmd ++ " - " ++ desc
-  
+renderCmdHelp cmdHelp = map render cmdHelp where
+    maxLeftIndent = length . fst $ maximumBy (compare `on` (length . fst)) cmdHelp
+    indent cmd desc width = cmd ++ (concat $ replicate (width - cmd.length) " ") ++
+        " - " ++ desc
+    render (cmd, desc) = indent cmd desc maxLeftIndent
+        
+help = intercalate newLine $ header ++ body where
+    header = ["At the prompt, you can enter Frege code snippets to get them evaluated.",
+            "The output or compilation errors will be printed below the prompt.",
+            "In addition to Frege code, the following commands are supported:"]
+    body = renderCmdHelp cmdHelp
+            
 urlContents url = do
     inStream <- URL.openStream url
     scanner <- Scanner.new inStream
@@ -181,8 +186,8 @@ runRepl repl state = evalStateT (Repl.un repl) state
 
 pure native isEmpty :: String -> Bool
 
-data Command = Version | Help | List | ListModule String | Type String | Load String | Eval String | 
-    Paste | History | Reload | Reset | Skip | Quit where 
+data Command = Version | Help | Browse | BrowseModule String | Type String | 
+    Load String | Eval String | History | Reload | Reset | Skip where 
     
     parse   :: String -> Either String Command
     parse s = parse' $ trim s where
@@ -190,21 +195,17 @@ data Command = Version | Help | List | ListModule String | Type String | Load St
         parse' #^:# = parseCommand s
         parse' script = Right $ Eval script
 
-    parseCommand (m~#:list\s(.*)#) = maybe (Right List) (Right . ListModule) $ m.group 1
-    parseCommand ":list" = Right $ List
+    parseCommand (m~#:browse\s(.*)#) = maybe (Right Browse) (Right . BrowseModule) $ m.group 1
+    parseCommand ":browse" = Right $ Browse
     parseCommand (m~#^:l.*?\s+(.*)#) = 
         maybe (Left "Missing external script path!") (Right . Load) $ m.group 1
     parseCommand  ":version" = Right Version
     parseCommand ":help" = Right Help
     parseCommand (m~#^:t.*?\s+(.*)#) = 
         maybe (Left "Missing expression!") (Right . Type) $ m.group 1
-    parseCommand ":p" = Right Paste
-    parseCommand (m~#^:p\s+(.*)#) = 
-            maybe (Left "Missing script!") (Right . Eval) $ m.group 1
     parseCommand ":history" = Right History
     parseCommand ":r" = Right Reload
     parseCommand ":reset" = Right Reset
-    parseCommand ":q" = Right Quit
     parseCommand otherwise = Left "Invalid Command"
     
 derive Eq Command
@@ -221,6 +222,7 @@ initInterpreterState = do
   urlarr <- URLArray.new 0
   loader <- ClassLoader.current >>= URLClassLoader.new urlarr
   classes <- HashMap.new ()
+  time <- currentTimeMillis ()
   let history = ""
   let options = Options {moduleName = "script.Main"}
   let interpreterState = InterpreterState {
@@ -254,8 +256,8 @@ showSymbol source var symbol g | isVariable g symbol = do
     if isString g symbol then do
         loader <- liftIO $ asMemoryClassLoader g.sub.loader
         newclasses <- liftIO $ loader.getClasses
-        v <- liftIO $ spawnFetchFieldValue state.options.moduleName var newclasses
-        --v <- liftIO $ fieldValue state.options.moduleName var g.sub.loader
+        --Actual execution happens here
+        v <- liftIO $ secureFetchFieldValue state.options.moduleName var loader
         case v of
             Left err -> return $ Left [err.getMessage]
             Right value -> do
@@ -268,3 +270,8 @@ showSymbol source var symbol g | isVariable g symbol = do
         showResult <- evalShow showScript
         return showResult
 showSymbol _ _ symbol g = return . Right $ getSymbolType symbol g
+
+native secureFetchFieldValue frege.memoryjavac.JavaUtils.secureFetchFieldValue :: 
+  String -> String -> ClassLoader -> IO (Either ScriptException a)
+  
+native currentTimeMillis java.lang.System.currentTimeMillis :: () -> IO Long

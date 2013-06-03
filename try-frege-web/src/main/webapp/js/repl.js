@@ -20,7 +20,7 @@ $(document).ready(function(){
   function failureHandler(report) {
     return function(req, status, error) { 
       document.body.style.cursor = 'default';
-      report(error);
+      report([{msg:error, className: 'ERROR'}]);
       scrollDown();
       };
   }
@@ -48,7 +48,7 @@ $(document).ready(function(){
    commandHandle:function(line, report){
      var line = $.trim(line);
      if (pasteMode) {
-       if (line.match(/:q\s*$/i)) {
+       if (line.match(/:}\s*$/i)) {
          controller.continuedPrompt = false;
          pasteMode = false;
          var lines = line.split("\n");
@@ -57,7 +57,7 @@ $(document).ready(function(){
        } else {
          controller.continuedPrompt = true;
        }
-     } else if (line.match(/^:p/i)) {
+     } else if (line.match(/^:\{/i)) {
        pasteMode = true;
        controller.continuedPrompt = true;
      } else if (line.match(/^:c/i)) {

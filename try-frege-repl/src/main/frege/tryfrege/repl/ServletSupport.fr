@@ -13,15 +13,17 @@ data HttpServletRequest = mutable native javax.servlet.http.HttpServletRequest w
     
 data HttpServletResponse = mutable native javax.servlet.http.HttpServletResponse
 
-data HttpServlet = mutable native javax.servlet.http.HttpServlet
+data HttpServlet = mutable native javax.servlet.http.HttpServlet where
+    native getServletContext :: HttpServlet -> IO ServletContext
 
 data HttpSession = mutable native javax.servlet.http.HttpSession where
 	native getAttribute :: HttpSession -> String -> IO (Maybe Object)
 	native setAttribute :: HttpSession -> String -> Object -> IO ()
 
 data ServletContext = mutable native javax.servlet.ServletContext where
-	native getAttribute :: ServletContext -> String -> IO (Maybe Object)
-	native setAttribute :: ServletContext -> String -> Object -> IO ()
+    native getAttribute :: ServletContext -> String -> IO (Maybe Object)
+    native setAttribute :: ServletContext -> String -> Object -> IO ()
+    native getContextPath :: ServletContext -> IO String
 
 data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
     native forward :: RequestDispatcher -> ServletRequest -> ServletResponse -> IO () throws ServletException, IOException
