@@ -17,18 +17,9 @@
     <servlet-name>repl</servlet-name>
     <servlet-class>tryfrege.web.FregeReplController</servlet-class>
   </servlet>
-  <servlet>
-    <display-name>Frege Repl Runner Servlet</display-name>
-    <servlet-name>replRunner</servlet-name>
-    <servlet-class>tryfrege.web.ReplRunnerServlet</servlet-class>
-  </servlet>
   <servlet-mapping>
     <servlet-name>repl</servlet-name>
     <url-pattern>/eval</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>replRunner</servlet-name>
-    <url-pattern>/run</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>tryfrege.web.ContextListener</listener-class>

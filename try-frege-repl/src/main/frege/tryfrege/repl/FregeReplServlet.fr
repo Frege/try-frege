@@ -3,84 +3,372 @@ module tryfrege.repl.FregeReplServlet where
 import Data.List
 import frege.interpreter.FregeInterpreter
 import frege.interpreter.FregeScriptCompiler hiding(compile)
-import tryfrege.repl.FregeSandboxRepl
+import frege.compiler.Import
+import frege.Version
+import frege.java.Net 
+import frege.compiler.Data
+import frege.compiler.EclipseUtil as EU()
+import frege.List as FL (Tree, values)
 import tryfrege.repl.ServletSupport
-import frege.java.Net
 
-initInterpreterState :: HttpSession -> IO InterpreterState 
-initInterpreterState session = do
+initInterpreterState :: IO InterpreterState 
+initInterpreterState = do
   urlarr <- URLArray.new 0
   loader <- ClassLoader.current >>= URLClassLoader.new urlarr
-  classesMaybe <- session.getAttribute "classes" 
-  classes <- maybe (HashMap.new () :: IO (JMap String ByteArr)) asClassesMap classesMaybe
-  strMaybe <- session.getAttribute "script"
-  currentScript <-  maybe (return "") asString strMaybe
-  let options = Options {moduleName = "script.Main"}
+  classes <- HashMap.new ()
   let interpreterState = InterpreterState {
       loader = loader,
       classes = classes,
-      options = options,
-      currentScript = currentScript
+      moduleName = "script.Main",
+      currentScript = "",
+      modulePrelude = initScript
   }
   return interpreterState
+    
+buildInterpreterState :: MutableIO HttpSession -> IO InterpreterState 
+buildInterpreterState session = do
+  classesMaybe <- session.getAttribute "classes" 
+  context <- session.getServletContext
+  preludeClassesMaybe <- context.getAttribute "classes" 
+  let preludeClasses = maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
+  classes <- maybe preludeClasses asClassesMap classesMaybe
+  strMaybe <- session.getAttribute "script"
+  currentScript <- maybe (return initScript) (return . asString) strMaybe
+  time <- currentTimeMillis ()
+  moduleNameMaybe <- session.getAttribute "moduleName"
+  let saveModuleName = session.setAttribute "moduleName" $ asObject moduleName
+      moduleName = "script.Main" ++ show time
+  moduleName <- maybe (saveModuleName >> return moduleName) (return . asString) moduleNameMaybe
+  interpreterState <- initInterpreterState
+  return interpreterState.{classes=classes, currentScript=currentScript, moduleName=moduleName}
 
-putSession :: HttpSession -> String -> a -> IO a
-putSession session name value = do
-	obj <- asObject value
-	session.setAttribute name obj
-	return value
+initScript = "import frege.Prelude hiding " ++
+           "(stdout, stderr, print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn)\n" ++
+           "import scripting.PreludeScripting"
 
-doGet :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+evalScript :: Command -> Repl ReplResult
+evalScript (Eval line) = do
+    oldInterpState <- Repl . lift $ Interpreter.get
+    fregecRes <- Repl . lift $ compile line
+    case fregecRes of
+        CompilationSuccess (c@CompilationInfo{sourceInfo=sourceInfo,state=g}) ->
+            case sourceInfo of
+                Module -> return $ ReplMessage ("Loaded module: " ++ moduleName g)           
+                Definitions -> do
+                    s <- Repl . lift $ Interpreter.get
+                    Repl . lift . Interpreter.put $ s.{currentScript <- (++ newLine ++ line)}
+                    return NoOutput
+                Expression{variableName=var} -> do
+                    res <- Repl . lift $ evalShow line
+                    Repl . lift $ Interpreter.put oldInterpState
+                    case res of
+                        Left err -> return $ ReplError err
+                        Right (res, out, err) -> return $ ReplSuccess res out err
+        CompilationFailure err -> return $ ReplError err
+
+evalScript (BrowseModule m) = do
+    let moduleName = trim m
+    replState <- Repl.get
+    state <- Repl . lift $ Interpreter.get
+    global <- liftIO $ MemoryClassLoader.new state.loader state.classes >>= standardOptions
+    let res = outlineModule moduleName global
+    return $ ReplMessage (intercalate newLine res)
+    
+evalScript Browse = do
+    state <- Repl . lift $ Interpreter.get
+    interpreterState <- Repl . lift $ Interpreter.get
+    if isEmpty . trim $ interpreterState.currentScript then
+        return NoOutput
+    else
+        evalScript $ BrowseModule state.moduleName
+
+evalScript (Type expr) = Repl.get >>= Repl . lift . interpret where
+  interpret replState = do
+        oldState <- Interpreter.get
+        typeOfExpression <- typeOfExpression expr
+        Interpreter.put oldState
+        case typeOfExpression of
+            Right typ -> return $ ReplMessage typ
+            Left errs -> return $ ReplError errs
+
+evalScript (Load (urlSpec@#.*?://#)) = do
+    urle <- liftIO $ URL.new urlSpec
+    let update res = case res of
+            ReplError _ -> return res
+            _ -> updateExternalScript urlSpec >> return res
+    --either handleMalformedURLException (\url -> evalURL url >>= update) urle
+    evalURL urle >>= update
+    
+evalScript (Load invalidUrl) = return $ ReplError ["Invalid URL: " ++ invalidUrl]
+        
+evalScript Reload = do
+    state <- Repl.get
+    case state.lastExternalScript of
+        Just extScript -> evalScript (Load extScript)
+        Nothing -> return NoOutput --Nothing to reload 
+            
+evalScript History = do
+    interpreterState <- Repl . lift $ Interpreter.get
+    return $ ReplMessage interpreterState.currentScript
+    
+evalScript Reset = do
+    Repl.put initReplState
+    initInterpreterState <- liftIO initInterpreterState
+    Repl . lift $ Interpreter.put initInterpreterState
+    return NoOutput
+
+evalScript Skip = return NoOutput
+evalScript Help = return $ ReplMessage help
+evalScript Version = Repl.get >>= (\s -> return $ ReplMessage version)
+
+data ReplState = ReplState {
+    lastExternalScript :: Maybe String
+}
+
+data Repl a = Repl {un :: StateT ReplState Interpreter a} where
+    get = Repl $ StateT (\s -> return (s, s)) 
+    put s = Repl $ StateT (\_ -> return ((), s))
+
+instance Monad Repl where
+    return = Repl . return
+    (Repl x) >>= f = Repl $ x >>= (\y -> Repl.un $ f y)
+    
+instance MonadIO Repl where
+    liftIO = Repl . lift . liftIO
+
+data ReplResult = ReplError [String] | 
+     ReplMessage String |
+     ReplSuccess {result :: String, stderr :: String, stdout :: String } | 
+     NoOutput
+
+
+ioException :: IOException -> Repl ReplResult    
+ioException e = return $ ReplError [Throwable.getMessage e]
+
+evalURL :: URL -> Repl ReplResult
+evalURL url = do
+    replState <- Repl.get
+    let contents = fetch `catch` handleIOE
+        fetch = urlContents url >>= (return . Right)
+        handleIOE :: IOException -> IO (Either String Script)
+        handleIOE ioe = return $ Left ioe.getMessage
+    scriptMay <- liftIO contents
+    case scriptMay of 
+        Right script -> evalScript $ Eval script
+        Left err -> return $ ReplError [err]
+
+updateExternalScript script = do
+    replState <- Repl.get
+    Repl.put $ replState.{lastExternalScript=Just script}
+    
+moduleName global = show $ sub.thisPack.className global where
+    sub = Global.sub global
+
+handleMalformedURLException :: MalformedURLException -> Repl ReplResult   
+handleMalformedURLException malformed = return $ ReplError [malformed.getMessage]
+
+outlineModule pack g = fst $ State.run (outlineModule' pack)  g where
+    outlineModule' pack = do
+        let p = Pack.new pack
+        importClass Position.null p
+        g <- getST
+        case g.packages.lookup p of
+            Nothing -> return []
+            Just env -> return $ map (EU.label g) $ EU.symbols env
+        
+positionAndName a b = case Symbol.pos a <=> Symbol.pos b of
+                                    Eq -> comparing (QName.base . Symbol.name) a b
+                                    ne -> ne 
+                                    
+cmdHelp = [(":type <expression>", "Display the type of an expression"),
+            (":{", "Start multiline definitions"),
+            (":}", "End multiline defintions"),
+            (":browse <module name>", "Display the names in a module if " ++
+                "a module name is provided otherwise display the names in the default REPL module"),
+            (":load <url>", "Load Frege code snippets from an URL"),
+            (":r", "Reload the last URL script"),
+            (":history", "Display the source history for definitions in the default REPL module"),
+            (":reset", "Reset the session discarding all evaluated scripts"),
+            (":clear", "Clear the REPL window. The session continues to be active."),
+            (":version", "Display Frege version"),
+            (":help", "Display this help message")]
+            
+f `on` g = \x \y -> f (g x) (g y)
+
+renderCmdHelp cmdHelp = map render cmdHelp where
+    maxLeftIndent = length . fst $ maximumBy (compare `on` (length . fst)) cmdHelp
+    indent cmd desc width = cmd ++ (concat $ replicate (width - cmd.length) " ") ++
+        " - " ++ desc
+    render (cmd, desc) = indent cmd desc maxLeftIndent
+        
+help = intercalate newLine $ header ++ body where
+    header = ["At the prompt, you can enter Frege code snippets to get them evaluated.",
+            "The output or compilation errors will be printed below the prompt.",
+            "In addition to Frege code, the following commands are supported:"]
+    body = renderCmdHelp cmdHelp
+            
+urlContents url = do
+    inStream <- URL.openStream url
+    scanner <- Scanner.new inStream
+    scanner.useDelimiter "\\Z"
+    scanner.next
+
+data Scanner = mutable native java.util.Scanner where
+    native new :: InputStream -> IO Scanner
+    native fromFile new :: MutableIO File -> String -> IO Scanner throws FileNotFoundException
+    native useDelimiter :: Scanner -> String -> IO ()
+    native next :: Scanner -> IO String   
+    
+runRepl repl state = evalStateT (Repl.un repl) state
+
+pure native isEmpty :: String -> Bool
+
+data Command = Version | Help | Browse | BrowseModule String | Type String | 
+    Load String | Eval String | History | Reload | Reset | Skip where 
+    
+    parse   :: String -> Either String Command
+    parse s = parse' $ trim s where
+        parse' "" = Right Skip
+        parse' #^:# = parseCommand s
+        parse' script = Right $ Eval script
+
+    parseCommand (m~#:browse\s(.*)#) = maybe (Right Browse) (Right . BrowseModule) $ m.group 1
+    parseCommand ":browse" = Right $ Browse
+    parseCommand (m~#^:l.*?\s+(.*)#) = 
+        maybe (Left "Missing external script path!") (Right . Load) $ m.group 1
+    parseCommand  ":version" = Right Version
+    parseCommand ":help" = Right Help
+    parseCommand (m~#^:t.*?\s+(.*)#) = 
+        maybe (Left "Missing expression!") (Right . Type) $ m.group 1
+    parseCommand ":history" = Right History
+    parseCommand ":r" = Right Reload
+    parseCommand ":reset" = Right Reset
+    parseCommand otherwise = Left "Invalid Command"
+    
+derive Eq Command
+derive Show Command
+
+initReplState :: ReplState
+initReplState = ReplState {
+    lastExternalScript = Nothing,
+}
+
+evalShow :: Script -> Interpreter (Either [String] (String, String, String))
+evalShow source = do
+  fregecRes <- compile source
+  case fregecRes of
+    -- The script is a set of definitions
+    CompilationSuccess (c@CompilationInfo{javaSource=jsrc,sourceInfo=sourceInfo,state=g}) ->
+        case sourceInfo of
+            Module -> return $ Left ["Not an expression!"]
+            Definitions -> return $ Left ["Not an expresssion!"]
+            Expression{variableName=var} -> showVariable source var g
+    CompilationFailure err -> return $ Left err
+
+showVariable source var g = do
+      let symbolMay = lookupVarSymbol g.thisTab var
+      case symbolMay of
+        Nothing -> return . Left $ ["Not found: " ++ var]
+        Just symbol -> showSymbol source var symbol g
+        
+showSymbol source var symbol g | isVariable g symbol = do
+    state <- Interpreter.get
+    if isString g symbol then liftIO $
+      do
+        loader <- asMemoryClassLoader g.sub.loader
+        newclasses <- loader.getClasses
+        --Actual execution happens here
+        v <- secureFetchFieldValue state.moduleName var loader
+        case v of
+            Left err -> return $ Left [err.getMessage]
+            Right value -> do
+                let result = toString $ asObject value
+                out <- fieldValue "scripting.PreludeScripting" "stdoutWriter" loader
+                outStr <- either (\e -> return e.getMessage) 
+                                 (return . toString . asObject) out
+                err <- fieldValue "scripting.PreludeScripting" "stderrWriter" loader
+                errStr <- either (\e -> return e.getMessage) 
+                                 (return . toString . asObject) err
+                return $ Right (result, outStr, errStr)
+    else do
+        Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
+        let showScript = buildShowScript var g symbol
+        showResult <- evalShow showScript
+        return showResult
+showSymbol _ _ symbol g = 
+           return . Right $ (getSymbolType symbol g, "", "") --Not a variable
+
+native secureFetchFieldValue tryfrege.jdeps.Sandbox.secureFetchFieldValue :: 
+  String -> String -> ClassLoader -> IO (Either ScriptException a)
+
+native fieldValue frege.memoryjavac.JavaUtils.fieldValue :: 
+  String -> String -> ClassLoader -> IO (Either ScriptException a)
+  
+
+pure native toString :: Object -> String
+
+pure native asObject "(Object)" :: a -> Object
+
+putSession :: Mutable s HttpSession -> String -> a -> ST s ()
+putSession session name value = session.setAttribute name (asObject value)
+
+
+doGet :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 doGet = doPost
 
-doPost :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+doPost :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 doPost !servlet !request !response = do
   input <- request.getParameter "cmd"
   case input of
-    Nothing -> sendError servlet request response "Invalid Script!"
+    Nothing -> sendReplResult servlet request response (ReplError ["Invalid Script!"])
     Just cmdStr -> do
        let c = Command.parse cmdStr
        case c of
-         Left err -> sendError servlet request response err
+         Left err -> sendReplResult servlet request response (ReplError [err])
          Right cmd -> processCommand servlet request response cmd
 
-processCommand :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> Command -> IO ()
-processCommand servlet request response cmd = interpreterState >>= runInterpreter interpreter where
+processCommand :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> Command -> IO ()
+processCommand servlet request response cmd = interpreterState >>= evalInterpreter interpreter where
     interpreter = runRepl repl initReplState
-    interpreterState = request.getSession >>= initInterpreterState
+    interpreterState = request.getSession >>= buildInterpreterState
     repl  = do
         res <- evalScript cmd
         session <- liftIO $ request.getSession
         interpreterState <- Repl . lift $ Interpreter.get
+        let saveAndSend = do
+                                putSession session "script" interpreterState.currentScript
+                                putSession session "classes" interpreterState.classes 
         case res of
-            ReplError errs -> liftIO $ sendError servlet request response $ intercalate newLine errs
-            replRes -> do
-                liftIO $ putSession session "script" interpreterState.currentScript
-                let message = case replRes of{ ReplSuccess msg -> msg; _ -> "" }
-                liftIO $ putSession session "classes" interpreterState.classes 
-                liftIO $ sendMessage servlet request response message
+            ReplError _ -> liftIO $ sendReplResult servlet request response res
+            _ -> liftIO $ saveAndSend >> sendReplResult servlet request response res
 
-sendError :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> String -> IO ()            
-sendError servlet request response error = do
-    msgType <- asObject "ERROR"
-    msg <- asObject error
-    request.setAttribute "msgType" msgType
+sendReplResult :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> ReplResult -> IO ()
+sendReplResult servlet request response (ReplError errs) = do
+    let msg = asObject $ intercalate newLine errs
+    request.setAttribute "msgType" (asObject "ERROR")
     request.setAttribute "msg" msg
     forwardRequest servlet request response
-
-sendMessage :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> String -> IO ()   
-sendMessage servlet request response message = do
-    msgType <-  asObject "SUCCESS"
-    msg <- asObject message
-    request.setAttribute "msgType" msgType
-    request.setAttribute "msg" msg
+sendReplResult servlet request response (ReplSuccess message out err) = do
+    request.setAttribute "msgType" (asObject "SUCCESS")
+    request.setAttribute "msg" (asObject message)
+    request.setAttribute "out" (asObject out)
+    request.setAttribute "err" (asObject err)
+    forwardRequest servlet request response
+sendReplResult servlet request response (ReplMessage message) = do
+    request.setAttribute "msgType" (asObject "MESSAGE")
+    request.setAttribute "msg" (asObject message)
+    forwardRequest servlet request response
+sendReplResult servlet request response (NoOutput) = do
+    request.setAttribute "msgType" (asObject "NOOUTPUT")
+    request.setAttribute "msg" (asObject "")
     forwardRequest servlet request response
 
-forwardRequest :: HttpServlet -> HttpServletRequest -> HttpServletResponse -> IO ()
+forwardRequest :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 forwardRequest servlet request response = do
     dispatcher <- request.getRequestDispatcher $ "/WEB-INF/pages/replResponse.jsp"
     dispatcher.forward request response
     
-native asClassesMap "(java.util.Map)" :: Object -> IO (JMap String ByteArr)
-native asString "(java.lang.String)" :: Object -> IO String     
- 
+native asClassesMap "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArr)
+pure native asString "(java.lang.String)" :: Object -> String
+
+native currentTimeMillis java.lang.System.currentTimeMillis :: () -> IO Long

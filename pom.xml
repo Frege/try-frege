@@ -9,6 +9,7 @@
   <url>https://github.com/Frege/try-frege</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <frege.version>3.21.190-g714a7cc</frege.version>
   </properties>
   <dependencies>
     <dependency>
@@ -37,6 +38,7 @@
     </plugins>
   </build>
   <modules>
+    <module>try-frege-repl-jdeps</module>
     <module>try-frege-repl</module>
     <module>try-frege-web</module>
   </modules>

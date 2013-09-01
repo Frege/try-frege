@@ -10,13 +10,10 @@
 <meta name="Content-Type" content="text/html; charset=UTF-8">
 <link rel="icon" type="image/png"
 	href="http://code.google.com/p/frege/logo?cct=1332936855">
-<script
-	src="${pageContext.request.contextPath}/jquery-ui-1.9.0.custom/js/jquery-1.8.2.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.console.js"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/jquery-ui-1.9.0.custom/css/redmond/jquery-ui-1.9.0.custom.min.css" />
-<script
-	src="${pageContext.request.contextPath}/jquery-ui-1.9.0.custom/js/jquery-ui-1.9.0.custom.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css"/>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="${pageContext.request.contextPath}/js/repl.js"></script>
 <script src="${pageContext.request.contextPath}/js/underscore-min.js"></script>
 <script src="${pageContext.request.contextPath}/js/base64.js"></script>
@@ -44,7 +41,7 @@
 			<table>
 				<tr>
 					<td width="100%">
-						<div class=" console"></div>
+						<div class=" console ui-corner-all"></div>
 					</td>
 					<td>
 						<div class="draggable " id="tutorial" style="display: none">
@@ -53,21 +50,46 @@
 				</tr>
 			</table>
 		</div>
-		<div id="morefrege"
-			style="font-family: Consolas, Inconsolata, Profont, Terminus; font-size: 12px;">
-			<div class="morefrege">
-				<h3>What is Frege?</h3>
-				<p>
-					<a target="_blank" href="https://github.com/Frege/frege#readme">Frege</a>
+		<div id="morefrege" align="center" >
+			<table style="width:80%;align: center;"><tr><td width="40%">
+<ul class="repolinks">
+					<li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/frege/wiki/Getting-Started">Getting Started!</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/frege/releases">Downloads (Binary, Language Reference, IDE and more)</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/eclipse-plugin/wiki">Frege
+						Eclipse IDE</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/frege/wiki/Differences-between-Frege-and-Haskell">Differences
+						between Frege and Haskell</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/frege/wiki/Calling-Frege-Code-from-Java">Calling Frege from Java</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="http://fregepl.blogspot.com/">Author's Blog</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://groups.google.com/forum/?fromgroups#!forum/frege-programming-language">Mailing List</a></li>
+          
+				</ul>
+</td><td>
+                             <div class="ui-widget-content ui-corner-all">
+                                 <h1>What is Frege?</h1><div class="widget-area" role="complementary">
+				<ul class="features">
+					<li><a target="_blank" href="https://github.com/Frege/frege#readme">Frege</a>
 					is a non-strict, pure functional programming language in the spirit
-					of Haskell. It enjoys a strong static type system with type
+					of Haskell. </li>
+          <li>It enjoys a strong static type system with type
 					inference. Higher rank types are supported, though type annotations
-					are required for that. Frege programs are compiled to Java and run
-					in a JVM. Existing Java Classes and Methods can be used seamlessly
-					from Frege. The Frege programming language is named after and in
-					honor of Gottlob Frege.
-				</p>
-				<h3>Hello World!</h3>
+					are required for that. </li>
+          <li>Frege programs are compiled to Java and run
+					in a JVM. </li>
+          <li>Existing Java Classes and Methods can be used seamlessly
+					from Frege. </li><li>The Frege programming language is named after and in
+					honor of Gottlob Frege.</li>
+				</ul></div>
+                                </div><br/>
+                                <div class="ui-widget-content ui-corner-all">
+				<h1>Hello World!</h1>
 				<pre>
 					<code>
 module helloworld.Main where
@@ -75,22 +97,10 @@ module helloworld.Main where
 main _ = println "Hello World!"
 </code>
 				</pre>
-				<h3>Learn more:</h3>
-				<p>
-					<a target="_blank"
-						href="https://github.com/Frege/frege/wiki/Getting-Started">Get
-						Frege!</a></br> <a target="_blank"
-						href="https://github.com/Frege/frege/wiki/Differences-between-Frege-and-Haskell">Differences
-						between Frege and Haskell</a></br> <a target="_blank"
-						href="https://code.google.com/p/frege/downloads/list">Downloads</a></br> <a target="_blank"
-						href="https://github.com/Frege/frege/wiki/How-To-Install-Eclipse-FregIDE">Frege
-						Eclipse IDE</a></br> <a target="_blank"
-						href="https://github.com/Frege/frege/wiki/NetBeans-Setup">Frege
-						NetBeans setup</a></br>
-				</p>
+                                </div>
+                                </td></tr></table>
 			</div>
-		</div>
-	</div>
+
 </body>
 </html>
 ​

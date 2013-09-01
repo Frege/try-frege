@@ -7,16 +7,37 @@ $(document).ready(function(){
   var tutorialMode = false;
   var tutPage = 1;
   var console = $('div.console');
+
   function successHandler(report) {
     return function(data) {
       document.body.style.cursor = 'default';
-        report([{msg:$(data).find("result").text(),
-            className: ($(data).find("type").text() == "SUCCESS" ?
-                "jquery-console-message-success" : 
-                "jquery-console-message-error")}]);
-        scrollDown();
+      var msgType = $(data).find("type").text();
+      if (msgType == "ERROR") {
+        var msg = $(data).find("message").text();
+        report([{'msg': msg, 'className': "jquery-console-message-error"}])
+      } else if (msgType == "SUCCESS") {
+        var msg = $(data).find("message").text();
+        var out = $(data).find("out").text();
+        var err = $(data).find("err").text();
+        var msgs = [{'msg':msg, 'className': "jquery-console-message-success"}];
+        if ($.trim(err) != "") {
+           msgs.unshift({'msg':err, 'className': "jquery-console-message-error"});
+        }
+
+        if ($.trim(out) != "") {
+           msgs.unshift({'msg':out, 'className': "jquery-console-message-success"});
+        }
+        report(msgs);
+      } else if (msgType == "MESSAGE") {
+        var msg = $(data).find("message").text();
+        report([{'msg': msg, 'className': "jquery-console-message-info"}]);
+      } else {
+        report([{'msg': "", 'className': "jquery-console-message-success"}]);
       }
+      scrollDown();
+    }
   }
+        
   function failureHandler(report) {
     return function(req, status, error) { 
       document.body.style.cursor = 'default';
