@@ -97,7 +97,7 @@ $(document).ready(function(){
         } else {
           fregeEval(line, report);
         }
-     } else if (line.match(/^:tutorial/i)) {
+     } /*else if (line.match(/^:tutorial/i)) {
         tutorialMode = true;
         $("div.console").parent().css({width:"50%"});
         $("#tutorial").parent().css({width:"50%"}, "slow");
@@ -107,7 +107,7 @@ $(document).ready(function(){
           "You can browse through tutorial by typing :1 for tutorial 1,\n" +
           ":2 for tutorial 2 and so on or by typing :next and :prev.\n" +
           "On the right side, the tutorial contents will be displayed.");
-     } else {
+     }*/ else {
        try {
          fregeEval(line, report);
        } catch (e) {
@@ -124,7 +124,7 @@ $(document).ready(function(){
  controller.promptText('');
       
   window.github = new Github({
-         token: "2cfc111c560520c526f7f7aa3f280bffa5fe1a12",
+         token: "", // Place a valid oauth token here
          auth: "oauth"
        });
   window.markdown = new Showdown.converter();
@@ -147,7 +147,7 @@ function navigateTutorial(cmd) {
   } else if (cmd == "prev") {
     navigateTutorial(tutPage - 1);
   } else {
-    repo.read('master', "tutorial/Tutorial-" + cmd + ".md", function(err, contents) {
+    repo.read('master', "try-frege-web/src/main/webapp/tutorial/Tutorial-" + cmd + ".md", function(err, contents) {
           if (contents) {
             $("#tutorial").html(markdown.makeHtml(contents));
             tutPage = parseInt(cmd);

@@ -66,6 +66,9 @@
           <li class="ui-state-default ui-corner-all"><a target="_blank"
 						href="https://github.com/Frege/frege/wiki/Calling-Frege-Code-from-Java">Calling Frege from Java</a></li>
           <li class="ui-state-default ui-corner-all"><a target="_blank"
+						href="https://github.com/Frege/frege/tree/master/examples">Examples
+	(Brainfuck, Euler, Sudoku, Java Swing and more)</a></li>
+          <li class="ui-state-default ui-corner-all"><a target="_blank"
 						href="http://fregepl.blogspot.com/">Author's Blog</a></li>
           <li class="ui-state-default ui-corner-all"><a target="_blank"
 						href="https://groups.google.com/forum/?fromgroups#!forum/frege-programming-language">Mailing List</a></li>
@@ -73,7 +76,7 @@
 				</ul>
 </td><td>
                              <div class="ui-widget-content ui-corner-all">
-                                 <h1>What is Frege?</h1><div class="widget-area" role="complementary">
+                                 <h4>What is Frege?</h4><div class="widget-area" role="complementary">
 				<ul class="features">
 					<li><a target="_blank" href="https://github.com/Frege/frege#readme">Frege</a>
 					is a non-strict, pure functional programming language in the spirit
@@ -89,7 +92,7 @@
 				</ul></div>
                                 </div><br/>
                                 <div class="ui-widget-content ui-corner-all">
-				<h1>Hello World!</h1>
+				<h4>Hello World!</h4>
 				<pre>
 					<code>
 module helloworld.Main where
