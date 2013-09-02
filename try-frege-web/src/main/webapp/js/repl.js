@@ -29,7 +29,7 @@ $(document).ready(function(){
         }
         report(msgs);
       } else if (msgType == "MESSAGE") {
-        var msg = $(data).find("message").text();
+        var msg = $.trim($(data).find("message").text());
         report([{'msg': msg, 'className': "jquery-console-message-info"}]);
       } else {
         report([{'msg': "", 'className': "jquery-console-message-success"}]);

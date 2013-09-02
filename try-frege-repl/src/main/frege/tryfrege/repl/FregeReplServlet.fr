@@ -109,7 +109,9 @@ evalScript Reload = do
             
 evalScript History = do
     interpreterState <- Repl . lift $ Interpreter.get
-    return $ ReplMessage interpreterState.currentScript
+    let removeInitScript = packed . drop len . toList
+        len = initScript.length
+    return . ReplMessage $ removeInitScript interpreterState.currentScript
     
 evalScript Reset = do
     Repl.put initReplState
@@ -175,7 +177,7 @@ outlineModule pack g = fst $ State.run (outlineModule' pack)  g where
         case g.packages.lookup p of
             Nothing -> return []
             Just env -> return $ map (EU.label g) $ EU.symbols env
-        
+
 positionAndName a b = case Symbol.pos a <=> Symbol.pos b of
                                     Eq -> comparing (QName.base . Symbol.name) a b
                                     ne -> ne 
