@@ -20,6 +20,7 @@ data HttpSession = native javax.servlet.http.HttpSession where
   native getAttribute :: (Mutable s HttpSession) -> String -> ST s (Maybe Object)
   native setAttribute :: (Mutable s HttpSession) -> String -> Object -> ST s ()
   native getServletContext :: (Mutable s HttpSession) -> STMutable s ServletContext
+  native removeAttribute :: (Mutable s HttpSession) -> String -> ST s ()
 
 data ServletContext = native javax.servlet.ServletContext where
   native getAttribute :: (Mutable s ServletContext) -> String -> ST s (Maybe Object)

@@ -11,43 +11,40 @@ import frege.compiler.EclipseUtil as EU()
 import frege.List as FL (Tree, values)
 import tryfrege.repl.ServletSupport
 
-initInterpreterState :: IO InterpreterState 
-initInterpreterState = do
-  urlarr <- URLArray.new 0
-  loader <- ClassLoader.current >>= URLClassLoader.new urlarr
-  classes <- HashMap.new ()
-  let interpreterState = InterpreterState {
-      loader = loader,
-      classes = classes,
-      moduleName = "script.Main",
-      currentScript = "",
-      modulePrelude = initScript
-  }
-  return interpreterState
-    
-buildInterpreterState :: MutableIO HttpSession -> IO InterpreterState 
-buildInterpreterState session = do
+buildInterpreterState :: Web -> IO InterpreterState 
+buildInterpreterState (web@Web{request=request}) = do
+  session <- request.getSession
   classesMaybe <- session.getAttribute "classes" 
   context <- session.getServletContext
-  preludeClassesMaybe <- context.getAttribute "classes" 
-  let preludeClasses = maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
-  classes <- maybe preludeClasses asClassesMap classesMaybe
+  classes <- maybe (initClasses web) asClassesMap classesMaybe
   strMaybe <- session.getAttribute "script"
   currentScript <- maybe (return initScript) (return . asString) strMaybe
-  time <- currentTimeMillis ()
+  urlarr <- URLArray.new 0
+  loader <- ClassLoader.current >>= URLClassLoader.new urlarr
   moduleNameMaybe <- session.getAttribute "moduleName"
-  let saveModuleName = session.setAttribute "moduleName" $ asObject moduleName
-      moduleName = "script.Main" ++ show time
-  moduleName <- maybe (saveModuleName >> return moduleName) (return . asString) moduleNameMaybe
-  interpreterState <- initInterpreterState
-  return interpreterState.{classes=classes, currentScript=currentScript, moduleName=moduleName}
+  moduleName <- maybe initModuleName (return . asString) moduleNameMaybe
+  return InterpreterState {
+      loader = loader,
+      classes = classes,
+      moduleName = moduleName,
+      currentScript = currentScript,
+      modulePrelude = initScript
+  }
 
+initClasses (Web{servlet=servlet}) = do
+  context <- servlet.getServletContext
+  preludeClassesMaybe <- context.getAttribute "classes" 
+  m <- maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
+  return m
+
+initModuleName = currentTimeMillis () >>= (return . ("script.Main" ++) . show)
+                 
 initScript = "import frege.Prelude hiding " ++
            "(stdout, stderr, print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn)\n" ++
            "import scripting.PreludeScripting"
 
-evalScript :: Command -> Repl ReplResult
-evalScript (Eval line) = do
+evalScript :: Web -> Command -> Repl ReplResult
+evalScript _ (Eval line) = do
     oldInterpState <- Repl . lift $ Interpreter.get
     fregecRes <- Repl . lift $ compile line
     case fregecRes of
@@ -66,7 +63,7 @@ evalScript (Eval line) = do
                         Right (res, out, err) -> return $ ReplSuccess res out err
         CompilationFailure err -> return $ ReplError err
 
-evalScript (BrowseModule m) = do
+evalScript _ (BrowseModule m) = do
     let moduleName = trim m
     replState <- Repl.get
     state <- Repl . lift $ Interpreter.get
@@ -74,15 +71,15 @@ evalScript (BrowseModule m) = do
     let res = outlineModule moduleName global
     return $ ReplMessage (intercalate newLine res)
     
-evalScript Browse = do
+evalScript web Browse = do
     state <- Repl . lift $ Interpreter.get
     interpreterState <- Repl . lift $ Interpreter.get
     if isEmpty . trim $ interpreterState.currentScript then
         return NoOutput
     else
-        evalScript $ BrowseModule state.moduleName
+        evalScript web (BrowseModule state.moduleName)
 
-evalScript (Type expr) = Repl.get >>= Repl . lift . interpret where
+evalScript _ (Type expr) = Repl.get >>= Repl . lift . interpret where
   interpret replState = do
         oldState <- Interpreter.get
         typeOfExpression <- typeOfExpression expr
@@ -91,37 +88,41 @@ evalScript (Type expr) = Repl.get >>= Repl . lift . interpret where
             Right typ -> return $ ReplMessage typ
             Left errs -> return $ ReplError errs
 
-evalScript (Load (urlSpec@#.*?://#)) = do
+evalScript web (Load (urlSpec@#.*?://#)) = do
     urle <- liftIO $ URL.new urlSpec
     let update res = case res of
             ReplError _ -> return res
             _ -> updateExternalScript urlSpec >> return res
     --either handleMalformedURLException (\url -> evalURL url >>= update) urle
-    evalURL urle >>= update
+    evalURL web urle >>= update
     
-evalScript (Load invalidUrl) = return $ ReplError ["Invalid URL: " ++ invalidUrl]
+evalScript _ (Load invalidUrl) = return $ ReplError ["Invalid URL: " ++ invalidUrl]
         
-evalScript Reload = do
+evalScript web Reload = do
     state <- Repl.get
     case state.lastExternalScript of
-        Just extScript -> evalScript (Load extScript)
+        Just extScript -> evalScript web (Load extScript)
         Nothing -> return NoOutput --Nothing to reload 
             
-evalScript History = do
+evalScript _ History = do
     interpreterState <- Repl . lift $ Interpreter.get
     let removeInitScript = packed . drop len . toList
         len = initScript.length
     return . ReplMessage $ removeInitScript interpreterState.currentScript
     
-evalScript Reset = do
-    Repl.put initReplState
-    initInterpreterState <- liftIO initInterpreterState
-    Repl . lift $ Interpreter.put initInterpreterState
-    return NoOutput
-
-evalScript Skip = return NoOutput
-evalScript Help = return $ ReplMessage help
-evalScript Version = Repl.get >>= (\s -> return $ ReplMessage version)
+evalScript (web@Web{request=request}) Reset = do
+     classes <- liftIO $ initClasses web
+     moduleName <- liftIO initModuleName
+     Repl . lift $ Interpreter.modify (InterpreterState.{
+          classes = classes,
+          currentScript=initScript,
+          moduleName=moduleName})
+     Repl.modify (ReplState.{lastExternalScript=Nothing})
+     return NoOutput
+  
+evalScript _ Skip = return NoOutput
+evalScript _ Help = return $ ReplMessage help
+evalScript _ Version = Repl.get >>= (\s -> return $ ReplMessage version)
 
 data ReplState = ReplState {
     lastExternalScript :: Maybe String
@@ -130,6 +131,9 @@ data ReplState = ReplState {
 data Repl a = Repl {un :: StateT ReplState Interpreter a} where
     get = Repl $ StateT (\s -> return (s, s)) 
     put s = Repl $ StateT (\_ -> return ((), s))
+    modify f = do
+           s <- Repl.get
+           Repl.put (f s)
 
 instance Monad Repl where
     return = Repl . return
@@ -143,12 +147,11 @@ data ReplResult = ReplError [String] |
      ReplSuccess {result :: String, stderr :: String, stdout :: String } | 
      NoOutput
 
-
 ioException :: IOException -> Repl ReplResult    
 ioException e = return $ ReplError [Throwable.getMessage e]
 
-evalURL :: URL -> Repl ReplResult
-evalURL url = do
+evalURL :: Web -> URL -> Repl ReplResult
+evalURL web url = do
     replState <- Repl.get
     let contents = fetch `catch` handleIOE
         fetch = urlContents url >>= (return . Right)
@@ -156,7 +159,7 @@ evalURL url = do
         handleIOE ioe = return $ Left ioe.getMessage
     scriptMay <- liftIO contents
     case scriptMay of 
-        Right script -> evalScript $ Eval script
+        Right script -> evalScript web (Eval script)
         Left err -> return $ ReplError [err]
 
 updateExternalScript script = do
@@ -221,7 +224,7 @@ data Scanner = mutable native java.util.Scanner where
     native useDelimiter :: Scanner -> String -> IO ()
     native next :: Scanner -> IO String   
     
-runRepl repl state = evalStateT (Repl.un repl) state
+evalRepl repl state = evalStateT (Repl.un repl) state
 
 pure native isEmpty :: String -> Bool
 
@@ -250,10 +253,16 @@ data Command = Version | Help | Browse | BrowseModule String | Type String |
 derive Eq Command
 derive Show Command
 
-initReplState :: ReplState
-initReplState = ReplState {
-    lastExternalScript = Nothing,
-}
+buildReplState :: Web -> IO ReplState
+buildReplState (Web{request=request}) = do
+  session <- request.getSession
+  lastScriptMaybe <- session.getAttribute "lastExternalScript"
+  let lastScript = case lastScriptMaybe of
+                        Nothing -> Nothing
+                        Just obj | s == "" -> Nothing
+                                 | otherwise -> Just s
+                                 where s = asString obj
+  return ReplState{lastExternalScript = lastScript}
 
 evalShow :: Script -> Interpreter (Either [String] (String, String, String))
 evalShow source = do
@@ -306,14 +315,13 @@ native secureFetchFieldValue tryfrege.jdeps.Sandbox.secureFetchFieldValue ::
 native fieldValue frege.memoryjavac.JavaUtils.fieldValue :: 
   String -> String -> ClassLoader -> IO (Either ScriptException a)
   
-
-pure native toString :: Object -> String
-
-pure native asObject "(Object)" :: a -> Object
-
 putSession :: Mutable s HttpSession -> String -> a -> ST s ()
 putSession session name value = session.setAttribute name (asObject value)
 
+data Web = Web {
+     servlet :: MutableIO HttpServlet,
+     request :: MutableIO HttpServletRequest,
+     response :: MutableIO HttpServletResponse }
 
 doGet :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 doGet = doPost
@@ -327,23 +335,33 @@ doPost !servlet !request !response = do
        let c = Command.parse cmdStr
        case c of
          Left err -> sendReplResult servlet request response (ReplError [err])
-         Right cmd -> processCommand servlet request response cmd
+         Right cmd -> processCommand (Web servlet request response) cmd
 
-processCommand :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> Command -> IO ()
-processCommand servlet request response cmd = interpreterState >>= evalInterpreter interpreter where
-    interpreter = runRepl repl initReplState
-    interpreterState = request.getSession >>= buildInterpreterState
-    repl  = do
-        res <- evalScript cmd
-        session <- liftIO $ request.getSession
-        interpreterState <- Repl . lift $ Interpreter.get
-        let saveAndSend = do
-                                putSession session "script" interpreterState.currentScript
-                                putSession session "classes" interpreterState.classes 
-        case res of
-            ReplError _ -> liftIO $ sendReplResult servlet request response res
-            _ -> liftIO $ saveAndSend >> sendReplResult servlet request response res
+processCommand :: Web -> Command -> IO ()
+processCommand (web@Web{servlet=servlet,request=request,response=response}) cmd = do
+    session <- request.getSession
+    interpreterState <- buildInterpreterState web
+    replState <- buildReplState web
+    let repl  = do
+                      res <- evalScript web cmd
+                      session <- liftIO $ request.getSession
+                      interpreterState <- Repl . lift $ Interpreter.get
+                      case res of
+                                  ReplError _ -> liftIO $ sendReplResult servlet request response res
+                                  _ -> saveSession session >> (liftIO $ sendReplResult servlet request response res)
+    evalInterpreter (evalRepl repl replState) interpreterState
 
+saveSession :: MutableIO HttpSession -> Repl ()
+saveSession session = do
+            replState <- Repl.get
+            interpreterState <- Repl . lift $ Interpreter.get
+            let extScriptStr = maybe "" id replState.lastExternalScript
+            liftIO $ do
+                        putSession session "script" interpreterState.currentScript
+                        putSession session "classes" interpreterState.classes 
+                        putSession session "moduleName" interpreterState.moduleName
+                        putSession session "lastExternalScript" extScriptStr
+            
 sendReplResult :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> ReplResult -> IO ()
 sendReplResult servlet request response (ReplError errs) = do
     let msg = asObject $ intercalate newLine errs
@@ -371,6 +389,11 @@ forwardRequest servlet request response = do
     dispatcher.forward request response
     
 native asClassesMap "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArr)
+
 pure native asString "(java.lang.String)" :: Object -> String
 
 native currentTimeMillis java.lang.System.currentTimeMillis :: () -> IO Long
+
+pure native toString :: Object -> String
+
+pure native asObject "(Object)" :: a -> Object
