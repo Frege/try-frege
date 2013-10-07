@@ -8,7 +8,6 @@ import frege.Version
 import frege.java.Net 
 import frege.compiler.Data
 import frege.compiler.EclipseUtil as EU()
-import frege.List as FL (Tree, values)
 import tryfrege.repl.ServletSupport
 
 buildInterpreterState :: Web -> IO InterpreterState 
@@ -67,7 +66,8 @@ evalScript _ (BrowseModule m) = do
     let moduleName = trim m
     replState <- Repl.get
     state <- Repl . lift $ Interpreter.get
-    global <- liftIO $ MemoryClassLoader.new state.loader state.classes >>= standardOptions
+    javac <- liftIO $ MemoryJavaCompiler.new state.loader state.classes
+    global <- liftIO $ javac.classLoader >>= standardOptions
     let res = outlineModule moduleName global
     return $ ReplMessage (intercalate newLine res)
     
@@ -286,9 +286,7 @@ showSymbol source var symbol g | isVariable g symbol = do
     state <- Interpreter.get
     if isString g symbol then liftIO $
       do
-        loader <- asMemoryClassLoader g.sub.loader
-        newclasses <- loader.getClasses
-        --Actual execution happens here
+        let loader = g.sub.loader
         v <- secureFetchFieldValue state.moduleName var loader
         case v of
             Left err -> return $ Left [err.getMessage]
@@ -387,7 +385,7 @@ forwardRequest :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> Mutab
 forwardRequest servlet request response = do
     dispatcher <- request.getRequestDispatcher $ "/WEB-INF/pages/replResponse.jsp"
     dispatcher.forward request response
-    
+
 native asClassesMap "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArr)
 
 pure native asString "(java.lang.String)" :: Object -> String

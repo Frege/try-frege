@@ -6,12 +6,11 @@
   <parent>
     <groupId>frege</groupId>
     <artifactId>try-frege</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>try-frege-web</artifactId>
   <packaging>war</packaging>
-  <name>try-frege-web Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>Try Frege web application</name>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -20,14 +19,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.theoryinpractise.frege</groupId>
+      <artifactId>frege-maven-plugin</artifactId>
+      <classifier>${frege.version}</classifier>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>try-frege-repl</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>jfrege-script-engine</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <version>${frege.scripting.version}</version>
     </dependency>
     <dependency>
       <groupId>jstl</groupId>

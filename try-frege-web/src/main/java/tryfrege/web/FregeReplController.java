@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import frege.runtime.Func1;
+import frege.runtime.Lambda;
 
 import tryfrege.repl.FregeReplServlet;
 
@@ -27,8 +27,8 @@ public class FregeReplController extends HttpServlet {
 	protected void doPost(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
-		final Func1 scriptResultIO = (Func1) FregeReplServlet.doPost(this, request, response);
-		scriptResultIO.apply(1).forced();
+		final Lambda scriptResultIO = FregeReplServlet.doPost(this, request, response);
+		scriptResultIO.apply(1).result().forced();
 	}
 
 	@Override

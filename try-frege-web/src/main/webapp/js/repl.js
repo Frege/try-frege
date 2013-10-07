@@ -1,8 +1,24 @@
 $(document).ready(function(){
+
+  var hwEditor =
+  CodeMirror.fromTextArea(document.getElementById("helloworldEditor"),
+  {
+        theme: 'blackboard',
+        lineNumbers: true,
+        readOnly: true
+  }).setValue(    "module helloworld.Main where\n\n" +
+                  "quicksort :: Ord a => [a] -> [a]\n" +
+                  "quicksort []     = []\n" +
+                  "quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater) where\n" +
+                  "  lesser  = filter (< p) xs\n" +
+                  "  greater = filter (>= p) xs\n\n" +
+                  "main _ = println $ quicksort [2,5,4,3,1,7,6]\n");
+
   $("#tabs" ).tabs();
-  $("#tabs").height($(window).height() * 0.9)
+  $("#tabs").height($(window).height() * 0.9);
   $("div.console").height($("#tabs").height() * 0.8);
   $("div.draggable").height($("#tabs").height() * 0.8);
+
   var pasteMode = false;
   var tutorialMode = false;
   var tutPage = 1;
@@ -97,17 +113,16 @@ $(document).ready(function(){
         } else {
           fregeEval(line, report);
         }
-     } /*else if (line.match(/^:tutorial/i)) {
-        tutorialMode = true;
-        $("div.console").parent().css({width:"50%"});
-        $("#tutorial").parent().css({width:"50%"}, "slow");
-        $("#tutorial").show();
-        navigateTutorial(tutPage);
-        report("Entering tutorial... Type :q to exit.\n" + 
-          "You can browse through tutorial by typing :1 for tutorial 1,\n" +
-          ":2 for tutorial 2 and so on or by typing :next and :prev.\n" +
-          "On the right side, the tutorial contents will be displayed.");
-     }*/ else {
+     } /*
+         * else if (line.match(/^:tutorial/i)) { tutorialMode = true;
+         * $("div.console").parent().css({width:"50%"});
+         * $("#tutorial").parent().css({width:"50%"}, "slow");
+         * $("#tutorial").show(); navigateTutorial(tutPage); report("Entering
+         * tutorial... Type :q to exit.\n" + "You can browse through tutorial by
+         * typing :1 for tutorial 1,\n" + ":2 for tutorial 2 and so on or by
+         * typing :next and :prev.\n" + "On the right side, the tutorial
+         * contents will be displayed."); }
+         */ else {
        try {
          fregeEval(line, report);
        } catch (e) {
