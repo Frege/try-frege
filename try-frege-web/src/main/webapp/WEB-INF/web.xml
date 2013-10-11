@@ -19,7 +19,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>repl</servlet-name>
-    <url-pattern>/eval</url-pattern>
+    <url-pattern>/eval/*</url-pattern>
   </servlet-mapping>
   <listener>
     <listener-class>tryfrege.web.ContextListener</listener-class>

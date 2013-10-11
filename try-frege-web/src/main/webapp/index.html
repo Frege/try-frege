@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+          "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Frege REPL</title>
+<meta name="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" type="image/png"
+	href="http://code.google.com/p/frege/logo?cct=1332936855">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="js/jquery.console.js"></script>
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="js/repl.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/base64.js"></script>
+<script src="js/github.js"></script>
+<script src="js/showdown.js"></script>
+<script src="lib/codemirror.js"></script>
+<link rel="stylesheet" href="lib/codemirror.css">
+<link rel="stylesheet" href="theme/solarized.css">
+<link rel="stylesheet" href="theme/ambiance.css">
+<link rel="stylesheet" href="theme/blackboard.css">
+<script src="mode/haskell/haskell.js"></script>
+<link rel="stylesheet" href="css/repl.css" />
+</head>
+<body
+	style="margin-left: 50px; margin-right: 50px; margin-top: 15px; margin-bottom: 10px;">
+	<noscript>
+		<p>
+			<strong>Please enable JavaScript or upgrade your browser.</strong>
+		</p>
+	</noscript>
+	<div id="tabs" style="position: relative;">
+		<ul>
+			<li><a href="#try">Try Frege</a></li>
+			<li><a href="#about">About Frege</a></li>
+		</ul>
+		<div id="try">
+			<table>
+				<tr>
+					<td width="100%">
+						<div class=" console ui-corner-all"></div>
+					</td>
+					<td>
+						<div class="draggable " id="input" style="display: none">
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="about" align="center">
+			<table style="width: 80%; align: center;">
+				<tr>
+					<td width="40%">
+						<ul class="repolinks">
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://github.com/Frege/frege/wiki/Getting-Started">Getting
+									Started!</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank" href="https://github.com/Frege/frege/releases">Downloads
+									(Binary, Language Reference, IDE and more)</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://github.com/Frege/eclipse-plugin/wiki">Frege
+									Eclipse IDE</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://github.com/Frege/frege/wiki/Differences-between-Frege-and-Haskell">Differences
+									between Frege and Haskell</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://github.com/Frege/frege/wiki/Calling-Frege-Code-from-Java">Calling
+									Frege from Java</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://github.com/Frege/frege/tree/master/examples">Examples
+									(Brainfuck, Euler, Sudoku, Java Swing and more)</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank" href="http://fregepl.blogspot.com/">Author's
+									Blog</a></li>
+							<li class="ui-state-default ui-corner-all"><a
+								target="_blank"
+								href="https://groups.google.com/forum/?fromgroups#!forum/frege-programming-language">Mailing
+									List</a></li>
+
+						</ul>
+					</td>
+					<td>
+						<div class="descfrege ui-widget-content ui-corner-all">
+							<strong><center>What is Frege?</center></strong>
+							<div class="widget-area">
+								<table class="features" cellspacing="5" cellpadding="10">
+									<tr>
+										<td class="ui-corner-all">A non-strict, pure functional
+											programming language in the spirit of Haskell</td>
+										<td class="ui-corner-all">Strong static type system with
+											type inference</td>
+									</tr>
+									<tr>
+										<td class="ui-corner-all">Higher rank types are supported
+											though type annotations are required for that</td>
+										<td class="ui-corner-all">Compiled to Java and run in a
+											JVM</td>
+									</tr>
+									<tr>
+										<td class="ui-corner-all">Existing Java Classes and
+											Methods can be used seamlessly from Frege</td>
+										<td class="ui-corner-all">The Frege programming language
+											is named after and in honor of Gottlob Frege</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+                        <br/>
+						<div class="ui-widget-content ui-corner-all">
+							<div>
+								<div style="float: left; padding: 2px">
+									<strong>Hello World</strong>
+								</div>
+								<!--
+                                        <div style="float:right;padding-right:6px;">
+                                             <input type="button" value="Compile"/>
+                                             <input type="button" value="Run"/>
+                                        </div>
+                                -->
+								<div>
+									<div style="clear: both">
+										<textarea id="helloworldEditor">
+                                       </textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

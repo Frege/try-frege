@@ -48,7 +48,7 @@ div.console span.jquery-console-prompt-label {
     font-weight: bold
 }
 
-div.morefrege {
+div.about {
     font-size: 14px;
     font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
     Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
@@ -77,4 +77,20 @@ ul.repolinks { list-style-type: none; margin: 0; padding: 0;  }
 ul.repolinks li { margin: 3px 3px 3px 0; padding: 6px; float: left; width: 80%; font-size: 16px; text-align: center; }
 ul.repolinks li a { margin: 0px; display: block; width: 100%; height: 100%; }
 
-div.features div {padding:2px; font-size:14px; margin:4px;}
+table.features {
+  font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
+    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+    "Lucida Console", "Bitstream Vera Sans Mono",
+    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+    "Courier New", Terminal, monospace;
+}
+
+table.features tr td {
+  background: #cccccc;
+  text-align:center;
+}
+
+div.descfrege {
+  padding: 3px;
+}

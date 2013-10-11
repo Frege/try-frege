@@ -17,7 +17,7 @@ $(document).ready(function(){
   $("#tabs" ).tabs();
   $("#tabs").height($(window).height() * 0.9);
   $("div.console").height($("#tabs").height() * 0.8);
-  $("div.draggable").height($("#tabs").height() * 0.8);
+  $("div.input").height($("#tabs").height() * 0.8);
 
   var pasteMode = false;
   var tutorialMode = false;
@@ -66,7 +66,7 @@ $(document).ready(function(){
       report("");
     } else {
       document.body.style.cursor = 'wait';
-      $.post(replurl, {"cmd": line},
+      $.post('eval/', {"cmd": line},
           successHandler(report), "xml")
       .error(failureHandler(report))
     }
