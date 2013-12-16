@@ -27,8 +27,10 @@ buildInterpreterState (web@Web{request=request}) = do
       classes = classes,
       moduleName = moduleName,
       currentScript = currentScript,
-      modulePrelude = initScript
+      transformDefs = \defs -> defs ++ [preludeImport]
   }
+
+preludeImport = ImpDcl {pos=Position.null, pack="scripting.PreludeScripting", as=Nothing, imports = linkAll}
 
 initClasses (Web{servlet=servlet}) = do
   context <- servlet.getServletContext
@@ -36,7 +38,7 @@ initClasses (Web{servlet=servlet}) = do
   m <- maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
   return m
 
-initModuleName = currentTimeMillis () >>= (return . ("script.Main" ++) . show)
+initModuleName = currentTimeMillis () >>= (\id -> return $ "repl" ++ show id ++ ".Repl")
                  
 initScript = "import frege.Prelude hiding " ++
            "(stdout, stderr, print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn)\n" ++
@@ -47,7 +49,8 @@ evalScript _ (Eval line) = do
     oldInterpState <- Repl . lift $ Interpreter.get
     fregecRes <- Repl . lift $ compile line
     case fregecRes of
-        CompilationSuccess (c@CompilationInfo{sourceInfo=sourceInfo,state=g}) ->
+        CompilationSuccess (c@CompilationInfo{javaSource=javaSrc,sourceInfo=sourceInfo,state=g}) -> do
+            Repl.modify $ ReplState.{lastJavaSource = Just javaSrc}
             case sourceInfo of
                 Module -> return $ ReplMessage ("Loaded module: " ++ moduleName g)           
                 Definitions -> do
@@ -97,6 +100,10 @@ evalScript web (Load (urlSpec@#.*?://#)) = do
     evalURL web urle >>= update
     
 evalScript _ (Load invalidUrl) = return $ ReplError ["Invalid URL: " ++ invalidUrl]
+
+evalScript _ Java = do
+  state <- Repl.get
+  return $ maybe NoOutput ReplMessage state.lastJavaSource
         
 evalScript web Reload = do
     state <- Repl.get
@@ -117,7 +124,7 @@ evalScript (web@Web{request=request}) Reset = do
           classes = classes,
           currentScript=initScript,
           moduleName=moduleName})
-     Repl.modify (ReplState.{lastExternalScript=Nothing})
+     Repl.put ReplState.init
      return NoOutput
   
 evalScript _ Skip = return NoOutput
@@ -125,8 +132,11 @@ evalScript _ Help = return $ ReplMessage help
 evalScript _ Version = Repl.get >>= (\s -> return $ ReplMessage version)
 
 data ReplState = ReplState {
-    lastExternalScript :: Maybe String
-}
+    lastExternalScript :: Maybe String,
+    lastJavaSource :: Maybe String
+} where
+  init = ReplState {lastExternalScript = Nothing,
+                    lastJavaSource = Nothing}
 
 data Repl a = Repl {un :: StateT ReplState Interpreter a} where
     get = Repl $ StateT (\s -> return (s, s)) 
@@ -191,6 +201,7 @@ cmdHelp = [(":type <expression>", "Display the type of an expression"),
             (":browse <module name>", "Display the names in a module if " ++
                 "a module name is provided otherwise display the names in the default REPL module"),
             (":load <url>", "Load Frege code snippets from an URL"),
+            (":java", "Show the generated Java code for the last successful compilation"),
             (":r", "Reload the last URL script"),
             (":history", "Display the source history for definitions in the default REPL module"),
             (":reset", "Reset the session discarding all evaluated scripts"),
@@ -229,7 +240,7 @@ evalRepl repl state = evalStateT (Repl.un repl) state
 pure native isEmpty :: String -> Bool
 
 data Command = Version | Help | Browse | BrowseModule String | Type String | 
-    Load String | Eval String | History | Reload | Reset | Skip where 
+    Load String | Eval String | Java | History | Reload | Reset | Skip where
     
     parse   :: String -> Either String Command
     parse s = parse' $ trim s where
@@ -238,13 +249,14 @@ data Command = Version | Help | Browse | BrowseModule String | Type String |
         parse' script = Right $ Eval script
 
     parseCommand (m~#:browse\s(.*)#) = maybe (Right Browse) (Right . BrowseModule) $ m.group 1
-    parseCommand ":browse" = Right $ Browse
+    parseCommand ":browse" = Right Browse
     parseCommand (m~#^:l.*?\s+(.*)#) = 
         maybe (Left "Missing external script path!") (Right . Load) $ m.group 1
     parseCommand  ":version" = Right Version
     parseCommand ":help" = Right Help
     parseCommand (m~#^:t.*?\s+(.*)#) = 
         maybe (Left "Missing expression!") (Right . Type) $ m.group 1
+    parseCommand ":java" = Right Java
     parseCommand ":history" = Right History
     parseCommand ":r" = Right Reload
     parseCommand ":reset" = Right Reset
@@ -257,12 +269,12 @@ buildReplState :: Web -> IO ReplState
 buildReplState (Web{request=request}) = do
   session <- request.getSession
   lastScriptMaybe <- session.getAttribute "lastExternalScript"
-  let lastScript = case lastScriptMaybe of
-                        Nothing -> Nothing
-                        Just obj | s == "" -> Nothing
-                                 | otherwise -> Just s
-                                 where s = asString obj
-  return ReplState{lastExternalScript = lastScript}
+  lastJavaSourceObj <- session.getAttribute "lastJavaSource"
+  let lastJavaSource = maybe Nothing f lastJavaSourceObj
+      lastScript = maybe Nothing f lastScriptMaybe
+      f obj = if s == "" then Nothing else Just s where s = asString obj
+  return ReplState{lastExternalScript = lastScript,
+                   lastJavaSource = lastJavaSource}
 
 evalShow :: Script -> Interpreter (Either [String] (String, String, String))
 evalShow source = do
@@ -281,29 +293,34 @@ showVariable source var g = do
       case symbolMay of
         Nothing -> return . Left $ ["Not found: " ++ var]
         Just symbol -> showSymbol source var symbol g
-        
-showSymbol source var symbol g | isVariable g symbol = do
-    state <- Interpreter.get
-    if isString g symbol then liftIO $
-      do
-        let loader = g.sub.loader
-        v <- secureFetchFieldValue state.moduleName var loader
-        case v of
-            Left err -> return $ Left [err.getMessage]
-            Right value -> do
-                let result = toString $ asObject value
-                out <- fieldValue "scripting.PreludeScripting" "stdoutWriter" loader
-                outStr <- either (\e -> return e.getMessage) 
-                                 (return . toString . asObject) out
-                err <- fieldValue "scripting.PreludeScripting" "stderrWriter" loader
-                errStr <- either (\e -> return e.getMessage) 
-                                 (return . toString . asObject) err
-                return $ Right (result, outStr, errStr)
-    else do
-        Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
-        let showScript = buildShowScript var g symbol
-        showResult <- evalShow showScript
-        return showResult
+
+showSymbol source var symbol g | isVariable g symbol =
+    case symbol of
+      SymL{alias} -> do
+         state <- Interpreter.get
+         Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
+         maybe (return . Right $ ("", "", "")) (evalShow . buildShowScript var g) $ alias.findit g
+      _      -> do
+            state <- Interpreter.get
+            if isString g symbol then liftIO $
+              do
+                let loader = g.sub.loader
+                v <- secureFetchFieldValue state.moduleName var loader
+                case v of
+                    Left err -> return $ Left [err.getMessage]
+                    Right value -> do
+                        let result = toString $ asObject value
+                        out <- fieldValue "scripting.PreludeScripting" "stdoutWriter" loader
+                        outStr <- either (\e -> return e.getMessage)
+                                         (return . toString . asObject) out
+                        err <- fieldValue "scripting.PreludeScripting" "stderrWriter" loader
+                        errStr <- either (\e -> return e.getMessage)
+                                         (return . toString . asObject) err
+                        return $ Right (result, outStr, errStr)
+            else do
+                Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
+                let showScript = buildShowScript var g symbol
+                evalShow showScript
 showSymbol _ _ symbol g = 
            return . Right $ (getSymbolType symbol g, "", "") --Not a variable
 
@@ -354,11 +371,13 @@ saveSession session = do
             replState <- Repl.get
             interpreterState <- Repl . lift $ Interpreter.get
             let extScriptStr = maybe "" id replState.lastExternalScript
+                lastJavaSource = maybe "" id replState.lastJavaSource
             liftIO $ do
                         putSession session "script" interpreterState.currentScript
                         putSession session "classes" interpreterState.classes 
                         putSession session "moduleName" interpreterState.moduleName
                         putSession session "lastExternalScript" extScriptStr
+                        putSession session "lastJavaSource" lastJavaSource
             
 sendReplResult :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> ReplResult -> IO ()
 sendReplResult servlet request response (ReplError errs) = do

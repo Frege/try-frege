@@ -5,7 +5,8 @@ $(document).ready(function(){
   {
         theme: 'blackboard',
         lineNumbers: true,
-        readOnly: true
+        readOnly: true,
+        mode: "text/x-haskell"
   }).setValue(    "module helloworld.Main where\n\n" +
                   "quicksort :: Ord a => [a] -> [a]\n" +
                   "quicksort []     = []\n" +
@@ -14,17 +15,31 @@ $(document).ready(function(){
                   "  greater = filter (>= p) xs\n\n" +
                   "main _ = println $ quicksort [2,5,4,3,1,7,6]\n");
 
+  var javaSourceEditor =
+    CodeMirror.fromTextArea(document.getElementById("javaSource"),
+    {
+          theme: 'blackboard',
+          lineNumbers: true,
+          readOnly: true,
+          mode: "text/x-java"
+    })
+
   $("#tabs" ).tabs();
   $("#tabs").height($(window).height() * 0.9);
   $("div.console").height($("#tabs").height() * 0.8);
   $("div.input").height($("#tabs").height() * 0.8);
+  $( "#dialog" ).dialog({
+                            modal: true,
+                            autoOpen: false,
+                            closeOnEscape: true
+                          });
 
   var pasteMode = false;
   var tutorialMode = false;
   var tutPage = 1;
   var console = $('div.console');
 
-  function successHandler(report) {
+  function successHandler(cmd, report) {
     return function(data) {
       document.body.style.cursor = 'default';
       var msgType = $(data).find("type").text();
@@ -46,7 +61,18 @@ $(document).ready(function(){
         report(msgs);
       } else if (msgType == "MESSAGE") {
         var msg = $.trim($(data).find("message").text());
-        report([{'msg': msg, 'className': "jquery-console-message-info"}]);
+        if (cmd.lastIndexOf(":java", 0) == 0) {
+          javaSourceEditor.setValue(msg);
+          $("#dialog").dialog({"height": $(window).height() * 0.9,
+                               "width": $(window).width() * 0.6,
+                               "title": "Java Source",
+                               "position": { my: "right top", at: "right top", of: window }})
+          $("#dialog" ).dialog("open")
+          javaSourceEditor.refresh();
+          report([{"msg": "", "className": "jquery-console-message-info"}]);
+        } else {
+          report([{'msg': msg, 'className': "jquery-console-message-info"}]);
+        }
       } else {
         report([{'msg': "", 'className': "jquery-console-message-success"}]);
       }
@@ -67,7 +93,7 @@ $(document).ready(function(){
     } else {
       document.body.style.cursor = 'wait';
       $.post('eval/', {"cmd": line},
-          successHandler(report), "xml")
+          successHandler(line, report), "xml")
       .error(failureHandler(report))
     }
     
