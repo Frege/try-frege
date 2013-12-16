@@ -21,6 +21,9 @@ local.properties
 .settings/
 .loadpath
 
+# Intellij idea
+*.iml
+
 # External tool builders
 .externalToolBuilders/
 
