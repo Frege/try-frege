@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.java.lang.Reflect - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.java.lang.Reflect</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:53:34 CET 2013 from source file: <SPAN CLASS="code">./frege/java/lang/Reflect.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#ReflectedClass">ReflectedClass</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Exceptional_InvocationTargetException">Exceptional_InvocationTargetException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ReflectedClass_Class">ReflectedClass_Class</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Field">Field</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#InvocationTargetException">InvocationTargetException</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#ReflectedClass.getDeclaredField">ReflectedClass.getDeclaredField</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Exceptional_InvocationTargetException.javaClass">Exceptional_InvocationTargetException.javaClass</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ReflectedClass_Class.getDeclaredField">ReflectedClass_Class.getDeclaredField</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Field.get">Field.get</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="ReflectedClass">ReflectedClass</a>  c</SPAN></dt>
+<dd class="clas">
+<p>
+This type class is used only to add methods to <a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a>   </p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#ReflectedClass_Class">Class</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ReflectedClass.getDeclaredField">getDeclaredField</a> :: <a class="tref" href="#ReflectedClass">ReflectedClass</a> c =&gt; <b>c</b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Field">Field</a><br><b>native </b>getDeclaredField&nbsp;&nbsp;<b>throws </b><a class="tref" href="../Lang.html#NoSuchFieldException">NoSuchFieldException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Exceptional_InvocationTargetException"> </a> <a class="tref" href="../../prelude/PreludeIO.html#Exceptional">Exceptional</a> <a class="tref" href="#InvocationTargetException">InvocationTargetException</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Exceptional_InvocationTargetException.javaClass">javaClass</a> :: <a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#InvocationTargetException">InvocationTargetException</a><br><b>pure </b><b>native </b>java.lang.reflect.InvocationTargetException.class</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ReflectedClass_Class"> </a> <a class="tref" href="#ReflectedClass">ReflectedClass</a> <a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ReflectedClass_Class.getDeclaredField">getDeclaredField</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a> α</b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Field">Field</a><br><b>native </b>getDeclaredField&nbsp;&nbsp;<b>throws </b><a class="tref" href="../Lang.html#NoSuchFieldException">NoSuchFieldException</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#ReflectedClass.getDeclaredField">ReflectedClass.getDeclaredField</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Field"> </a> <a class="tref" href="#Field">Field</a> = <b>pure </b><b>native </b>java.lang.reflect.Field</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Field.get">get</a> :: <b><a class="tref" href="#Field">Field</a></b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../../prelude/PreludeBase.html#Object">Object</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../../prelude/PreludeBase.html#Object">Object</a><br><b>native </b>get&nbsp;&nbsp;<b>throws </b><a class="tref" href="../Lang.html#IllegalAccessException">IllegalAccessException</a>, <a class="tref" href="../Lang.html#IllegalArgumentException">IllegalArgumentException</a>, <a class="tref" href="../Lang.html#ExceptionInInitializerError">ExceptionInInitializerError</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="InvocationTargetException"> </a> <a class="tref" href="#InvocationTargetException">InvocationTargetException</a> = <b>pure </b><b>native </b>java.lang.reflect.InvocationTargetException</SPAN></dt>
+<dd class="data">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Field">Field</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../../prelude/PreludeBase.html#Object">Object</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../../prelude/PreludeBase.html#Object">Object</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Field.get">Field.get</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#InvocationTargetException">InvocationTargetException</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Exceptional_InvocationTargetException.javaClass">Exceptional_InvocationTargetException.javaClass</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Class">Class</a> α -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Field">Field</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ReflectedClass_Class.getDeclaredField">ReflectedClass_Class.getDeclaredField</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ReflectedClass">ReflectedClass</a> c =&gt; c -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Field">Field</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ReflectedClass.getDeclaredField">ReflectedClass.getDeclaredField</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

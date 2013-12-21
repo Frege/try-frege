@@ -1,0 +1,882 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.prelude.Math - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.prelude.Math</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:41:45 CET 2013 from source file: <SPAN CLASS="code">frege/prelude/Math.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+This package mirrors the content of java.lang.Math For details see http://download.oracle.com/javase/7/docs/api/java/lang/Math.html Contributed by Daniel Gronau   </p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#PrimitiveFloating_Double">PrimitiveFloating_Double</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#PrimitiveFloating_Float">PrimitiveFloating_Float</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#e">e</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRound">javaRound</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRoundα">javaRoundα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRoundβ">javaRoundβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#pi">pi</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#random">random</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sqr">sqr</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#e">e</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRound">javaRound</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRoundα">javaRoundα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#javaRoundβ">javaRoundβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#pi">pi</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#random">random</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sqr">sqr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.floor">PrimitiveFloating.floor</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.ceil">PrimitiveFloating.ceil</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.asin">PrimitiveFloating.asin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.acos">PrimitiveFloating.acos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating._star_star">PrimitiveFloating.**</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.atan2">PrimitiveFloating.atan2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.atan">PrimitiveFloating.atan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.cbrt">PrimitiveFloating.cbrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.cos">PrimitiveFloating.cos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.copySign">PrimitiveFloating.copySign</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.exp">PrimitiveFloating.exp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.cosh">PrimitiveFloating.cosh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.expm1">PrimitiveFloating.expm1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.scalb">PrimitiveFloating.scalb</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.nativeMax">PrimitiveFloating.nativeMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.log">PrimitiveFloating.log</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.hypot">PrimitiveFloating.hypot</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.getExponent">PrimitiveFloating.getExponent</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.ieeeRemainder">PrimitiveFloating.ieeeRemainder</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.log1p">PrimitiveFloating.log1p</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.log10">PrimitiveFloating.log10</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.nativeAbs">PrimitiveFloating.nativeAbs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.pow">PrimitiveFloating.pow</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.nextAfter">PrimitiveFloating.nextAfter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.nativeMin">PrimitiveFloating.nativeMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.nextUp">PrimitiveFloating.nextUp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.rint">PrimitiveFloating.rint</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.round">PrimitiveFloating.round</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.sqrt">PrimitiveFloating.sqrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.sin">PrimitiveFloating.sin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.signum">PrimitiveFloating.signum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.sinh">PrimitiveFloating.sinh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.tanh">PrimitiveFloating.tanh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.tan">PrimitiveFloating.tan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.toRadians">PrimitiveFloating.toRadians</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.toDegrees">PrimitiveFloating.toDegrees</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating.ulp">PrimitiveFloating.ulp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.floor">PrimitiveFloating_Double.floor</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.ceil">PrimitiveFloating_Double.ceil</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.asin">PrimitiveFloating_Double.asin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.acos">PrimitiveFloating_Double.acos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double._star_star">PrimitiveFloating_Double.**</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.atan2">PrimitiveFloating_Double.atan2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.atan">PrimitiveFloating_Double.atan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.cbrt">PrimitiveFloating_Double.cbrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.exp">PrimitiveFloating_Double.exp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.cos">PrimitiveFloating_Double.cos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.copySign">PrimitiveFloating_Double.copySign</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.cosh">PrimitiveFloating_Double.cosh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.expm1">PrimitiveFloating_Double.expm1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.scalb">PrimitiveFloating_Double.scalb</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.nativeMax">PrimitiveFloating_Double.nativeMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.log">PrimitiveFloating_Double.log</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.hypot">PrimitiveFloating_Double.hypot</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.getExponent">PrimitiveFloating_Double.getExponent</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.ieeeRemainder">PrimitiveFloating_Double.ieeeRemainder</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.log1p">PrimitiveFloating_Double.log1p</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.log10">PrimitiveFloating_Double.log10</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.nativeAbs">PrimitiveFloating_Double.nativeAbs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.pow">PrimitiveFloating_Double.pow</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.nextAfter">PrimitiveFloating_Double.nextAfter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.nativeMin">PrimitiveFloating_Double.nativeMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.nextUp">PrimitiveFloating_Double.nextUp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.round">PrimitiveFloating_Double.round</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.rint">PrimitiveFloating_Double.rint</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.sqrt">PrimitiveFloating_Double.sqrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.sin">PrimitiveFloating_Double.sin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.signum">PrimitiveFloating_Double.signum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.sinh">PrimitiveFloating_Double.sinh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.tanh">PrimitiveFloating_Double.tanh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.tan">PrimitiveFloating_Double.tan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.toRadians">PrimitiveFloating_Double.toRadians</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.toDegrees">PrimitiveFloating_Double.toDegrees</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Double.ulp">PrimitiveFloating_Double.ulp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.floor">PrimitiveFloating_Float.floor</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.ceil">PrimitiveFloating_Float.ceil</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.asin">PrimitiveFloating_Float.asin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.acos">PrimitiveFloating_Float.acos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float._star_star">PrimitiveFloating_Float.**</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.atan2">PrimitiveFloating_Float.atan2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.atan">PrimitiveFloating_Float.atan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.cbrt">PrimitiveFloating_Float.cbrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.exp">PrimitiveFloating_Float.exp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.cos">PrimitiveFloating_Float.cos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.copySign">PrimitiveFloating_Float.copySign</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.cosh">PrimitiveFloating_Float.cosh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.expm1">PrimitiveFloating_Float.expm1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.scalb">PrimitiveFloating_Float.scalb</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.nativeMax">PrimitiveFloating_Float.nativeMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.log">PrimitiveFloating_Float.log</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.hypot">PrimitiveFloating_Float.hypot</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.getExponent">PrimitiveFloating_Float.getExponent</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.ieeeRemainder">PrimitiveFloating_Float.ieeeRemainder</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.log1p">PrimitiveFloating_Float.log1p</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.log10">PrimitiveFloating_Float.log10</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.nativeAbs">PrimitiveFloating_Float.nativeAbs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.pow">PrimitiveFloating_Float.pow</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.nextAfter">PrimitiveFloating_Float.nextAfter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.nativeMin">PrimitiveFloating_Float.nativeMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.nextUp">PrimitiveFloating_Float.nextUp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.round">PrimitiveFloating_Float.round</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.rint">PrimitiveFloating_Float.rint</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.sqrt">PrimitiveFloating_Float.sqrt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.sin">PrimitiveFloating_Float.sin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.signum">PrimitiveFloating_Float.signum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.sinh">PrimitiveFloating_Float.sinh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.tanh">PrimitiveFloating_Float.tanh</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.tan">PrimitiveFloating_Float.tan</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.toRadians">PrimitiveFloating_Float.toRadians</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.toDegrees">PrimitiveFloating_Float.toDegrees</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrimitiveFloating_Float.ulp">PrimitiveFloating_Float.ulp</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="./PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/Category.html">frege.control.Category</a> as Category</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/Semigroupoid.html">frege.control.Semigroupoid</a> as Semigroupoid</div>
+</li>
+</ul>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="PrimitiveFloating">PrimitiveFloating</a> (<a class="tref" href="./PreludeBase.html#Eq">Eq</a> number, <a class="tref" href="./PreludeBase.html#Ord">Ord</a> number, <a class="tref" href="./PreludeBase.html#Num">Num</a> number, <a class="tref" href="./PreludeBase.html#Real">Real</a> number) =&gt;  number</SPAN></dt>
+<dd class="clas">
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#PrimitiveFloating_Float">Float</a>, <a class="tref" href="#PrimitiveFloating_Double">Double</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating._star_star">**</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.acos">acos</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.acos</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.asin">asin</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.asin</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.atan">atan</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.atan2">atan2</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan2</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.cbrt">cbrt</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cbrt</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.ceil">ceil</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.ceil</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.copySign">copySign</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.copySign</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.cos">cos</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cos</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.cosh">cosh</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cosh</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.exp">exp</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.exp</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.expm1">expm1</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.expm1</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.floor">floor</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.floor</SPAN></dt>
+<dd class="func">
+<p>
+Returns the largest (closest to positive infinity) value that is less than or equal to the argument and is equal to a mathematical integer.</p>
+<p>
+Special cases:</p>
+<ul>
+<LI>
+ If the argument value is already equal to a mathematical integer, then the result is the same as the argument.</LI>
+<LI>
+ If the argument is NaN or an infinity or positive zero or negative zero, then the result is the same as the argument.</LI>
+</ul>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.getExponent">getExponent</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a><br><b>pure </b><b>native </b>java.lang.Math.getExponent</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.hypot">hypot</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.hypot</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.ieeeRemainder">ieeeRemainder</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.IEEEremainder</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.log">log</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.log10">log10</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log10</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.log1p">log1p</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log1p</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.nativeAbs">nativeAbs</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.abs</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.nativeMax">nativeMax</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.max</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.nativeMin">nativeMin</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.min</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.nextAfter">nextAfter</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.nextAfter</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.nextUp">nextUp</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.nextUp</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.pow">pow</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.rint">rint</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.rint</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.round">round</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.scalb">scalb</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.scalb</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.signum">signum</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.signum</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.sin">sin</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sin</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.sinh">sinh</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sinh</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.sqrt">sqrt</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sqrt</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.tan">tan</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tan</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.tanh">tanh</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tanh</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.toDegrees">toDegrees</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toDegrees</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.toRadians">toRadians</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toRadians</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating.ulp">ulp</a> :: <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; <b>number</b> -&gt; number<br><b>pure </b><b>native </b>java.lang.Math.ulp</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="PrimitiveFloating_Double"> </a> <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double._star_star">**</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating._star_star">PrimitiveFloating.**</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.acos">acos</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.acos</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.acos">PrimitiveFloating.acos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.asin">asin</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.asin</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.asin">PrimitiveFloating.asin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.atan">atan</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.atan">PrimitiveFloating.atan</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.atan2">atan2</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan2</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.atan2">PrimitiveFloating.atan2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.cbrt">cbrt</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cbrt</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cbrt">PrimitiveFloating.cbrt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.ceil">ceil</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.ceil</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ceil">PrimitiveFloating.ceil</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.copySign">copySign</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.copySign</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.copySign">PrimitiveFloating.copySign</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.cos">cos</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cos</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cos">PrimitiveFloating.cos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.cosh">cosh</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cosh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cosh">PrimitiveFloating.cosh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.exp">exp</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.exp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.exp">PrimitiveFloating.exp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.expm1">expm1</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.expm1</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.expm1">PrimitiveFloating.expm1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.floor">floor</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.floor</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.floor">PrimitiveFloating.floor</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.getExponent">getExponent</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a><br><b>pure </b><b>native </b>java.lang.Math.getExponent</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.getExponent">PrimitiveFloating.getExponent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.hypot">hypot</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.hypot</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.hypot">PrimitiveFloating.hypot</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.ieeeRemainder">ieeeRemainder</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.IEEEremainder</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ieeeRemainder">PrimitiveFloating.ieeeRemainder</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.log">log</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log">PrimitiveFloating.log</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.log10">log10</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log10</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log10">PrimitiveFloating.log10</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.log1p">log1p</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log1p</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log1p">PrimitiveFloating.log1p</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.nativeAbs">nativeAbs</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.abs</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeAbs">PrimitiveFloating.nativeAbs</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.nativeMax">nativeMax</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.max</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeMax">PrimitiveFloating.nativeMax</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.nativeMin">nativeMin</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.min</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeMin">PrimitiveFloating.nativeMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.nextAfter">nextAfter</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.nextAfter</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nextAfter">PrimitiveFloating.nextAfter</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.nextUp">nextUp</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.nextUp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nextUp">PrimitiveFloating.nextUp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.pow">pow</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.pow">PrimitiveFloating.pow</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.rint">rint</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.rint</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.rint">PrimitiveFloating.rint</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.round">round</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.scalb">scalb</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.scalb</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.scalb">PrimitiveFloating.scalb</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.signum">signum</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.signum</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.signum">PrimitiveFloating.signum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.sin">sin</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sin</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sin">PrimitiveFloating.sin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.sinh">sinh</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sinh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sinh">PrimitiveFloating.sinh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.sqrt">sqrt</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sqrt</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sqrt">PrimitiveFloating.sqrt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.tan">tan</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tan</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.tan">PrimitiveFloating.tan</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.tanh">tanh</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tanh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.tanh">PrimitiveFloating.tanh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.toDegrees">toDegrees</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toDegrees</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.toDegrees">PrimitiveFloating.toDegrees</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.toRadians">toRadians</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toRadians</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.toRadians">PrimitiveFloating.toRadians</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Double.ulp">ulp</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.ulp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ulp">PrimitiveFloating.ulp</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="PrimitiveFloating_Float"> </a> <a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> <a class="tref" href="./PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float._star_star">**</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating._star_star">PrimitiveFloating.**</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.acos">acos</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.acos</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.acos">PrimitiveFloating.acos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.asin">asin</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.asin</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.asin">PrimitiveFloating.asin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.atan">atan</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.atan">PrimitiveFloating.atan</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.atan2">atan2</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.atan2</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.atan2">PrimitiveFloating.atan2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.cbrt">cbrt</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cbrt</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cbrt">PrimitiveFloating.cbrt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.ceil">ceil</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.ceil</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ceil">PrimitiveFloating.ceil</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.copySign">copySign</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.copySign</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.copySign">PrimitiveFloating.copySign</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.cos">cos</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cos</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cos">PrimitiveFloating.cos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.cosh">cosh</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.cosh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.cosh">PrimitiveFloating.cosh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.exp">exp</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.exp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.exp">PrimitiveFloating.exp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.expm1">expm1</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.expm1</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.expm1">PrimitiveFloating.expm1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.floor">floor</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.floor</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.floor">PrimitiveFloating.floor</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.getExponent">getExponent</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a><br><b>pure </b><b>native </b>java.lang.Math.getExponent</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.getExponent">PrimitiveFloating.getExponent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.hypot">hypot</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.hypot</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.hypot">PrimitiveFloating.hypot</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.ieeeRemainder">ieeeRemainder</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.IEEEremainder</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ieeeRemainder">PrimitiveFloating.ieeeRemainder</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.log">log</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log">PrimitiveFloating.log</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.log10">log10</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log10</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log10">PrimitiveFloating.log10</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.log1p">log1p</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.log1p</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.log1p">PrimitiveFloating.log1p</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.nativeAbs">nativeAbs</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.abs</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeAbs">PrimitiveFloating.nativeAbs</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.nativeMax">nativeMax</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.max</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeMax">PrimitiveFloating.nativeMax</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.nativeMin">nativeMin</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.min</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nativeMin">PrimitiveFloating.nativeMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.nextAfter">nextAfter</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.nextAfter</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nextAfter">PrimitiveFloating.nextAfter</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.nextUp">nextUp</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.nextUp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.nextUp">PrimitiveFloating.nextUp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.pow">pow</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.pow</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.pow">PrimitiveFloating.pow</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.rint">rint</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.rint</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.rint">PrimitiveFloating.rint</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.round">round</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.scalb">scalb</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.scalb</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.scalb">PrimitiveFloating.scalb</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.signum">signum</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.signum</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.signum">PrimitiveFloating.signum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.sin">sin</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sin</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sin">PrimitiveFloating.sin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.sinh">sinh</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sinh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sinh">PrimitiveFloating.sinh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.sqrt">sqrt</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.sqrt</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.sqrt">PrimitiveFloating.sqrt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.tan">tan</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tan</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.tan">PrimitiveFloating.tan</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.tanh">tanh</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.tanh</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.tanh">PrimitiveFloating.tanh</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.toDegrees">toDegrees</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toDegrees</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.toDegrees">PrimitiveFloating.toDegrees</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.toRadians">toRadians</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.toRadians</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.toRadians">PrimitiveFloating.toRadians</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrimitiveFloating_Float.ulp">ulp</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a><br><b>pure </b><b>native </b>java.lang.Math.ulp</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#PrimitiveFloating.ulp">PrimitiveFloating.ulp</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="e">e</a> :: <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.E</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="javaRound">javaRound</a> :: ω<br><b>pure </b><b>native </b>java.lang.Math.round</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="javaRoundα">javaRoundα</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a><br><b>pure </b><b>native </b>java.lang.Math.round</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="javaRoundβ">javaRoundβ</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a><br><b>pure </b><b>native </b>java.lang.Math.round</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="pi">pi</a> :: <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>pure </b><b>native </b>java.lang.Math.PI</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="random">random</a> :: <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; <a class="tref" href="./PreludeBase.html#IO">IO</a> <a class="tref" href="./PreludeBase.html#Double">Double</a><br><b>native </b>java.lang.Math.random</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sqr">sqr</a> :: <a class="tref" href="./PreludeBase.html#Num">Num</a> a =&gt; a -&gt; a</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Unit">()</a> -&gt; <a class="tref" href="./PreludeBase.html#IO">IO</a> <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#random">random</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Double._star_star">PrimitiveFloating_Double.**</a>, <a class="fref" href="#PrimitiveFloating_Double.atan2">PrimitiveFloating_Double.atan2</a>, <a class="fref" href="#PrimitiveFloating_Double.copySign">PrimitiveFloating_Double.copySign</a>, <a class="fref" href="#PrimitiveFloating_Double.nativeMax">PrimitiveFloating_Double.nativeMax</a>, <a class="fref" href="#PrimitiveFloating_Double.hypot">PrimitiveFloating_Double.hypot</a>, <a class="fref" href="#PrimitiveFloating_Double.ieeeRemainder">PrimitiveFloating_Double.ieeeRemainder</a>, <a class="fref" href="#PrimitiveFloating_Double.pow">PrimitiveFloating_Double.pow</a>, <a class="fref" href="#PrimitiveFloating_Double.nextAfter">PrimitiveFloating_Double.nextAfter</a>, <a class="fref" href="#PrimitiveFloating_Double.nativeMin">PrimitiveFloating_Double.nativeMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Double.scalb">PrimitiveFloating_Double.scalb</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Double.floor">PrimitiveFloating_Double.floor</a>, <a class="fref" href="#PrimitiveFloating_Double.ceil">PrimitiveFloating_Double.ceil</a>, <a class="fref" href="#PrimitiveFloating_Double.asin">PrimitiveFloating_Double.asin</a>, <a class="fref" href="#PrimitiveFloating_Double.acos">PrimitiveFloating_Double.acos</a>, <a class="fref" href="#PrimitiveFloating_Double.atan">PrimitiveFloating_Double.atan</a>, <a class="fref" href="#PrimitiveFloating_Double.cbrt">PrimitiveFloating_Double.cbrt</a>, <a class="fref" href="#PrimitiveFloating_Double.exp">PrimitiveFloating_Double.exp</a>, <a class="fref" href="#PrimitiveFloating_Double.cos">PrimitiveFloating_Double.cos</a>, <a class="fref" href="#PrimitiveFloating_Double.cosh">PrimitiveFloating_Double.cosh</a>, <a class="fref" href="#PrimitiveFloating_Double.expm1">PrimitiveFloating_Double.expm1</a>, <a class="fref" href="#PrimitiveFloating_Double.log">PrimitiveFloating_Double.log</a>, <a class="fref" href="#PrimitiveFloating_Double.log1p">PrimitiveFloating_Double.log1p</a>, <a class="fref" href="#PrimitiveFloating_Double.log10">PrimitiveFloating_Double.log10</a>, <a class="fref" href="#PrimitiveFloating_Double.nativeAbs">PrimitiveFloating_Double.nativeAbs</a>, <a class="fref" href="#PrimitiveFloating_Double.nextUp">PrimitiveFloating_Double.nextUp</a>, <a class="fref" href="#PrimitiveFloating_Double.rint">PrimitiveFloating_Double.rint</a>, <a class="fref" href="#PrimitiveFloating_Double.sqrt">PrimitiveFloating_Double.sqrt</a>, <a class="fref" href="#PrimitiveFloating_Double.sin">PrimitiveFloating_Double.sin</a>, <a class="fref" href="#PrimitiveFloating_Double.signum">PrimitiveFloating_Double.signum</a>, <a class="fref" href="#PrimitiveFloating_Double.sinh">PrimitiveFloating_Double.sinh</a>, <a class="fref" href="#PrimitiveFloating_Double.tanh">PrimitiveFloating_Double.tanh</a>, <a class="fref" href="#PrimitiveFloating_Double.tan">PrimitiveFloating_Double.tan</a>, <a class="fref" href="#PrimitiveFloating_Double.toRadians">PrimitiveFloating_Double.toRadians</a>, <a class="fref" href="#PrimitiveFloating_Double.toDegrees">PrimitiveFloating_Double.toDegrees</a>, <a class="fref" href="#PrimitiveFloating_Double.ulp">PrimitiveFloating_Double.ulp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Double.getExponent">PrimitiveFloating_Double.getExponent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#javaRoundα">javaRoundα</a>, <a class="fref" href="#PrimitiveFloating_Double.round">PrimitiveFloating_Double.round</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float._star_star">PrimitiveFloating_Float.**</a>, <a class="fref" href="#PrimitiveFloating_Float.atan2">PrimitiveFloating_Float.atan2</a>, <a class="fref" href="#PrimitiveFloating_Float.hypot">PrimitiveFloating_Float.hypot</a>, <a class="fref" href="#PrimitiveFloating_Float.ieeeRemainder">PrimitiveFloating_Float.ieeeRemainder</a>, <a class="fref" href="#PrimitiveFloating_Float.pow">PrimitiveFloating_Float.pow</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float.copySign">PrimitiveFloating_Float.copySign</a>, <a class="fref" href="#PrimitiveFloating_Float.nativeMax">PrimitiveFloating_Float.nativeMax</a>, <a class="fref" href="#PrimitiveFloating_Float.nextAfter">PrimitiveFloating_Float.nextAfter</a>, <a class="fref" href="#PrimitiveFloating_Float.nativeMin">PrimitiveFloating_Float.nativeMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float.scalb">PrimitiveFloating_Float.scalb</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float.floor">PrimitiveFloating_Float.floor</a>, <a class="fref" href="#PrimitiveFloating_Float.ceil">PrimitiveFloating_Float.ceil</a>, <a class="fref" href="#PrimitiveFloating_Float.asin">PrimitiveFloating_Float.asin</a>, <a class="fref" href="#PrimitiveFloating_Float.acos">PrimitiveFloating_Float.acos</a>, <a class="fref" href="#PrimitiveFloating_Float.atan">PrimitiveFloating_Float.atan</a>, <a class="fref" href="#PrimitiveFloating_Float.cbrt">PrimitiveFloating_Float.cbrt</a>, <a class="fref" href="#PrimitiveFloating_Float.exp">PrimitiveFloating_Float.exp</a>, <a class="fref" href="#PrimitiveFloating_Float.cos">PrimitiveFloating_Float.cos</a>, <a class="fref" href="#PrimitiveFloating_Float.cosh">PrimitiveFloating_Float.cosh</a>, <a class="fref" href="#PrimitiveFloating_Float.expm1">PrimitiveFloating_Float.expm1</a>, <a class="fref" href="#PrimitiveFloating_Float.log">PrimitiveFloating_Float.log</a>, <a class="fref" href="#PrimitiveFloating_Float.log1p">PrimitiveFloating_Float.log1p</a>, <a class="fref" href="#PrimitiveFloating_Float.log10">PrimitiveFloating_Float.log10</a>, <a class="fref" href="#PrimitiveFloating_Float.rint">PrimitiveFloating_Float.rint</a>, <a class="fref" href="#PrimitiveFloating_Float.sqrt">PrimitiveFloating_Float.sqrt</a>, <a class="fref" href="#PrimitiveFloating_Float.sin">PrimitiveFloating_Float.sin</a>, <a class="fref" href="#PrimitiveFloating_Float.sinh">PrimitiveFloating_Float.sinh</a>, <a class="fref" href="#PrimitiveFloating_Float.tanh">PrimitiveFloating_Float.tanh</a>, <a class="fref" href="#PrimitiveFloating_Float.tan">PrimitiveFloating_Float.tan</a>, <a class="fref" href="#PrimitiveFloating_Float.toRadians">PrimitiveFloating_Float.toRadians</a>, <a class="fref" href="#PrimitiveFloating_Float.toDegrees">PrimitiveFloating_Float.toDegrees</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float.nativeAbs">PrimitiveFloating_Float.nativeAbs</a>, <a class="fref" href="#PrimitiveFloating_Float.nextUp">PrimitiveFloating_Float.nextUp</a>, <a class="fref" href="#PrimitiveFloating_Float.signum">PrimitiveFloating_Float.signum</a>, <a class="fref" href="#PrimitiveFloating_Float.ulp">PrimitiveFloating_Float.ulp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#javaRoundβ">javaRoundβ</a>, <a class="fref" href="#PrimitiveFloating_Float.getExponent">PrimitiveFloating_Float.getExponent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating_Float.round">PrimitiveFloating_Float.round</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#e">e</a>, <a class="fref" href="#pi">pi</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; number</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.scalb">PrimitiveFloating.scalb</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating._star_star">PrimitiveFloating.**</a>, <a class="fref" href="#PrimitiveFloating.atan2">PrimitiveFloating.atan2</a>, <a class="fref" href="#PrimitiveFloating.hypot">PrimitiveFloating.hypot</a>, <a class="fref" href="#PrimitiveFloating.ieeeRemainder">PrimitiveFloating.ieeeRemainder</a>, <a class="fref" href="#PrimitiveFloating.pow">PrimitiveFloating.pow</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; number -&gt; number</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.copySign">PrimitiveFloating.copySign</a>, <a class="fref" href="#PrimitiveFloating.nativeMax">PrimitiveFloating.nativeMax</a>, <a class="fref" href="#PrimitiveFloating.nextAfter">PrimitiveFloating.nextAfter</a>, <a class="fref" href="#PrimitiveFloating.nativeMin">PrimitiveFloating.nativeMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.floor">PrimitiveFloating.floor</a>, <a class="fref" href="#PrimitiveFloating.ceil">PrimitiveFloating.ceil</a>, <a class="fref" href="#PrimitiveFloating.asin">PrimitiveFloating.asin</a>, <a class="fref" href="#PrimitiveFloating.acos">PrimitiveFloating.acos</a>, <a class="fref" href="#PrimitiveFloating.atan">PrimitiveFloating.atan</a>, <a class="fref" href="#PrimitiveFloating.cbrt">PrimitiveFloating.cbrt</a>, <a class="fref" href="#PrimitiveFloating.cos">PrimitiveFloating.cos</a>, <a class="fref" href="#PrimitiveFloating.exp">PrimitiveFloating.exp</a>, <a class="fref" href="#PrimitiveFloating.cosh">PrimitiveFloating.cosh</a>, <a class="fref" href="#PrimitiveFloating.expm1">PrimitiveFloating.expm1</a>, <a class="fref" href="#PrimitiveFloating.log">PrimitiveFloating.log</a>, <a class="fref" href="#PrimitiveFloating.log1p">PrimitiveFloating.log1p</a>, <a class="fref" href="#PrimitiveFloating.log10">PrimitiveFloating.log10</a>, <a class="fref" href="#PrimitiveFloating.rint">PrimitiveFloating.rint</a>, <a class="fref" href="#PrimitiveFloating.sqrt">PrimitiveFloating.sqrt</a>, <a class="fref" href="#PrimitiveFloating.sin">PrimitiveFloating.sin</a>, <a class="fref" href="#PrimitiveFloating.sinh">PrimitiveFloating.sinh</a>, <a class="fref" href="#PrimitiveFloating.tanh">PrimitiveFloating.tanh</a>, <a class="fref" href="#PrimitiveFloating.tan">PrimitiveFloating.tan</a>, <a class="fref" href="#PrimitiveFloating.toRadians">PrimitiveFloating.toRadians</a>, <a class="fref" href="#PrimitiveFloating.toDegrees">PrimitiveFloating.toDegrees</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.getExponent">PrimitiveFloating.getExponent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.round">PrimitiveFloating.round</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrimitiveFloating">PrimitiveFloating</a> number =&gt; number -&gt; number</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrimitiveFloating.nativeAbs">PrimitiveFloating.nativeAbs</a>, <a class="fref" href="#PrimitiveFloating.nextUp">PrimitiveFloating.nextUp</a>, <a class="fref" href="#PrimitiveFloating.signum">PrimitiveFloating.signum</a>, <a class="fref" href="#PrimitiveFloating.ulp">PrimitiveFloating.ulp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Num">Num</a> a =&gt; a -&gt; a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sqr">sqr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">ω</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#javaRound">javaRound</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

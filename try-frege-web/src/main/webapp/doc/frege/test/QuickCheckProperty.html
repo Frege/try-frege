@@ -1,0 +1,1100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.test.QuickCheckProperty - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.test.QuickCheckProperty</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:26 CET 2013 from source file: <SPAN CLASS="code">./frege/test/QuickCheckProperty.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#type">Type Aliases</a></div>
+<div>
+<a class="tref" href="#Property">Property</a></div>
+</li>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#Testable">Testable</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Functor_Rose">Functor_Rose</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monad_Rose">Monad_Rose</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Testable__minus_gt">Testable_-&gt;</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Testable_Bool">Testable_Bool</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Testable_Gen">Testable_Gen</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Testable_Prop">Testable_Prop</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Testable_Result">Testable_Result</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Callback">Callback</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CallbackKind">CallbackKind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Prop">Prop</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Result">Result</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Rose">Rose</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#_dot_amp_amp_dot">.&amp;&amp;.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_dot_amp_dot">.&amp;.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_dot_bar_bar_dot">.||.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_eq_eq_gt">==&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#callback">callback</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#classify">classify</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collect">collect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#conjoin">conjoin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cover">cover</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#disjoin">disjoin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#exception">exception</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#expectFailure">expectFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#failed">failed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#forAll">forAll</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#forAllShrink">forAllShrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#formatException">formatException</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ioRose">ioRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#joinRose">joinRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#label">label</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#liftBool">liftBool</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapProp">mapProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapResult">mapResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapRoseResult">mapRoseResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapSize">mapSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapTotalResult">mapTotalResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#morallyDubiousIOProperty">morallyDubiousIOProperty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#noShrinking">noShrinking</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#onRose">onRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#once">once</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printTestCase">printTestCase</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protect">protect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectResult">protectResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectResults">protectResults</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectRose">protectRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reduceRose">reduceRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#rejected">rejected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#result">result</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinking">shrinking</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#succeeded">succeeded</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#verbose">verbose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#whenFail">whenFail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#whenFail_tick">whenFail'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#within">within</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#_dot_amp_amp_dot">.&amp;&amp;.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_dot_amp_dot">.&amp;.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_dot_bar_bar_dot">.||.</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_eq_eq_gt">==&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#callback">callback</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#classify">classify</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collect">collect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#conjoin">conjoin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cover">cover</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#disjoin">disjoin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#exception">exception</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#expectFailure">expectFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#failed">failed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#forAll">forAll</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#forAllShrink">forAllShrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#formatException">formatException</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ioRose">ioRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#joinRose">joinRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#label">label</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#liftBool">liftBool</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapProp">mapProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapResult">mapResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapRoseResult">mapRoseResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapSize">mapSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapTotalResult">mapTotalResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#morallyDubiousIOProperty">morallyDubiousIOProperty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#noShrinking">noShrinking</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#onRose">onRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#once">once</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printTestCase">printTestCase</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protect">protect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectResult">protectResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectResults">protectResults</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#protectRose">protectRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reduceRose">reduceRose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#rejected">rejected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#result">result</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinking">shrinking</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#succeeded">succeeded</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#verbose">verbose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#whenFail">whenFail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#whenFail_tick">whenFail'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#within">within</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable.exhaustive">Testable.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable.property">Testable.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Functor_Rose.fmap">Functor_Rose.fmap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._gt_gt">Monad_Rose.&gt;&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._lt_star">Monad_Rose.&lt;*</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._star_gt">Monad_Rose.*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._lt_star_gt">Monad_Rose.&lt;*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose.join">Monad_Rose.join</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._gt_gt_eq">Monad_Rose.&gt;&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose._return">Monad_Rose.return</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Rose.pure">Monad_Rose.pure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable__minus_gt.property">Testable_-&gt;.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable__minus_gt.exhaustive">Testable_-&gt;.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Bool.property">Testable_Bool.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Bool.exhaustive">Testable_Bool.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Gen.property">Testable_Gen.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Gen.exhaustive">Testable_Gen.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Prop.property">Testable_Prop.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Prop.exhaustive">Testable_Prop.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Result.property">Testable_Result.property</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Testable_Result.exhaustive">Testable_Result.exhaustive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Callback.PostTest">Callback.PostTest</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Callback.PostFinalFailure">Callback.PostFinalFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CallbackKind.Counterexample">CallbackKind.Counterexample</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CallbackKind.NotCounterexample">CallbackKind.NotCounterexample</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prop.has$unProp">Prop.has$unProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prop.chg$unProp">Prop.chg$unProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prop.MkProp">Prop.MkProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prop.unProp">Prop.unProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prop.upd$unProp">Prop.upd$unProp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$interrupted">Result.has$interrupted</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$ok">Result.chg$ok</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$abort">Result.chg$abort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.abort">Result.abort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.MkResult">Result.MkResult</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.callbacks">Result.callbacks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$expect">Result.chg$expect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$callbacks">Result.chg$callbacks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$interrupted">Result.chg$interrupted</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$abort">Result.has$abort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$stamp">Result.chg$stamp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.chg$reason">Result.chg$reason</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.expect">Result.expect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$expect">Result.has$expect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$callbacks">Result.has$callbacks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$abort">Result.upd$abort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.interrupted">Result.interrupted</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$reason">Result.has$reason</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$ok">Result.has$ok</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.has$stamp">Result.has$stamp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.reason">Result.reason</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.ok">Result.ok</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.stamp">Result.stamp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$ok">Result.upd$ok</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$expect">Result.upd$expect</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$callbacks">Result.upd$callbacks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$interrupted">Result.upd$interrupted</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$reason">Result.upd$reason</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Result.upd$stamp">Result.upd$stamp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Rose.IORose">Rose.IORose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Rose.MkRose">Rose.MkRose</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/Maybe.html">frege.data.Maybe</a> as Maybe</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckGen.html">frege.test.QuickCheckGen</a> as QuickCheckGen</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckArbitrary.html">frege.test.QuickCheckArbitrary</a> as QuickCheckArbitrary</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckException.html">frege.test.QuickCheckException</a> as QuickCheckException</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckState.html">frege.test.QuickCheckState</a> as QuickCheckState</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckText.html">frege.test.QuickCheckText</a> as QuickCheckText</div>
+</li>
+</ul>
+<h2>
+<a name="type">Type Aliases</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>type </b><a name="Property">Property</a>  = <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="clas">
+</dd>
+</dl>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="Testable">Testable</a>  prop</SPAN></dt>
+<dd class="clas">
+<p>
+The class of things which can be tested, i.e. turned into a property.   </p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#Testable_Result">Result</a>, <a class="tref" href="#Testable_Gen">QuickCheckGen.Gen</a>, <a class="tref" href="#Testable__minus_gt">-&gt;</a>, <a class="tref" href="#Testable_Bool">Bool</a>, <a class="tref" href="#Testable_Prop">Prop</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable.exhaustive">exhaustive</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable.property">property</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Functor_Rose"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Functor">Functor</a> <a class="tref" href="#Rose">Rose</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Functor_Rose.fmap">fmap</a> :: (α -&gt; β) -&gt; <b><a class="tref" href="#Rose">Rose</a> α</b> -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monad_Rose"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> <a class="tref" href="#Rose">Rose</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._star_gt">*&gt;</a> :: <a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._star_gt">Applicative.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._lt_star">&lt;*</a> :: <a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._lt_star">Applicative.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._lt_star_gt">&lt;*&gt;</a> :: <a class="tref" href="#Rose">Rose</a> (α-&gt;β) -&gt; <a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad._lt_star_gt">Monad.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._gt_gt">&gt;&gt;</a> :: <b><a class="tref" href="#Rose">Rose</a> α</b> -&gt; <a class="tref" href="#Rose">Rose</a> β -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad._gt_gt">Monad.&gt;&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._gt_gt_eq">&gt;&gt;=</a> :: <b><a class="tref" href="#Rose">Rose</a> α</b> -&gt; (α -&gt; <a class="tref" href="#Rose">Rose</a> β) -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose.join">join</a> :: <b><a class="tref" href="#Rose">Rose</a> (<a class="tref" href="#Rose">Rose</a> α)</b> -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad.join">Monad.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose.pure">pure</a> :: α -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad.pure">Monad.pure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Rose._return">return</a> :: α -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Testable__minus_gt"> </a> <a class="tref" href="#Testable">Testable</a> (<a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; a -&gt; prop</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable__minus_gt.exhaustive">exhaustive</a> :: (<a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="#Testable">Testable</a> β) =&gt; (α-&gt;β) -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Testable.exhaustive">Testable.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable__minus_gt.property">property</a> :: (<a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="#Testable">Testable</a> β) =&gt; (α-&gt;β) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Testable_Bool"> </a> <a class="tref" href="#Testable">Testable</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Bool.exhaustive">exhaustive</a> :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Bool.property">property</a> :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Testable_Gen"> </a> <a class="tref" href="#Testable">Testable</a> <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> prop</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Gen.exhaustive">exhaustive</a> :: <a class="tref" href="#Testable">Testable</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Testable.exhaustive">Testable.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Gen.property">property</a> :: <a class="tref" href="#Testable">Testable</a> α =&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Testable_Prop"> </a> <a class="tref" href="#Testable">Testable</a> <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Prop.exhaustive">exhaustive</a> :: <a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Prop.property">property</a> :: <b><a class="tref" href="#Prop">Prop</a></b> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Testable_Result"> </a> <a class="tref" href="#Testable">Testable</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Result.exhaustive">exhaustive</a> :: <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Testable_Result.property">property</a> :: <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Callback"> </a> <a class="tref" href="#Callback">Callback</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Callback.PostFinalFailure">PostFinalFailure</a> <a class="tref" href="#CallbackKind">CallbackKind</a>&nbsp;&nbsp; (<a class="tref" href="./QuickCheckState.html#State">State</a> -&gt; <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Callback.PostTest">PostTest</a> <a class="tref" href="#CallbackKind">CallbackKind</a>&nbsp;&nbsp; (<a class="tref" href="./QuickCheckState.html#State">State</a> -&gt; <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="CallbackKind"> </a> <a class="tref" href="#CallbackKind">CallbackKind</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CallbackKind.Counterexample">Counterexample</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="CallbackKind.NotCounterexample">NotCounterexample</a> </SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Prop"> </a> <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="data">
+<ul>
+<LI>
+----------------------------------------------------------------------    </LI>
+</ul>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Prop.MkProp">MkProp</a> {unProp :: <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Prop.unProp">unProp</a> :: <b><a class="tref" href="#Prop">Prop</a></b> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">unProp</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Result"> </a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.MkResult">MkResult</a> {ok :: <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, expect :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, reason :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a>, interrupted :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, abort :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, stamp :: [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)], callbacks :: [<a class="tref" href="#Callback">Callback</a>]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.abort">abort</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">abort</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.callbacks">callbacks</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; [<a class="tref" href="#Callback">Callback</a>]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">callbacks</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.expect">expect</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">expect</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.interrupted">interrupted</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">interrupted</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.ok">ok</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">ok</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.reason">reason</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">reason</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Result.stamp">stamp</a> :: <b><a class="tref" href="#Result">Result</a></b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">stamp</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Rose"> </a> <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Rose.IORose">IORose</a> (<a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> a))</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Rose.MkRose">MkRose</a> a&nbsp;&nbsp; [<a class="tref" href="#Rose">Rose</a> a]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="_dot_amp_amp_dot">.&amp;&amp;.</a> :: (<a class="tref" href="#Testable">Testable</a> prop1, <a class="tref" href="#Testable">Testable</a> prop2) =&gt; prop1 -&gt; prop2 -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_dot_amp_dot">.&amp;.</a> :: (<a class="tref" href="#Testable">Testable</a> prop1, <a class="tref" href="#Testable">Testable</a> prop2) =&gt; prop1 -&gt; prop2 -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_dot_bar_bar_dot">.||.</a> :: (<a class="tref" href="#Testable">Testable</a> prop1, <a class="tref" href="#Testable">Testable</a> prop2) =&gt; prop1 -&gt; prop2 -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_eq_eq_gt">==&gt;</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Implication for properties: The resulting property holds if the first argument is <SPAN CLASS="code">false</SPAN> (in which case the test case is discarded), or if the given property holds.      </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="callback">callback</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="#Callback">Callback</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Adds a callback   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="classify">classify</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Conditionally labels test case.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="collect">collect</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; a -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Labels a property with a value:</p>
+<PRE>
+ collect x = label (show x)   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="conjoin">conjoin</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; [prop] -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="cover">cover</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Checks that at least the given proportion of the test cases belong to the given class.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="disjoin">disjoin</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; [prop] -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="exception">exception</a> :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a></b> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="expectFailure">expectFailure</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Modifies a property so that it is expected to fail for some test cases.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="failed">failed</a> :: <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="forAll">forAll</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</b> -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="forAllShrink">forAllShrink</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</b> -&gt; (a -&gt; [a]) -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="formatException">formatException</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ioRose">ioRose</a> :: <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="joinRose">joinRose</a> :: <b><a class="tref" href="#Rose">Rose</a> (<a class="tref" href="#Rose">Rose</a> a)</b> -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="label">label</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Attaches a label to a property.</p>
+<p>
+This is used for reporting test case distribution.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="liftBool">liftBool</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapProp">mapProp</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="#Prop">Prop</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapResult">mapResult</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Result">Result</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapRoseResult">mapRoseResult</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapSize">mapSize</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<ul>
+<LI>
+---------------------------------------------------------------------- </LI>
+</ul>
+<p>
+Changes the maximum test case size for a property.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapTotalResult">mapTotalResult</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Result">Result</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="morallyDubiousIOProperty">morallyDubiousIOProperty</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Do I/O inside a property. This can obviously lead to unrepeatable testcases, so use with care.      </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="noShrinking">noShrinking</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Disables shrinking for a property altogether.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="onRose">onRose</a> :: (a -&gt; [<a class="tref" href="#Rose">Rose</a> a] -&gt; <a class="tref" href="#Rose">Rose</a> a) -&gt; <b><a class="tref" href="#Rose">Rose</a> a</b> -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="once">once</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Modifies a property so that it only will be tested once.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="printTestCase">printTestCase</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Prints a message to the terminal as part of the counterexample.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="protect">protect</a> :: (<a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a> -&gt; a) -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="protectResult">protectResult</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="protectResults">protectResults</a> :: <b><a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="protectRose">protectRose</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>)</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="reduceRose">reduceRose</a> :: <b><a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="rejected">rejected</a> :: <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="result">result</a> :: <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shrinking">shrinking</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; (a -&gt; [a]) -&gt; a -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="succeeded">succeeded</a> :: <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="verbose">verbose</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Prints out the generated testcase every time the property is tested, like "verboseCheck" from QuickCheck 1. Only variables quantified over <i>inside</i> the <a class="fref" href="#verbose">verbose</a> are printed.      </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="whenFail">whenFail</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+Performs an <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> action after the last failure of a property.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="whenFail_tick">whenFail'</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="within">within</a> :: <a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#protectRose">protectRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ioRose">ioRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#protectResult">protectResult</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; [<a class="tref" href="#Callback">Callback</a>] -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.MkResult">Result.MkResult</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#formatException">formatException</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#exception">exception</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#reduceRose">reduceRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#protectResults">protectResults</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prop.MkProp">Prop.MkProp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Bool.property">Testable_Bool.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Bool.exhaustive">Testable_Bool.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#liftBool">liftBool</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#CallbackKind">CallbackKind</a> -&gt; (<a class="tref" href="./QuickCheckState.html#State">State</a> -&gt; <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a>) -&gt; <a class="tref" href="#Callback">Callback</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Callback.PostTest">Callback.PostTest</a>, <a class="fref" href="#Callback.PostFinalFailure">Callback.PostFinalFailure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prop">Prop</a> -&gt; (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>-&gt;<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prop.chg$unProp">Prop.chg$unProp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Prop">Prop</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prop.upd$unProp">Prop.upd$unProp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Prop.property">Testable_Prop.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prop.unProp">Prop.unProp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Prop.exhaustive">Testable_Prop.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.chg$ok">Result.chg$ok</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#String">String</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#String">String</a>) -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.chg$reason">Result.chg$reason</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; ([(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]-&gt;[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]) -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.chg$stamp">Result.chg$stamp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; ([<a class="tref" href="#Callback">Callback</a>]-&gt;[<a class="tref" href="#Callback">Callback</a>]) -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.chg$callbacks">Result.chg$callbacks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.chg$abort">Result.chg$abort</a>, <a class="fref" href="#Result.chg$expect">Result.chg$expect</a>, <a class="fref" href="#Result.chg$interrupted">Result.chg$interrupted</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.upd$ok">Result.upd$ok</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.upd$reason">Result.upd$reason</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.upd$stamp">Result.upd$stamp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; [<a class="tref" href="#Callback">Callback</a>] -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.upd$callbacks">Result.upd$callbacks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.upd$abort">Result.upd$abort</a>, <a class="fref" href="#Result.upd$expect">Result.upd$expect</a>, <a class="fref" href="#Result.upd$interrupted">Result.upd$interrupted</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.ok">Result.ok</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.reason">Result.reason</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.stamp">Result.stamp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; [<a class="tref" href="#Callback">Callback</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Result.callbacks">Result.callbacks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Result.property">Testable_Result.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Result.exhaustive">Testable_Result.exhaustive</a>, <a class="fref" href="#Result.abort">Result.abort</a>, <a class="fref" href="#Result.expect">Result.expect</a>, <a class="fref" href="#Result.interrupted">Result.interrupted</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#CallbackKind">CallbackKind</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CallbackKind.Counterexample">CallbackKind.Counterexample</a>, <a class="fref" href="#CallbackKind.NotCounterexample">CallbackKind.NotCounterexample</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Result">Result</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#failed">failed</a>, <a class="fref" href="#rejected">rejected</a>, <a class="fref" href="#result">result</a>, <a class="fref" href="#succeeded">succeeded</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeIO.html#Exception">Exception</a> -&gt; a) -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> a -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#protect">protect</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; [<a class="tref" href="#Rose">Rose</a> a] -&gt; <a class="tref" href="#Rose">Rose</a> a) -&gt; <a class="tref" href="#Rose">Rose</a> a -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#onRose">onRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="#Rose">Rose</a> a) -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Rose.IORose">Rose.IORose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> (<a class="tref" href="#Rose">Rose</a> a) -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#joinRose">joinRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> (<a class="tref" href="#Rose">Rose</a> α) -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose.join">Monad_Rose.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; [<a class="tref" href="#Rose">Rose</a> a] -&gt; <a class="tref" href="#Rose">Rose</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Rose.MkRose">Rose.MkRose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose._return">Monad_Rose.return</a>, <a class="fref" href="#Monad_Rose.pure">Monad_Rose.pure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prop.has$unProp">Prop.has$unProp</a>, <a class="fref" href="#Result.has$interrupted">Result.has$interrupted</a>, <a class="fref" href="#Result.has$abort">Result.has$abort</a>, <a class="fref" href="#Result.has$expect">Result.has$expect</a>, <a class="fref" href="#Result.has$callbacks">Result.has$callbacks</a>, <a class="fref" href="#Result.has$reason">Result.has$reason</a>, <a class="fref" href="#Result.has$ok">Result.has$ok</a>, <a class="fref" href="#Result.has$stamp">Result.has$stamp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Rose">Rose</a> <a class="tref" href="#Result">Result</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mapRoseResult">mapRoseResult</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mapSize">mapSize</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Prop">Prop</a> -&gt; <a class="tref" href="#Prop">Prop</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mapProp">mapProp</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; (<a class="tref" href="#Result">Result</a> -&gt; <a class="tref" href="#Result">Result</a>) -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mapResult">mapResult</a>, <a class="fref" href="#mapTotalResult">mapTotalResult</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#whenFail">whenFail</a>, <a class="fref" href="#whenFail_tick">whenFail'</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#morallyDubiousIOProperty">morallyDubiousIOProperty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#label">label</a>, <a class="fref" href="#printTestCase">printTestCase</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; [prop] -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#conjoin">conjoin</a>, <a class="fref" href="#disjoin">disjoin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#classify">classify</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#cover">cover</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_eq_eq_gt">==&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#within">within</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; <a class="tref" href="#Callback">Callback</a> -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#callback">callback</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#expectFailure">expectFailure</a>, <a class="fref" href="#noShrinking">noShrinking</a>, <a class="fref" href="#once">once</a>, <a class="fref" href="#verbose">verbose</a>, <a class="fref" href="#Testable.property">Testable.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; prop -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable.exhaustive">Testable.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Gen.property">Testable_Gen.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable_Gen.exhaustive">Testable_Gen.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β) -&gt; <a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Functor_Rose.fmap">Functor_Rose.fmap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> (α-&gt;β) -&gt; <a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose._lt_star_gt">Monad_Rose.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> α -&gt; (α -&gt; <a class="tref" href="#Rose">Rose</a> β) -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose._gt_gt_eq">Monad_Rose.&gt;&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β -&gt; <a class="tref" href="#Rose">Rose</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose._lt_star">Monad_Rose.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Rose">Rose</a> α -&gt; <a class="tref" href="#Rose">Rose</a> β -&gt; <a class="tref" href="#Rose">Rose</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Rose._gt_gt">Monad_Rose.&gt;&gt;</a>, <a class="fref" href="#Monad_Rose._star_gt">Monad_Rose.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; (a -&gt; [a]) -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#forAllShrink">forAllShrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#forAll">forAll</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="#Testable">Testable</a> prop) =&gt; a -&gt; prop -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#collect">collect</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="#Testable">Testable</a> β) =&gt; (α-&gt;β) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable__minus_gt.property">Testable_-&gt;.property</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="#Testable">Testable</a> β) =&gt; (α-&gt;β) -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Testable__minus_gt.exhaustive">Testable_-&gt;.exhaustive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Testable">Testable</a> prop =&gt; (a -&gt; [a]) -&gt; a -&gt; (a -&gt; prop) -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shrinking">shrinking</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Testable">Testable</a> prop1, <a class="tref" href="#Testable">Testable</a> prop2) =&gt; prop1 -&gt; prop2 -&gt; <a class="tref" href="#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_dot_amp_amp_dot">.&amp;&amp;.</a>, <a class="fref" href="#_dot_amp_dot">.&amp;.</a>, <a class="fref" href="#_dot_bar_bar_dot">.||.</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

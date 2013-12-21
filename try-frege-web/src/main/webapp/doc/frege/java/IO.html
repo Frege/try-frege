@@ -1,0 +1,922 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.java.IO - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.java.IO</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:42:02 CET 2013 from source file: <SPAN CLASS="code">./frege/java/IO.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+Classes from java.io</p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Exceptional_EOFException">Exceptional_EOFException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Exceptional_FileNotFoundException">Exceptional_FileNotFoundException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Exceptional_UnsupportedEncodingException">Exceptional_UnsupportedEncodingException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Serializable_File">Serializable_File</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_File">Show_File</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#BufferedReader">BufferedReader</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Closeable">Closeable</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#EOFException">EOFException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#File">File</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#FileInputStream">FileInputStream</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#FileNotFoundException">FileNotFoundException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Flushable">Flushable</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#InputStream">InputStream</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#InputStreamReader">InputStreamReader</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#OutputStream">OutputStream</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#OutputStreamWriter">OutputStreamWriter</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#PrintWriter">PrintWriter</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Reader">Reader</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#StringWriter">StringWriter</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#URI">URI</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Writer">Writer</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#openReader">openReader</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#openWriter">openWriter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stderr">stderr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stdin">stdin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stdout">stdout</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#openReader">openReader</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#openWriter">openWriter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stderr">stderr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stdin">stdin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stdout">stdout</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Exceptional_EOFException.javaClass">Exceptional_EOFException.javaClass</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Exceptional_FileNotFoundException.javaClass">Exceptional_FileNotFoundException.javaClass</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Exceptional_UnsupportedEncodingException.javaClass">Exceptional_UnsupportedEncodingException.javaClass</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Serializable_File.freeze">Serializable_File.freeze</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Serializable_File.copySerializable">Serializable_File.copySerializable</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Serializable_File.thaw">Serializable_File.thaw</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.showList">Show_File.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.show">Show_File.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.display">Show_File.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.showChars">Show_File.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.showsPrec">Show_File.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_File.showsub">Show_File.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BufferedReader.getLines">BufferedReader.getLines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BufferedReader.getLine">BufferedReader.getLine</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BufferedReader._new">BufferedReader.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BufferedReader.readLine">BufferedReader.readLine</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Closeable.close">Closeable.close</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#EOFException._new">EOFException.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.getPath">File.getPath</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.delete">File.delete</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.canWrite">File.canWrite</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.canRead">File.canRead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.getName">File.getName</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.exists">File.exists</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.getParentFile">File.getParentFile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File._new">File.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.isFile">File.isFile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.isAbsolute">File.isAbsolute</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.getPathF">File.getPathF</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.isDirectory">File.isDirectory</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.list">File.list</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.lastModified">File.lastModified</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.mkdirs">File.mkdirs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.pathSeparator">File.pathSeparator</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.newα">File.newα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.newβ">File.newβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.separator">File.separator</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.renameTo">File.renameTo</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#File.toURI">File.toURI</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#FileInputStream.newα">FileInputStream.newα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#FileInputStream._new">FileInputStream.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#FileInputStream.newβ">FileInputStream.newβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Flushable.flush">Flushable.flush</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#InputStreamReader._new">InputStreamReader.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OutputStreamWriter._new">OutputStreamWriter.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.newγ">PrintWriter.newγ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.newα">PrintWriter.newα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter._new">PrintWriter.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.newβ">PrintWriter.newβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.println">PrintWriter.println</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.newε">PrintWriter.newε</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.newδ">PrintWriter.newδ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.print">PrintWriter.print</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.printlnα">PrintWriter.printlnα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#PrintWriter.printlnβ">PrintWriter.printlnβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Reader.read">Reader.read</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Reader.getChar">Reader.getChar</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#StringWriter.printer">StringWriter.printer</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#StringWriter._new">StringWriter.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#StringWriter.toString">StringWriter.toString</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Writer.write">Writer.write</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Writer.putChar">Writer.putChar</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Writer.writeβ">Writer.writeβ</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Writer.writeα">Writer.writeα</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Writer.writeγ">Writer.writeγ</a></div>
+</li>
+<li>
+<div>
+<a HREF="#of">Re-Exported Items</a></div>
+<div>
+<a class="tref" href="./Lang.html#IOException">IOException</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="./Lang.html#PrintStream">PrintStream</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="./Lang.html">frege.java.Lang</a> as Lang</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/Arrays.html">frege.prelude.Arrays</a> as Arrays</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Exceptional_EOFException"> </a> <a class="tref" href="../prelude/PreludeIO.html#Exceptional">Exceptional</a> <a class="tref" href="#EOFException">EOFException</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Exceptional_EOFException.javaClass">javaClass</a> :: <a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#EOFException">EOFException</a><br><b>pure </b><b>native </b>java.io.EOFException.class</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Exceptional_FileNotFoundException"> </a> <a class="tref" href="../prelude/PreludeIO.html#Exceptional">Exceptional</a> <a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Exceptional_FileNotFoundException.javaClass">javaClass</a> :: <a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#FileNotFoundException">FileNotFoundException</a><br><b>pure </b><b>native </b>java.io.FileNotFoundException.class</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Exceptional_UnsupportedEncodingException"> </a> <a class="tref" href="../prelude/PreludeIO.html#Exceptional">Exceptional</a> <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Exceptional_UnsupportedEncodingException.javaClass">javaClass</a> :: <a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a><br><b>pure </b><b>native </b>java.io.UnsupportedEncodingException.class</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Serializable_File"> </a> <a class="tref" href="../prelude/PreludeIO.html#Serializable">Serializable</a> <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Serializable_File.copySerializable">copySerializable</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="#File">File</a><br><b>pure </b><b>native </b>frege.runtime.Runtime.copySerializable</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeIO.html#Serializable.copySerializable">Serializable.copySerializable</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Serializable_File.freeze">freeze</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeIO.html#Serializable.freeze">Serializable.freeze</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Serializable_File.thaw">thaw</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeIO.html#Serializable.thaw">Serializable.thaw</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_File"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.display">display</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.show">show</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.showChars">showChars</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.showList">showList</a> :: <b>[<a class="tref" href="#File">File</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#File">File</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_File.showsub">showsub</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="BufferedReader"> </a> <a class="tref" href="#BufferedReader">BufferedReader</a> = <b>mutable </b><b>native </b>java.io.BufferedReader</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="BufferedReader.getLine">getLine</a> :: <b><a class="tref" href="#BufferedReader">BufferedReader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Reads the next line from a buffered reader using <a class="fref" href="#BufferedReader.readLine">BufferedReader.readLine</a>, and returns the string or throws <a class="tref" href="#EOFException">EOFException</a> on end of file.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BufferedReader.getLines">getLines</a> :: <b><a class="tref" href="#BufferedReader">BufferedReader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+read all lines and return them as list, close reader afterwards   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BufferedReader._new">new</a> :: <b><a class="tref" href="#Reader">Reader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#BufferedReader">BufferedReader</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BufferedReader.readLine">readLine</a> :: <b><a class="tref" href="#BufferedReader">BufferedReader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)<br><b>native </b>readLine&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+<p>
+Reads a line of text. A line is considered to be terminated by any one of a line feed ("\n"), a carriage return ("\r"), or a carriage return followed immediately by a linefeed.</p>
+<dl>
+<dt>
+Returns:</dt>
+<dd>
+<div>
+ <a class="fref" href="../prelude/PreludeBase.html#Maybe.Just">Maybe.Just</a> <i>string</i>, where <i>string</i> is the contents of the line, not including any line-termination characters, or <a class="fref" href="../prelude/PreludeBase.html#Maybe.Nothing">Maybe.Nothing</a> if the end of the stream has been reached.</div>
+</dd>
+<dt>
+Throws:</dt>
+<dd>
+<div>
+ IOException - If an I/O error occurs </div>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Closeable"> </a> <a class="tref" href="#Closeable">Closeable</a> = <b>mutable </b><b>native </b>java.io.Closeable</SPAN></dt>
+<dd class="data">
+<p>
+frege equivalent of <SPAN CLASS="code">java.io.Closeable</SPAN>   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Closeable.close">close</a> :: <b><a class="tref" href="#Closeable">Closeable</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>close&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="EOFException"> </a> <a class="tref" href="#EOFException">EOFException</a> = <b>pure </b><b>native </b>java.io.EOFException</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="EOFException._new">new</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="#EOFException">EOFException</a><br><b>pure </b><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="File"> </a> <a class="tref" href="#File">File</a> = <b>native </b>java.io.File</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="File.canRead">canRead</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>canRead</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.canWrite">canWrite</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>canWrite</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.delete">delete</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>delete</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.exists">exists</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>exists</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.getName">getName</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>native </b>getName</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.getParentFile">getParentFile</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a>))<br><b>native </b>getParentFile</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.getPath">getPath</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>native </b>getPath</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.getPathF">getPathF</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>getPath</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.isAbsolute">isAbsolute</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>isAbsolute</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.isDirectory">isDirectory</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>isDirectory</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.isFile">isFile</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>isFile</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.lastModified">lastModified</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a><br><b>native </b>lastModified</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.list">list</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../prelude/Arrays.html#StringArr">StringArr</a>))<br><b>native </b>list</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.mkdirs">mkdirs</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>mkdirs</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File._new">new</a> :: ω<br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.newα">newα</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#File">File</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.newβ">newβ</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#Mutable">Mutable</a> s <a class="tref" href="#File">File</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#File">File</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.pathSeparator">pathSeparator</a> :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.io.File.pathSeparator</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.renameTo">renameTo</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a><br><b>native </b>renameTo</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.separator">separator</a> :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.io.File.separator</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="File.toURI">toURI</a> :: <b><a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="#URI">URI</a><br><b>pure </b><b>native </b>toURI</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="FileInputStream"> </a> <a class="tref" href="#FileInputStream">FileInputStream</a> = <b>mutable </b><b>native </b>java.io.FileInputStream</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="FileInputStream._new">new</a> :: ω<br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="FileInputStream.newα">newα</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#FileInputStream">FileInputStream</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="FileInputStream.newβ">newβ</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#FileInputStream">FileInputStream</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="FileNotFoundException"> </a> <a class="tref" href="#FileNotFoundException">FileNotFoundException</a> = <b>pure </b><b>native </b>java.io.FileNotFoundException</SPAN></dt>
+<dd class="data">
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Flushable"> </a> <a class="tref" href="#Flushable">Flushable</a> = <b>mutable </b><b>native </b>java.io.Flushable</SPAN></dt>
+<dd class="data">
+<p>
+frege equivalent of <SPAN CLASS="code">java.io.Flushable</SPAN>   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Flushable.flush">flush</a> :: <b><a class="tref" href="#Flushable">Flushable</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>flush&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="InputStream"> </a> <a class="tref" href="#InputStream">InputStream</a> = <b>mutable </b><b>native </b>java.io.InputStream</SPAN></dt>
+<dd class="data">
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="InputStreamReader"> </a> <a class="tref" href="#InputStreamReader">InputStreamReader</a> = <b>mutable </b><b>native </b>java.io.InputStreamReader</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="InputStreamReader._new">new</a> :: <b><a class="tref" href="#InputStream">InputStream</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#InputStreamReader">InputStreamReader</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="OutputStream"> </a> <a class="tref" href="#OutputStream">OutputStream</a> = <b>mutable </b><b>native </b>java.io.OutputStream</SPAN></dt>
+<dd class="data">
+<p>
+frege equivalent of <SPAN CLASS="code">java.io.OutputStream</SPAN>   </p>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="OutputStreamWriter"> </a> <a class="tref" href="#OutputStreamWriter">OutputStreamWriter</a> = <b>mutable </b><b>native </b>java.io.OutputStreamWriter</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="OutputStreamWriter._new">new</a> :: <b><a class="tref" href="#OutputStream">OutputStream</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#OutputStreamWriter">OutputStreamWriter</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="PrintWriter"> </a> <a class="tref" href="#PrintWriter">PrintWriter</a> = <b>mutable </b><b>native </b>java.io.PrintWriter</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter._new">new</a> :: ω<br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.newα">newα</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.newβ">newβ</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.newγ">newγ</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>new&nbsp;&nbsp;<b>throws </b><a class="tref" href="#FileNotFoundException">FileNotFoundException</a>, <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.newδ">newδ</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.newε">newε</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.print">print</a> :: <b><a class="tref" href="#PrintWriter">PrintWriter</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>print</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.println">println</a> :: ω<br><b>native </b>println</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.printlnα">printlnα</a> :: <b><a class="tref" href="#PrintWriter">PrintWriter</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>println</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="PrintWriter.printlnβ">printlnβ</a> :: <b><a class="tref" href="#PrintWriter">PrintWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>println</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Reader"> </a> <a class="tref" href="#Reader">Reader</a> = <b>mutable </b><b>native </b>java.io.Reader</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Reader.getChar">getChar</a> :: <b><a class="tref" href="#Reader">Reader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="func">
+<p>
+Read the next character from the input stream. Throws <a class="tref" href="#EOFException">EOFException</a> if the end of the stream has been reached, or <a class="tref" href="./Lang.html#IOException">IOException</a> if an I/O error occurs.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Reader.read">read</a> :: <b><a class="tref" href="#Reader">Reader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a><br><b>native </b>read&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+<p>
+Reads a single character and returns it as <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> in the range 0 to 65535. Returns -1 if the end of the stream has been reached.</p>
+<p>
+Throws <a class="tref" href="./Lang.html#IOException">IOException</a> if an I/O error occurs.</p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="StringWriter"> </a> <a class="tref" href="#StringWriter">StringWriter</a> = <b>mutable </b><b>native </b>java.io.StringWriter</SPAN></dt>
+<dd class="data">
+<p>
+Frege type for a <SPAN CLASS="code">java.io.StringWriter</SPAN></p>
+<p>
+Not intended for direct use but rather as something a <a class="tref" href="#PrintWriter">PrintWriter</a> can be made of. (Though, because of the <a class="tref" href="./Lang.html#Appendable">Appendable</a> inheritance, one could still <a class="fref" href="./Lang.html#Appendable.append">Appendable.append</a> directly.)</p>
+<p>
+To be used like:</p>
+<PRE>
+ action :: PrintWriter -&gt; IO ()
+ action =  ...
+ actionOnStringWriter :: IO String
+ actionOnStringWriter = do
+       sw &lt;- StringWriter.new
+       pr &lt;- sw.printer
+       action pr
+       pr.close
+       sw.toString</PRE>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="StringWriter._new">new</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#StringWriter">StringWriter</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+<p>
+create a fresh <a class="tref" href="#StringWriter">StringWriter</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="StringWriter.printer">printer</a> :: <b><a class="tref" href="#StringWriter">StringWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+make a <a class="tref" href="#PrintWriter">PrintWriter</a> that prints to this <a class="tref" href="#StringWriter">StringWriter</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="StringWriter.toString">toString</a> :: <b><a class="tref" href="#StringWriter">StringWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>native </b>toString</SPAN></dt>
+<dd class="func">
+<p>
+get the content of a <a class="tref" href="#StringWriter">StringWriter</a> as <a class="tref" href="../prelude/PreludeBase.html#String">String</a>       </p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="URI"> </a> <a class="tref" href="#URI">URI</a> = <b>pure </b><b>native </b>java.net.URI</SPAN></dt>
+<dd class="data">
+<p>
+forward declaration of URI   </p>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="UnsupportedEncodingException"> </a> <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a> = <b>pure </b><b>native </b>java.io.UnsupportedEncodingException</SPAN></dt>
+<dd class="data">
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Writer"> </a> <a class="tref" href="#Writer">Writer</a> = <b>mutable </b><b>native </b>java.io.Writer</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Writer.putChar">putChar</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Writer.write">write</a> :: ω<br><b>native </b>write</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Writer.writeα">writeα</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>write&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Writer.writeβ">writeβ</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>write&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Writer.writeγ">writeγ</a> :: <b><a class="tref" href="#Writer">Writer</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a><br><b>native </b>write&nbsp;&nbsp;<b>throws </b><a class="tref" href="./Lang.html#IOException">IOException</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="openReader">openReader</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#BufferedReader">BufferedReader</a></SPAN></dt>
+<dd class="func">
+<p>
+Convenience function to open a file and wrap it with an UTF-8 decoding buffered <a class="tref" href="#Reader">Reader</a>.</p>
+<p>
+May throw <a class="tref" href="#FileNotFoundException">FileNotFoundException</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="openWriter">openWriter</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+Convenience function to open a file for writing through an UTF-8 encoding <a class="tref" href="#PrintWriter">PrintWriter</a>.</p>
+<p>
+May throw <a class="tref" href="#FileNotFoundException">FileNotFoundException</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="stderr">stderr</a> :: <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>frege.runtime.Runtime.stderr</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="stdin">stdin</a> :: <a class="tref" href="#BufferedReader">BufferedReader</a><br><b>native </b>frege.runtime.Runtime.stdin</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="stdout">stdout</a> :: <a class="tref" href="#PrintWriter">PrintWriter</a><br><b>native </b>frege.runtime.Runtime.stdout</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.renameTo">File.renameTo</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.newγ">PrintWriter.newγ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a>))</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.getParentFile">File.getParentFile</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../prelude/Arrays.html#StringArr">StringArr</a>))</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.list">File.list</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.getPath">File.getPath</a>, <a class="fref" href="#File.getName">File.getName</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#FileInputStream">FileInputStream</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#FileInputStream.newα">FileInputStream.newα</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.newβ">PrintWriter.newβ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.delete">File.delete</a>, <a class="fref" href="#File.canWrite">File.canWrite</a>, <a class="fref" href="#File.canRead">File.canRead</a>, <a class="fref" href="#File.exists">File.exists</a>, <a class="fref" href="#File.isFile">File.isFile</a>, <a class="fref" href="#File.isAbsolute">File.isAbsolute</a>, <a class="fref" href="#File.isDirectory">File.isDirectory</a>, <a class="fref" href="#File.mkdirs">File.mkdirs</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.lastModified">File.lastModified</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#BufferedReader">BufferedReader</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#openReader">openReader</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#FileInputStream">FileInputStream</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#FileInputStream.newβ">FileInputStream.newβ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#openWriter">openWriter</a>, <a class="fref" href="#PrintWriter.newα">PrintWriter.newα</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="#EOFException">EOFException</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#EOFException._new">EOFException.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#File">File</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_File.showList">Show_File.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BufferedReader">BufferedReader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BufferedReader.readLine">BufferedReader.readLine</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BufferedReader">BufferedReader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BufferedReader.getLine">BufferedReader.getLine</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BufferedReader">BufferedReader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BufferedReader.getLines">BufferedReader.getLines</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Closeable">Closeable</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Closeable.close">Closeable.close</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_File.show">Show_File.show</a>, <a class="fref" href="#Show_File.display">Show_File.display</a>, <a class="fref" href="#Show_File.showsub">Show_File.showsub</a>, <a class="fref" href="#File.getPathF">File.getPathF</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#File">File</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_File.showChars">Show_File.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#File">File</a> -&gt; <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Serializable_File.freeze">Serializable_File.freeze</a>, <a class="fref" href="#Serializable_File.copySerializable">Serializable_File.copySerializable</a>, <a class="fref" href="#Serializable_File.thaw">Serializable_File.thaw</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#File">File</a> -&gt; <a class="tref" href="#URI">URI</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.toURI">File.toURI</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Flushable">Flushable</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Flushable.flush">Flushable.flush</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#InputStream">InputStream</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#InputStreamReader">InputStreamReader</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#InputStreamReader._new">InputStreamReader.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#OutputStream">OutputStream</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#OutputStreamWriter">OutputStreamWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#OutputStreamWriter._new">OutputStreamWriter.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.print">PrintWriter.print</a>, <a class="fref" href="#PrintWriter.printlnα">PrintWriter.printlnα</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.printlnβ">PrintWriter.printlnβ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Reader">Reader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#BufferedReader">BufferedReader</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BufferedReader._new">BufferedReader.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Reader">Reader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Reader.getChar">Reader.getChar</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Reader">Reader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Reader.read">Reader.read</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#StringWriter">StringWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#StringWriter.toString">StringWriter.toString</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#StringWriter">StringWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#StringWriter.printer">StringWriter.printer</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Writer.writeγ">Writer.writeγ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Writer.writeβ">Writer.writeβ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.newε">PrintWriter.newε</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Writer.putChar">Writer.putChar</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Writer.writeα">Writer.writeα</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Writer">Writer</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#PrintWriter.newδ">PrintWriter.newδ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="#StringWriter">StringWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#StringWriter._new">StringWriter.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_File.showsPrec">Show_File.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#EOFException">EOFException</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Exceptional_EOFException.javaClass">Exceptional_EOFException.javaClass</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#FileNotFoundException">FileNotFoundException</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Exceptional_FileNotFoundException.javaClass">Exceptional_FileNotFoundException.javaClass</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Class">Class</a> <a class="tref" href="#UnsupportedEncodingException">UnsupportedEncodingException</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Exceptional_UnsupportedEncodingException.javaClass">Exceptional_UnsupportedEncodingException.javaClass</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.pathSeparator">File.pathSeparator</a>, <a class="fref" href="#File.separator">File.separator</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BufferedReader">BufferedReader</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#stdin">stdin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#PrintWriter">PrintWriter</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#stderr">stderr</a>, <a class="fref" href="#stdout">stdout</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#Mutable">Mutable</a> s <a class="tref" href="#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.newβ">File.newβ</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#File">File</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File.newα">File.newα</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">ω</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#File._new">File.new</a>, <a class="fref" href="#FileInputStream._new">FileInputStream.new</a>, <a class="fref" href="#PrintWriter._new">PrintWriter.new</a>, <a class="fref" href="#PrintWriter.println">PrintWriter.println</a>, <a class="fref" href="#Writer.write">Writer.write</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

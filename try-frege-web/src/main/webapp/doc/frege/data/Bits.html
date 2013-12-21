@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.data.Bits - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.data.Bits</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:48 CET 2013 from source file: <SPAN CLASS="code">./frege/data/Bits.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Empty_BitSet">Empty_BitSet</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_BitSet">Eq_BitSet</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monoid_BitSet">Monoid_BitSet</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_BitSet">Ord_BitSet</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_BitSet">Show_BitSet</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#BitSet">BitSet</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#Empty_BitSet._null">Empty_BitSet.null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Empty_BitSet.empty">Empty_BitSet.empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_BitSet._eq_eq">Eq_BitSet.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_BitSet._excl_eq">Eq_BitSet.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_BitSet.hashCode">Eq_BitSet.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.mtimes">Monoid_BitSet.mtimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.mconcat">Monoid_BitSet.mconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.mappend">Monoid_BitSet.mappend</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.mempty">Monoid_BitSet.mempty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.sconcat">Monoid_BitSet.sconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_BitSet.stimes">Monoid_BitSet.stimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet._gt">Ord_BitSet.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet._lt_eq">Ord_BitSet.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet._lt">Ord_BitSet.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet._lt_eq_gt">Ord_BitSet.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet.compare">Ord_BitSet.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet._gt_eq">Ord_BitSet.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet.max">Ord_BitSet.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_BitSet.min">Ord_BitSet.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.showList">Show_BitSet.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.show">Show_BitSet.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.display">Show_BitSet.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.showChars">Show_BitSet.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.showsPrec">Show_BitSet.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_BitSet.showsub">Show_BitSet.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.intersection">BitSet.intersection</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.BitSet">BitSet.BitSet</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.difference">BitSet.difference</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.chg$set">BitSet.chg$set</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.fromList">BitSet.fromList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.differenceE">BitSet.differenceE</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.has$set">BitSet.has$set</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.member">BitSet.member</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.intersectionE">BitSet.intersectionE</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.singleton">BitSet.singleton</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.set">BitSet.set</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.union">BitSet.union</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.subset">BitSet.subset</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.size">BitSet.size</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.toList">BitSet.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.universal">BitSet.universal</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.unionE">BitSet.unionE</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#BitSet.upd$set">BitSet.upd$set</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="./Monoid.html">frege.data.Monoid</a> as Monoid</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Empty_BitSet"> </a> <a class="tref" href="../prelude/PreludeList.html#Empty">Empty</a> <a class="tref" href="#BitSet">BitSet</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty_BitSet.empty">empty</a> :: <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+The empty set   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty_BitSet._null">null</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Predicate to tell if the set is empty   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_BitSet"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="#BitSet">BitSet</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_BitSet._excl_eq">!=</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_BitSet._eq_eq">==</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_BitSet.hashCode">hashCode</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monoid_BitSet"> </a> <a class="tref" href="./Monoid.html#Monoid">Monoid</a> <a class="tref" href="#BitSet">BitSet</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.mappend">mappend</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.mconcat">mconcat</a> :: <b>[<a class="tref" href="#BitSet">BitSet</a> α]</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Monoid.mconcat">Monoid.mconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.mempty">mempty</a> :: <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.mtimes">mtimes</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Monoid.mtimes">Monoid.mtimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.sconcat">sconcat</a> :: <b>[<a class="tref" href="#BitSet">BitSet</a> α]</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Semigroup.sconcat">Semigroup.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_BitSet.stimes">stimes</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Semigroup.stimes">Semigroup.stimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_BitSet"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="#BitSet">BitSet</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet._lt">&lt;</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet._lt_eq">&lt;=</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet._lt_eq_gt">&lt;=&gt;</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet._gt">&gt;</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet._gt_eq">&gt;=</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet.compare">compare</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet.max">max</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_BitSet.min">min</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_BitSet"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> a) =&gt; <a class="tref" href="#BitSet">BitSet</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.display">display</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.show">show</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.showChars">showChars</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.showList">showList</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <b>[<a class="tref" href="#BitSet">BitSet</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.showsPrec">showsPrec</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_BitSet.showsub">showsub</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="BitSet"> </a> <a class="tref" href="#BitSet">BitSet</a> e</SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.BitSet">BitSet</a> {set :: <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a>}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.difference">difference</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `difference` b</SPAN> -- a set with all elements that are members of a and not members of b   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.differenceE">differenceE</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b>α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `differenceE` e</SPAN> = <SPAN CLASS="code">a `difference` {e}</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.fromList">fromList</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b>[α]</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+convert a list to a <a class="tref" href="#BitSet">BitSet</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.intersection">intersection</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `intersection` b</SPAN> -- a set with all elements that are members of a and members of b   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.intersectionE">intersectionE</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b>α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `intersectionE` e</SPAN> = <SPAN CLASS="code">a `intersection` {e}</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.member">member</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b>α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Predicate to tell if an element is a member of a set   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.set">set</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">set</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.singleton">singleton</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b>α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+A set with one argument   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.size">size</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+tell the number of elements in a <a class="tref" href="#BitSet">BitSet</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.subset">subset</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Predicate that tells if one set is a subset of another   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.toList">toList</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+convert a <a class="tref" href="#BitSet">BitSet</a> to a list   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.union">union</a> :: <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `union` b</SPAN> -- a set with all elements that are members of a or members of b   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.unionE">unionE</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <b><a class="tref" href="#BitSet">BitSet</a> α</b> -&gt; <b>α</b> -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">a `unionE` e</SPAN> = <SPAN CLASS="code">a `union` {e}</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="BitSet.universal">universal</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α, <a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> α) =&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+The universal set   </p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_BitSet.mappend">Monoid_BitSet.mappend</a>, <a class="fref" href="#Ord_BitSet.max">Ord_BitSet.max</a>, <a class="fref" href="#Ord_BitSet.min">Ord_BitSet.min</a>, <a class="fref" href="#BitSet.intersection">BitSet.intersection</a>, <a class="fref" href="#BitSet.difference">BitSet.difference</a>, <a class="fref" href="#BitSet.union">BitSet.union</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_BitSet._eq_eq">Eq_BitSet.==</a>, <a class="fref" href="#Eq_BitSet._excl_eq">Eq_BitSet.!=</a>, <a class="fref" href="#Ord_BitSet._gt">Ord_BitSet.&gt;</a>, <a class="fref" href="#Ord_BitSet._lt_eq">Ord_BitSet.&lt;=</a>, <a class="fref" href="#Ord_BitSet._lt">Ord_BitSet.&lt;</a>, <a class="fref" href="#Ord_BitSet._gt_eq">Ord_BitSet.&gt;=</a>, <a class="fref" href="#BitSet.subset">BitSet.subset</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_BitSet._lt_eq_gt">Ord_BitSet.&lt;=&gt;</a>, <a class="fref" href="#Ord_BitSet.compare">Ord_BitSet.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty_BitSet._null">Empty_BitSet.null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_BitSet.hashCode">Eq_BitSet.hashCode</a>, <a class="fref" href="#BitSet.size">BitSet.size</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.set">BitSet.set</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#BitSet">BitSet</a> α] -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_BitSet.mconcat">Monoid_BitSet.mconcat</a>, <a class="fref" href="#Monoid_BitSet.sconcat">Monoid_BitSet.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_BitSet.mtimes">Monoid_BitSet.mtimes</a>, <a class="fref" href="#Monoid_BitSet.stimes">Monoid_BitSet.stimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="#BitSet">BitSet</a> e</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.BitSet">BitSet.BitSet</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.has$set">BitSet.has$set</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.differenceE">BitSet.differenceE</a>, <a class="fref" href="#BitSet.intersectionE">BitSet.intersectionE</a>, <a class="fref" href="#BitSet.unionE">BitSet.unionE</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.toList">BitSet.toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; [α] -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.fromList">BitSet.fromList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; α -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.member">BitSet.member</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α =&gt; α -&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.singleton">BitSet.singleton</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_BitSet.show">Show_BitSet.show</a>, <a class="fref" href="#Show_BitSet.display">Show_BitSet.display</a>, <a class="fref" href="#Show_BitSet.showsub">Show_BitSet.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_BitSet.showChars">Show_BitSet.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; [<a class="tref" href="#BitSet">BitSet</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_BitSet.showList">Show_BitSet.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α) =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_BitSet.showsPrec">Show_BitSet.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty_BitSet.empty">Empty_BitSet.empty</a>, <a class="fref" href="#Monoid_BitSet.mempty">Monoid_BitSet.mempty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> α, <a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> α) =&gt; <a class="tref" href="#BitSet">BitSet</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.universal">BitSet.universal</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Long">Long</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Long">Long</a>) -&gt; <a class="tref" href="#BitSet">BitSet</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.chg$set">BitSet.chg$set</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#BitSet">BitSet</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="#BitSet">BitSet</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#BitSet.upd$set">BitSet.upd$set</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

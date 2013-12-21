@@ -70,6 +70,31 @@ $(document).ready(function(){
           $("#dialog" ).dialog("open")
           javaSourceEditor.refresh();
           report([{"msg": "", "className": "jquery-console-message-info"}]);
+        } else if (cmd.match(/\s*:help\s+.*/)) {
+            if (msg != '') {
+                $("#help").html(msg);
+                $('#help a').not('[href^="http"],[href^="https"],[href^="mailto:"],[href^="#"]').each(function() {
+                            $(this).attr('href', function(index, value) {
+                                if (!value) return
+                                if (value.substr(0,1) !== "/") {
+                                    if (value.substr(0,2) == "..") {
+                                        value = window.location.pathname + "doc" + value.substr(2)
+                                    } else {
+                                        value = window.location.pathname + "doc" + value;
+                                    }
+                                }
+                                return value;
+                            });
+                        });
+                $('#help a').attr("target", "_blank")
+                $("#help").dialog({"height": $(window).height() * 0.4,
+                                               "width": $(window).width() * 0.6,
+                                               "title": "Frege Documentation - " + cmd.split(' ')[1],
+                                               "position": { my: "right top", at: "right top", of: window }})
+                $("#help" ).dialog("open")
+            }
+
+            report([{"msg": "", "className": "jquery-console-message-info"}]);
         } else {
           report([{'msg': msg, 'className': "jquery-console-message-info"}]);
         }

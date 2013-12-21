@@ -1,0 +1,420 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.tools.Doc - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.tools.Doc</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:52:58 CET 2013 from source file: <SPAN CLASS="code">./frege/tools/Doc.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+This program reads java class files that are the result of compiling a frege package and writes a documentation of that package. All public classes, instances, data types, type aliases and functions are listed along with programmer supplied documentation from <i>doc</i> comments.</p>
+<p>
+Usage:</p>
+<PRE>
+java frege.tools.Doc [-d docpath] your.frege.Package ...</PRE>
+<p>
+This creates or updates the documentation files for the packages named on the command line. A documentation file for package <SPAN CLASS="code">a.b.C</SPAN> will be written in file <SPAN CLASS="code">docpath/a/b/C.html</SPAN>, where <SPAN CLASS="code">docpath</SPAN> must be an existing directory.</p>
+<p>
+If the <SPAN CLASS="code">-d</SPAN>  flag is not given, the current directory is assumed for <SPAN CLASS="code">docpath</SPAN>.</p>
+<p>
+The generated HTML will contain links to the documentation files of imported packages, which are assumed to exist in the same <SPAN CLASS="code">docpath</SPAN>.</p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Date">Date</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#DocOpts">DocOpts</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#continueImport">continueImport</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#continueNamespaces">continueNamespaces</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docArch">docArch</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docDir">docDir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docDirEntry">docDirEntry</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docThing">docThing</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_main">main</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mkLinks">mkLinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#options">options</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanOpts">scanOpts</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stime">stime</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#usage">usage</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#work">work</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#continueImport">continueImport</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#continueNamespaces">continueNamespaces</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docArch">docArch</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docDir">docDir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docDirEntry">docDirEntry</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#docThing">docThing</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_main">main</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mkLinks">mkLinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#options">options</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanOpts">scanOpts</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#stime">stime</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#usage">usage</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#work">work</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Date._new">Date.new</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Date.toString">Date.toString</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.has$docdir">DocOpts.has$docdir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.chg$path">DocOpts.chg$path</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.chg$docdir">DocOpts.chg$docdir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.DOpt">DocOpts.DOpt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.chg$except">DocOpts.chg$except</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.docdir">DocOpts.docdir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.chg$verbose">DocOpts.chg$verbose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.except">DocOpts.except</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.has$verbose">DocOpts.has$verbose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.has$except">DocOpts.has$except</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.has$path">DocOpts.has$path</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.upd$path">DocOpts.upd$path</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.upd$docdir">DocOpts.upd$docdir</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.path">DocOpts.path</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.upd$except">DocOpts.upd$except</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.verbose">DocOpts.verbose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#DocOpts.upd$verbose">DocOpts.upd$verbose</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/Data.html">frege.compiler.Data</a> as D</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/Main.html">frege.compiler.Main</a> as C</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/Classtools.html">frege.compiler.Classtools</a> as CT</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/List.html">frege.data.List</a> as DL</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/Import.html">frege.compiler.Import</a> as I</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/DocUtils.html">frege.compiler.DocUtils</a> as DocUtils</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/TreeMap.html">frege.data.TreeMap</a> as TreeMap</div>
+</li>
+<li>
+<div>
+import <a HREF="../test/QuickCheck.html">frege.test.QuickCheck</a> as QC</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/monad/State.html">frege.control.monad.State</a> as S</div>
+</li>
+<li>
+<div>
+import <a HREF="../java/Util.html">frege.java.Util</a> as Util</div>
+</li>
+<li>
+<div>
+import <a HREF="../compiler/Utilities.html">frege.compiler.Utilities</a> as U</div>
+</li>
+<li>
+<div>
+import <a HREF="../java/util/Zip.html">frege.java.util.Zip</a> as Zip</div>
+</li>
+</ul>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Date"> </a> <a class="tref" href="#Date">Date</a> = <b>native </b>java.util.Date</SPAN></dt>
+<dd class="data">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Date._new">new</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></b> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#Date">Date</a><br><b>native </b>new</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Date.toString">toString</a> :: <b><a class="tref" href="../prelude/PreludeIO.html#Mutable">Mutable</a> s <a class="tref" href="#Date">Date</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#ST">ST</a> s <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>native </b>toString</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="DocOpts"> </a> <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="DocOpts.DOpt">DOpt</a> {verbose :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, docdir :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a>, except :: [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], path :: [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="DocOpts.docdir">docdir</a> :: <b><a class="tref" href="#DocOpts">DocOpts</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+path name of documentation root, must exist   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="DocOpts.except">except</a> :: <b><a class="tref" href="#DocOpts">DocOpts</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+excluded modules   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="DocOpts.path">path</a> :: <b><a class="tref" href="#DocOpts">DocOpts</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+class path   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="DocOpts.verbose">verbose</a> :: <b><a class="tref" href="#DocOpts">DocOpts</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+print a line for each documentation file   </p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="continueImport">continueImport</a> :: <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="continueNamespaces">continueNamespaces</a> :: <a class="tref" href="../compiler/Classtools.html#FregePackage">FregePackage</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="docArch">docArch</a> :: <a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="docDir">docDir</a> :: <a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="docDirEntry">docDirEntry</a> :: <a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <b><a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="docThing">docThing</a> :: <a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_main">main</a> :: <b>[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mkLinks">mkLinks</a> :: <a class="tref" href="../compiler/Data.html#NSName">NSName</a> -&gt; <a class="tref" href="../compiler/Data.html#Pack">Pack</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="options">options</a> :: <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanOpts">scanOpts</a> :: <a class="tref" href="#DocOpts">DocOpts</a> -&gt; <b>[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="#DocOpts">DocOpts</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]))</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="stime">stime</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="usage">usage</a> :: <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="work">work</a> :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+make 1 documentation file   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#work">work</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_main">main</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Classtools.html#FregePackage">FregePackage</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#continueNamespaces">continueNamespaces</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#docDirEntry">docDirEntry</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#docDir">docDir</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#MutableIO">MutableIO</a> <a class="tref" href="../java/IO.html#File">File</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#docArch">docArch</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#Global">Global</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../compiler/Data.html#Global">Global</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#docThing">docThing</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#NSName">NSName</a> -&gt; <a class="tref" href="../compiler/Data.html#Pack">Pack</a> -&gt; <a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mkLinks">mkLinks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.DOpt">DocOpts.DOpt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#stime">stime</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#String">String</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#String">String</a>) -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.chg$docdir">DocOpts.chg$docdir</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; ([<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]-&gt;[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]) -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.chg$path">DocOpts.chg$path</a>, <a class="fref" href="#DocOpts.chg$except">DocOpts.chg$except</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.chg$verbose">DocOpts.chg$verbose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.upd$docdir">DocOpts.upd$docdir</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="#DocOpts">DocOpts</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]))</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanOpts">scanOpts</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.upd$path">DocOpts.upd$path</a>, <a class="fref" href="#DocOpts.upd$except">DocOpts.upd$except</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.upd$verbose">DocOpts.upd$verbose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.docdir">DocOpts.docdir</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.except">DocOpts.except</a>, <a class="fref" href="#DocOpts.path">DocOpts.path</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.verbose">DocOpts.verbose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../compiler/Data.html#StG">StG</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#continueImport">continueImport</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#usage">usage</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#DocOpts">DocOpts</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#options">options</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeIO.html#Mutable">Mutable</a> s <a class="tref" href="#Date">Date</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#ST">ST</a> s <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Date.toString">Date.toString</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="../prelude/PreludeIO.html#STMutable">STMutable</a> s <a class="tref" href="#Date">Date</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Date._new">Date.new</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#DocOpts.has$docdir">DocOpts.has$docdir</a>, <a class="fref" href="#DocOpts.has$verbose">DocOpts.has$verbose</a>, <a class="fref" href="#DocOpts.has$except">DocOpts.has$except</a>, <a class="fref" href="#DocOpts.has$path">DocOpts.has$path</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

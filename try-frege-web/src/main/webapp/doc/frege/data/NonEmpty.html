@@ -1,0 +1,954 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.data.NonEmpty - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.data.NonEmpty</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:55:56 CET 2013 from source file: <SPAN CLASS="code">./frege/data/NonEmpty.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Eq_NonEmpty">Eq_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Foldable_NonEmpty">Foldable_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Functor_NonEmpty">Functor_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListLike_NonEmpty">ListLike_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource_NonEmpty">ListSource_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monad_NonEmpty">Monad_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_NonEmpty">Ord_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Semigroup_NonEmpty">Semigroup_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_NonEmpty">Show_NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Traversable_NonEmpty">Traversable_NonEmpty</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#NonEmpty">NonEmpty</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#_dot_colon">.:</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cycle">cycle</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#inits">inits</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insert">insert</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#iterate">iterate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#nonEmpty">nonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reverse">reverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl">scanl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl1">scanl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr">scanr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr1">scanr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sort">sort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#tails">tails</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toNonEmpty">toNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toNonEmpty_tick">toNonEmpty'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unsafeToNonEmpty">unsafeToNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip">unzip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip">zip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_bar_colon">|:</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#_dot_colon">.:</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cycle">cycle</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#inits">inits</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insert">insert</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#iterate">iterate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#nonEmpty">nonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reverse">reverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl">scanl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl1">scanl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr">scanr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr1">scanr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sort">sort</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#tails">tails</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toNonEmpty">toNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toNonEmpty_tick">toNonEmpty'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unsafeToNonEmpty">unsafeToNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip">unzip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip">zip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_bar_colon">|:</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmpty._eq_eq">Eq_NonEmpty.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmpty._excl_eq">Eq_NonEmpty.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmpty.hashCode">Eq_NonEmpty.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldMap1">Foldable_NonEmpty.foldMap1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.fold1">Foldable_NonEmpty.fold1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.fold">Foldable_NonEmpty.fold</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldMap">Foldable_NonEmpty.foldMap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldl1">Foldable_NonEmpty.foldl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldl">Foldable_NonEmpty.foldl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldr">Foldable_NonEmpty.foldr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_NonEmpty.foldr1">Foldable_NonEmpty.foldr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Functor_NonEmpty.fmap">Functor_NonEmpty.fmap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty.length">ListLike_NonEmpty.length</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty.empty">ListLike_NonEmpty.empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty._plus_plus">ListLike_NonEmpty.++</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty.head">ListLike_NonEmpty.head</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty._null">ListLike_NonEmpty.null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_NonEmpty.tail">ListLike_NonEmpty.tail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource_NonEmpty.toList">ListSource_NonEmpty.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._gt_gt">Monad_NonEmpty.&gt;&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._lt_star">Monad_NonEmpty.&lt;*</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._star_gt">Monad_NonEmpty.*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._lt_star_gt">Monad_NonEmpty.&lt;*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty.join">Monad_NonEmpty.join</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._gt_gt_eq">Monad_NonEmpty.&gt;&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty._return">Monad_NonEmpty.return</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_NonEmpty.pure">Monad_NonEmpty.pure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty._gt">Ord_NonEmpty.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty._lt_eq">Ord_NonEmpty.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty._lt">Ord_NonEmpty.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty._lt_eq_gt">Ord_NonEmpty.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty.compare">Ord_NonEmpty.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty._gt_eq">Ord_NonEmpty.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty.max">Ord_NonEmpty.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmpty.min">Ord_NonEmpty.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_NonEmpty.sconcat">Semigroup_NonEmpty.sconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_NonEmpty.mappend">Semigroup_NonEmpty.mappend</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_NonEmpty.stimes">Semigroup_NonEmpty.stimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.showList">Show_NonEmpty.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.show">Show_NonEmpty.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.display">Show_NonEmpty.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.showChars">Show_NonEmpty.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.showsPrec">Show_NonEmpty.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmpty.showsub">Show_NonEmpty.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_NonEmpty.sequence">Traversable_NonEmpty.sequence</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_NonEmpty.mapM">Traversable_NonEmpty.mapM</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_NonEmpty.traverse">Traversable_NonEmpty.traverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_NonEmpty.sequenceA">Traversable_NonEmpty.sequenceA</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.chg$neTail">NonEmpty.chg$neTail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.chg$neHead">NonEmpty.chg$neHead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.NonEmpty">NonEmpty.NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.neTail">NonEmpty.neTail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.has$neHead">NonEmpty.has$neHead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.has$neTail">NonEmpty.has$neTail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.neHead">NonEmpty.neHead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.upd$neHead">NonEmpty.upd$neHead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmpty.upd$neTail">NonEmpty.upd$neTail</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="./List.html">frege.data.List</a> as List</div>
+</li>
+<li>
+<div>
+import <a HREF="./Foldable.html">frege.data.Foldable</a> as Foldable</div>
+</li>
+<li>
+<div>
+import <a HREF="./Monoid.html">frege.data.Monoid</a> as Monoid</div>
+</li>
+<li>
+<div>
+import <a HREF="./Maybe.html">frege.data.Maybe</a> as Maybe</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../test/QuickCheck.html">frege.test.QuickCheck</a> as QuickCheck</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="./Traversable.html">frege.data.Traversable</a> as Traversable</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmpty._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmpty._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmpty.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Foldable_NonEmpty"> </a> <a class="tref" href="./Foldable.html#Foldable">Foldable</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.fold">fold</a> :: <a class="tref" href="./Monoid.html#Monoid">Monoid</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.fold">Foldable.fold</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.fold1">fold1</a> :: <a class="tref" href="./Monoid.html#Semigroup">Semigroup</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.fold1">Foldable.fold1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldMap">foldMap</a> :: <a class="tref" href="./Monoid.html#Monoid">Monoid</a> β =&gt; (α -&gt; β) -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.foldMap">Foldable.foldMap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldMap1">foldMap1</a> :: <a class="tref" href="./Monoid.html#Semigroup">Semigroup</a> β =&gt; (α -&gt; β) -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.foldMap1">Foldable.foldMap1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldl">foldl</a> :: (α -&gt; β -&gt; α) -&gt; <b>α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> β</b> -&gt; α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldl1">foldl1</a> :: (α -&gt; α -&gt; α) -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.foldl1">Foldable.foldl1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldr">foldr</a> :: (α -&gt; β -&gt; β) -&gt; β -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_NonEmpty.foldr1">foldr1</a> :: (α -&gt; α -&gt; α) -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Foldable.html#Foldable.foldr1">Foldable.foldr1</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Functor_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Functor">Functor</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Functor_NonEmpty.fmap">fmap</a> :: (α -&gt; β) -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListLike_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeList.html#ListLike">ListLike</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty._plus_plus">++</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty.empty">empty</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty.head">head</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty.length">length</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty._null">null</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_NonEmpty.tail">tail</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeList.html#ListSource">ListSource</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource_NonEmpty.toList">toList</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monad_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._star_gt">*&gt;</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._star_gt">Applicative.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._lt_star">&lt;*</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._lt_star">Applicative.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._lt_star_gt">&lt;*&gt;</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> (α-&gt;β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad._lt_star_gt">Monad.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._gt_gt">&gt;&gt;</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad._gt_gt">Monad.&gt;&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._gt_gt_eq">&gt;&gt;=</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; (α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty.join">join</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> (<a class="tref" href="#NonEmpty">NonEmpty</a> α)</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad.join">Monad.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty.pure">pure</a> :: α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad.pure">Monad.pure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_NonEmpty._return">return</a> :: α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmpty.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Semigroup_NonEmpty"> </a> <a class="tref" href="./Monoid.html#Semigroup">Semigroup</a> <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_NonEmpty.mappend">mappend</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_NonEmpty.sconcat">sconcat</a> :: <b>[<a class="tref" href="#NonEmpty">NonEmpty</a> α]</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Semigroup.sconcat">Semigroup.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_NonEmpty.stimes">stimes</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Monoid.html#Semigroup.stimes">Semigroup.stimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_NonEmpty"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#NonEmpty">NonEmpty</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmpty.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Traversable_NonEmpty"> </a> <a class="tref" href="./Traversable.html#Traversable">Traversable</a> <a class="tref" href="#NonEmpty">NonEmpty</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_NonEmpty.mapM">mapM</a> :: <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; γ (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Traversable.html#Traversable.mapM">Traversable.mapM</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_NonEmpty.sequence">sequence</a> :: <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (α β) -&gt; α (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Traversable.html#Traversable.sequence">Traversable.sequence</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_NonEmpty.sequenceA">sequenceA</a> :: <a class="tref" href="../prelude/PreludeMonad.html#Applicative">Applicative</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (α β) -&gt; α (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./Traversable.html#Traversable.sequenceA">Traversable.sequenceA</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_NonEmpty.traverse">traverse</a> :: <a class="tref" href="../prelude/PreludeMonad.html#Applicative">Applicative</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; γ (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="NonEmpty"> </a> <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="data">
+<p>
+A <a class="tref" href="#NonEmpty">NonEmpty</a> is like a list, but never empty.</p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonEmpty.NonEmpty">NonEmpty</a> {neHead :: a, neTail :: [a]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonEmpty.neHead">neHead</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">neHead</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="NonEmpty.neTail">neTail</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+The head of the non-empty list. The tail of the non-empty list.   </p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="_dot_colon">.:</a> :: a -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> a</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Prepends a value to a <a class="tref" href="#NonEmpty">NonEmpty</a>.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="cycle">cycle</a> :: <a class="tref" href="../prelude/PreludeList.html#ListSource">ListSource</a> src =&gt; src a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+cycle ties a finite <a class="tref" href="#NonEmpty">NonEmpty</a> into a circular one, or equivalently, the infinite repetition of the original <a class="tref" href="#NonEmpty">NonEmpty</a>. It is the identity on infinite <a class="tref" href="#NonEmpty">NonEmpty</a>s.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="inits">inits</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> a</b> -&gt; [<a class="tref" href="#NonEmpty">NonEmpty</a> a]</SPAN></dt>
+<dd class="func">
+<p>
+The inits function returns all initial segments of the argument, shortest first.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insert">insert</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+The insert function takes an element and a <a class="tref" href="#NonEmpty">NonEmpty</a> and inserts the element into the <a class="tref" href="#NonEmpty">NonEmpty</a> at the last position where it is still less than or equal to the next element.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="iterate">iterate</a> :: (a -&gt; a) -&gt; a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+iterate f x returns an infinite <a class="tref" href="#NonEmpty">NonEmpty</a> of repeated applications of f to x   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="nonEmpty">nonEmpty</a> :: a -&gt; [a] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Constructs a non-empty list with the given head and tail.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="reverse">reverse</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Reverses the elements of the (finite) <a class="tref" href="#NonEmpty">NonEmpty</a>.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanl">scanl</a> :: (b -&gt; a -&gt; b) -&gt; <b>b</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> b</SPAN></dt>
+<dd class="func">
+<p>
+scanl is similar to foldl, but returns a <a class="tref" href="#NonEmpty">NonEmpty</a> of successive reduced values from the left   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanl1">scanl1</a> :: (a -&gt; a -&gt; a) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+scanl1 is similar to foldl1, but returns a <a class="tref" href="#NonEmpty">NonEmpty</a> of successive reduced values from the left   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanr">scanr</a> :: (a -&gt; b -&gt; b) -&gt; b -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> b</SPAN></dt>
+<dd class="func">
+<p>
+scanr is similar to foldr, but returns a <a class="tref" href="#NonEmpty">NonEmpty</a> of successive reduced values from the right   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanr1">scanr1</a> :: (a -&gt; a -&gt; a) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+scanr1 is similar to foldr1, but returns a <a class="tref" href="#NonEmpty">NonEmpty</a> of successive reduced values from the right   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sort">sort</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+The sort function implements a stable sorting algorithm.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="tails">tails</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> a</b> -&gt; [<a class="tref" href="#NonEmpty">NonEmpty</a> a]</SPAN></dt>
+<dd class="func">
+<p>
+The tails function returns all final segments of the argument, longest first.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="toNonEmpty">toNonEmpty</a> :: <b>[a]</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="#NonEmpty">NonEmpty</a> a)</SPAN></dt>
+<dd class="func">
+<p>
+Tries to convert a list to a <a class="tref" href="#NonEmpty">NonEmpty</a> returning <a class="fref" href="../prelude/PreludeBase.html#Maybe.Nothing">Maybe.Nothing</a> if the given list is empty.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="toNonEmpty_tick">toNonEmpty'</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <b>[a]</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Converts a list to a <a class="tref" href="#NonEmpty">NonEmpty</a> using the given default value for the empty list case.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unsafeToNonEmpty">unsafeToNonEmpty</a> :: <b>[a]</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+/WARNING: Fails if given the empty list./</p>
+<p>
+Tries to convert a list to a <a class="tref" href="#NonEmpty">NonEmpty</a>.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unzip">unzip</a> :: <a class="tref" href="#NonEmpty">NonEmpty</a> (a, b) -&gt; (<a class="tref" href="#NonEmpty">NonEmpty</a> a, <a class="tref" href="#NonEmpty">NonEmpty</a> b)</SPAN></dt>
+<dd class="func">
+<p>
+unzip transforms a <a class="tref" href="#NonEmpty">NonEmpty</a> of pairs into a <a class="tref" href="#NonEmpty">NonEmpty</a> of first components and a <a class="tref" href="#NonEmpty">NonEmpty</a> of second components.    </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="zip">zip</a> :: <b><a class="tref" href="#NonEmpty">NonEmpty</a> a</b> -&gt; <b><a class="tref" href="#NonEmpty">NonEmpty</a> b</b> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (a, b)</SPAN></dt>
+<dd class="func">
+<p>
+zip takes two <a class="tref" href="#NonEmpty">NonEmpty</a>s and returns a <a class="tref" href="#NonEmpty">NonEmpty</a> of corresponding pairs. If one input <a class="tref" href="#NonEmpty">NonEmpty</a>s is short, excess elements of the longer <a class="tref" href="#NonEmpty">NonEmpty</a> are discarded.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_bar_colon">|:</a> :: a -&gt; [a] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Constructs a non-empty list with the given head and tail (an alias for <a class="fref" href="#nonEmpty">nonEmpty</a>).   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; a -&gt; a) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl1">scanl1</a>, <a class="fref" href="#scanr1">scanr1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; a) -&gt; a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#iterate">iterate</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; α -&gt; α) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.foldl1">Foldable_NonEmpty.foldl1</a>, <a class="fref" href="#Foldable_NonEmpty.foldr1">Foldable_NonEmpty.foldr1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> (<a class="tref" href="#NonEmpty">NonEmpty</a> α) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty.join">Monad_NonEmpty.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; [a] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#toNonEmpty_tick">toNonEmpty'</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#reverse">reverse</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; [<a class="tref" href="#NonEmpty">NonEmpty</a> a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#inits">inits</a>, <a class="fref" href="#tails">tails</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; ([α]-&gt;[α]) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmpty.chg$neTail">NonEmpty.chg$neTail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; (α-&gt;α) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmpty.chg$neHead">NonEmpty.chg$neHead</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty._plus_plus">ListLike_NonEmpty.++</a>, <a class="fref" href="#Semigroup_NonEmpty.mappend">Semigroup_NonEmpty.mappend</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; [α] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmpty.upd$neTail">NonEmpty.upd$neTail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmpty.upd$neHead">NonEmpty.upd$neHead</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty.tail">ListLike_NonEmpty.tail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource_NonEmpty.toList">ListSource_NonEmpty.toList</a>, <a class="fref" href="#NonEmpty.neTail">NonEmpty.neTail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty._null">ListLike_NonEmpty.null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty.length">ListLike_NonEmpty.length</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty.head">ListLike_NonEmpty.head</a>, <a class="fref" href="#NonEmpty.neHead">NonEmpty.neHead</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#NonEmpty">NonEmpty</a> α] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Semigroup_NonEmpty.sconcat">Semigroup_NonEmpty.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unsafeToNonEmpty">unsafeToNonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> (<a class="tref" href="#NonEmpty">NonEmpty</a> a)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#toNonEmpty">toNonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Semigroup_NonEmpty.stimes">Semigroup_NonEmpty.stimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_dot_colon">.:</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; [a] -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#nonEmpty">nonEmpty</a>, <a class="fref" href="#_bar_colon">|:</a>, <a class="fref" href="#NonEmpty.NonEmpty">NonEmpty.NonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty._return">Monad_NonEmpty.return</a>, <a class="fref" href="#Monad_NonEmpty.pure">Monad_NonEmpty.pure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmpty.has$neHead">NonEmpty.has$neHead</a>, <a class="fref" href="#NonEmpty.has$neTail">NonEmpty.has$neTail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./Monoid.html#Monoid">Monoid</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.fold">Foldable_NonEmpty.fold</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./Monoid.html#Semigroup">Semigroup</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.fold1">Foldable_NonEmpty.fold1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonEmpty._eq_eq">Eq_NonEmpty.==</a>, <a class="fref" href="#Eq_NonEmpty._excl_eq">Eq_NonEmpty.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonEmpty.hashCode">Eq_NonEmpty.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sort">sort</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#insert">insert</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmpty.max">Ord_NonEmpty.max</a>, <a class="fref" href="#Ord_NonEmpty.min">Ord_NonEmpty.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmpty._gt">Ord_NonEmpty.&gt;</a>, <a class="fref" href="#Ord_NonEmpty._lt_eq">Ord_NonEmpty.&lt;=</a>, <a class="fref" href="#Ord_NonEmpty._lt">Ord_NonEmpty.&lt;</a>, <a class="fref" href="#Ord_NonEmpty._gt_eq">Ord_NonEmpty.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmpty._lt_eq_gt">Ord_NonEmpty.&lt;=&gt;</a>, <a class="fref" href="#Ord_NonEmpty.compare">Ord_NonEmpty.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmpty.show">Show_NonEmpty.show</a>, <a class="fref" href="#Show_NonEmpty.display">Show_NonEmpty.display</a>, <a class="fref" href="#Show_NonEmpty.showsub">Show_NonEmpty.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmpty.showChars">Show_NonEmpty.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#NonEmpty">NonEmpty</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmpty.showList">Show_NonEmpty.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmpty.showsPrec">Show_NonEmpty.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_NonEmpty.empty">ListLike_NonEmpty.empty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; b -&gt; b) -&gt; b -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanr">scanr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(b -&gt; a -&gt; b) -&gt; b -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl">scanl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β -&gt; α) -&gt; α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.foldl">Foldable_NonEmpty.foldl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β -&gt; β) -&gt; β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.foldr">Foldable_NonEmpty.foldr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Functor_NonEmpty.fmap">Functor_NonEmpty.fmap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> (a, b) -&gt; (<a class="tref" href="#NonEmpty">NonEmpty</a> a, <a class="tref" href="#NonEmpty">NonEmpty</a> b)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unzip">unzip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> (α-&gt;β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty._lt_star_gt">Monad_NonEmpty.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> b -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (a, b)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zip">zip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; (α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty._gt_gt_eq">Monad_NonEmpty.&gt;&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty._lt_star">Monad_NonEmpty.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_NonEmpty._gt_gt">Monad_NonEmpty.&gt;&gt;</a>, <a class="fref" href="#Monad_NonEmpty._star_gt">Monad_NonEmpty.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./Monoid.html#Monoid">Monoid</a> β =&gt; (α -&gt; β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.foldMap">Foldable_NonEmpty.foldMap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./Monoid.html#Semigroup">Semigroup</a> β =&gt; (α -&gt; β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_NonEmpty.foldMap1">Foldable_NonEmpty.foldMap1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeList.html#ListSource">ListSource</a> src =&gt; src a -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#cycle">cycle</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeMonad.html#Applicative">Applicative</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (α β) -&gt; α (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_NonEmpty.sequenceA">Traversable_NonEmpty.sequenceA</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> α =&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> (α β) -&gt; α (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_NonEmpty.sequence">Traversable_NonEmpty.sequence</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeMonad.html#Applicative">Applicative</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; γ (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_NonEmpty.traverse">Traversable_NonEmpty.traverse</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#NonEmpty">NonEmpty</a> α -&gt; γ (<a class="tref" href="#NonEmpty">NonEmpty</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_NonEmpty.mapM">Traversable_NonEmpty.mapM</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

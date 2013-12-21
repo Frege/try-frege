@@ -1,0 +1,1228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.test.QuickCheckArbitrary - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.test.QuickCheckArbitrary</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:06 CET 2013 from source file: <SPAN CLASS="code">./frege/test/QuickCheckArbitrary.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#Arbitrary">Arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary">CoArbitrary</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Arbitrary_l__r">Arbitrary_()</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_l_c_r">Arbitrary_(,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_l_cc_r">Arbitrary_(,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_l_ccc_r">Arbitrary_(,,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_l_cccc_r">Arbitrary_(,,,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary__minus_gt">Arbitrary_-&gt;</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Bool">Arbitrary_Bool</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Char">Arbitrary_Char</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Double">Arbitrary_Double</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Either">Arbitrary_Either</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Float">Arbitrary_Float</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Int">Arbitrary_Int</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Integer">Arbitrary_Integer</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Long">Arbitrary_Long</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Maybe">Arbitrary_Maybe</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Ordering">Arbitrary_Ordering</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_String">Arbitrary_String</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary__lbrack_rbrack">Arbitrary_[]</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Bounded_Ordering">Bounded_Ordering</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_l__r">CoArbitrary_()</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_l_c_r">CoArbitrary_(,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_l_cc_r">CoArbitrary_(,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_l_ccc_r">CoArbitrary_(,,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_l_cccc_r">CoArbitrary_(,,,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary__minus_gt">CoArbitrary_-&gt;</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Bool">CoArbitrary_Bool</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Char">CoArbitrary_Char</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Double">CoArbitrary_Double</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Either">CoArbitrary_Either</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Float">CoArbitrary_Float</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Int">CoArbitrary_Int</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Integer">CoArbitrary_Integer</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Long">CoArbitrary_Long</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Maybe">CoArbitrary_Maybe</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_Ordering">CoArbitrary_Ordering</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary_String">CoArbitrary_String</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#CoArbitrary__lbrack_rbrack">CoArbitrary_[]</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#_gt_lt">&gt;&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedEnum">arbitraryBoundedEnum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedIntegral">arbitraryBoundedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedRandom">arbitraryBoundedRandom</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedBoundedIntegral">arbitrarySizedBoundedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedFloating">arbitrarySizedFloating</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedIntegral">arbitrarySizedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryEnum">coarbitraryEnum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryIntegral">coarbitraryIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryShow">coarbitraryShow</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#orderedList">orderedList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkFloating">shrinkFloating</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkIntegral">shrinkIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkList">shrinkList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkNothing">shrinkNothing</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#vector">vector</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#_gt_lt">&gt;&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedEnum">arbitraryBoundedEnum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedIntegral">arbitraryBoundedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitraryBoundedRandom">arbitraryBoundedRandom</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedBoundedIntegral">arbitrarySizedBoundedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedFloating">arbitrarySizedFloating</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#arbitrarySizedIntegral">arbitrarySizedIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryEnum">coarbitraryEnum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryIntegral">coarbitraryIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#coarbitraryShow">coarbitraryShow</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#orderedList">orderedList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkFloating">shrinkFloating</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkIntegral">shrinkIntegral</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkList">shrinkList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shrinkNothing">shrinkNothing</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#vector">vector</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary.arbitrary">Arbitrary.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary.shrink">Arbitrary.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary.coarbitrary">CoArbitrary.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l__r.arbitrary">Arbitrary_().arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l__r.shrink">Arbitrary_().shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_c_r.arbitrary">Arbitrary_(,).arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_c_r.shrink">Arbitrary_(,).shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_cc_r.arbitrary">Arbitrary_(,,).arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_cc_r.shrink">Arbitrary_(,,).shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_ccc_r.arbitrary">Arbitrary_(,,,).arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_ccc_r.shrink">Arbitrary_(,,,).shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_cccc_r.arbitrary">Arbitrary_(,,,,).arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_l_cccc_r.shrink">Arbitrary_(,,,,).shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary__minus_gt.arbitrary">Arbitrary_-&gt;.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary__minus_gt.shrink">Arbitrary_-&gt;.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Bool.arbitrary">Arbitrary_Bool.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Bool.shrink">Arbitrary_Bool.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Char.arbitrary">Arbitrary_Char.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Char.shrink">Arbitrary_Char.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Double.arbitrary">Arbitrary_Double.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Double.shrink">Arbitrary_Double.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Either.arbitrary">Arbitrary_Either.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Either.shrink">Arbitrary_Either.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Float.arbitrary">Arbitrary_Float.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Float.shrink">Arbitrary_Float.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Int.arbitrary">Arbitrary_Int.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Int.shrink">Arbitrary_Int.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Integer.arbitrary">Arbitrary_Integer.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Integer.shrink">Arbitrary_Integer.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Long.arbitrary">Arbitrary_Long.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Long.shrink">Arbitrary_Long.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Maybe.arbitrary">Arbitrary_Maybe.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Maybe.shrink">Arbitrary_Maybe.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Ordering.arbitrary">Arbitrary_Ordering.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Ordering.shrink">Arbitrary_Ordering.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_String.arbitrary">Arbitrary_String.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_String.shrink">Arbitrary_String.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary__lbrack_rbrack.arbitrary">Arbitrary_[].arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary__lbrack_rbrack.shrink">Arbitrary_[].shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Bounded_Ordering.minBound">Bounded_Ordering.minBound</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Bounded_Ordering.maxBound">Bounded_Ordering.maxBound</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_l__r.coarbitrary">CoArbitrary_().coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_l_c_r.coarbitrary">CoArbitrary_(,).coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_l_cc_r.coarbitrary">CoArbitrary_(,,).coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_l_ccc_r.coarbitrary">CoArbitrary_(,,,).coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_l_cccc_r.coarbitrary">CoArbitrary_(,,,,).coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary__minus_gt.coarbitrary">CoArbitrary_-&gt;.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Bool.coarbitrary">CoArbitrary_Bool.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Char.coarbitrary">CoArbitrary_Char.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Double.coarbitrary">CoArbitrary_Double.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Either.coarbitrary">CoArbitrary_Either.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Float.coarbitrary">CoArbitrary_Float.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Int.coarbitrary">CoArbitrary_Int.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Integer.coarbitrary">CoArbitrary_Integer.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Long.coarbitrary">CoArbitrary_Long.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Maybe.coarbitrary">CoArbitrary_Maybe.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_Ordering.coarbitrary">CoArbitrary_Ordering.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary_String.coarbitrary">CoArbitrary_String.coarbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#CoArbitrary__lbrack_rbrack.coarbitrary">CoArbitrary_[].coarbitrary</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/Math.html">frege.prelude.Math</a> as Math</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/Floating.html">frege.prelude.Floating</a> as Floating</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/Char.html">frege.data.Char</a> as Char</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/List.html">frege.data.List</a> as List</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckGen.html">frege.test.QuickCheckGen</a> as QuickCheckGen</div>
+</li>
+<li>
+<div>
+import <a HREF="../system/Random.html">frege.system.Random</a> as Random</div>
+</li>
+</ul>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="Arbitrary">Arbitrary</a>  a</SPAN></dt>
+<dd class="clas">
+<p>
+class Arbitrary</p>
+<p>
+Random generation and shrinking of values.   </p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#Arbitrary_String">StringJ</a>, <a class="tref" href="#Arbitrary__lbrack_rbrack">[]</a>, <a class="tref" href="#Arbitrary_Long">Long</a>, <a class="tref" href="#Arbitrary_Maybe">Maybe</a>, <a class="tref" href="#Arbitrary_Float">Float</a>, <a class="tref" href="#Arbitrary_Int">Int</a>, <a class="tref" href="#Arbitrary_Double">Double</a>, <a class="tref" href="#Arbitrary_Bool">Bool</a>, <a class="tref" href="#Arbitrary_Char">Char</a>, <a class="tref" href="#Arbitrary_Either">Either</a>, <a class="tref" href="#Arbitrary_Integer">Integer</a>, <a class="tref" href="#Arbitrary_Ordering">Ordering</a>, <a class="tref" href="#Arbitrary_l_cccc_r">(,,,,)</a>, <a class="tref" href="#Arbitrary_l_ccc_r">(,,,)</a>, <a class="tref" href="#Arbitrary_l_c_r">(,)</a>, <a class="tref" href="#Arbitrary_l__r">()</a>, <a class="tref" href="#Arbitrary_l_cc_r">(,,)</a>, <a class="tref" href="#Arbitrary__minus_gt">-&gt;</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary.arbitrary">arbitrary</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+A generator for values of the given type.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary.shrink">shrink</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+Produces a (possibly) empty list of all the possible immediate shrinks of the given value.      </p>
+</dd>
+</dl>
+</dd>
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="CoArbitrary">CoArbitrary</a>  a</SPAN></dt>
+<dd class="clas">
+<p>
+CoArbitrary</p>
+<p>
+Used for random generation of functions.   </p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#CoArbitrary__lbrack_rbrack">[]</a>, <a class="tref" href="#CoArbitrary_Ordering">Ordering</a>, <a class="tref" href="#CoArbitrary_String">StringJ</a>, <a class="tref" href="#CoArbitrary_Long">Long</a>, <a class="tref" href="#CoArbitrary_Maybe">Maybe</a>, <a class="tref" href="#CoArbitrary_Float">Float</a>, <a class="tref" href="#CoArbitrary_Int">Int</a>, <a class="tref" href="#CoArbitrary_Double">Double</a>, <a class="tref" href="#CoArbitrary_Bool">Bool</a>, <a class="tref" href="#CoArbitrary_Char">Char</a>, <a class="tref" href="#CoArbitrary_Either">Either</a>, <a class="tref" href="#CoArbitrary_Integer">Integer</a>, <a class="tref" href="#CoArbitrary_l_cccc_r">(,,,,)</a>, <a class="tref" href="#CoArbitrary_l_cc_r">(,,)</a>, <a class="tref" href="#CoArbitrary_l_ccc_r">(,,,)</a>, <a class="tref" href="#CoArbitrary_l__r">()</a>, <a class="tref" href="#CoArbitrary_l_c_r">(,)</a>, <a class="tref" href="#CoArbitrary__minus_gt">-&gt;</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary.coarbitrary">coarbitrary</a> :: <a class="tref" href="#CoArbitrary">CoArbitrary</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> c -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> c</SPAN></dt>
+<dd class="func">
+<p>
+Used to generate a function of type <SPAN CLASS="code">a -&gt; c</SPAN>. The implementation should use the first argument to perturb the random generator given as the second argument. The returned generator is then used to generate the function result.</p>
+<p>
+You can often use <a class="fref" href="./QuickCheckGen.html#variant">QuickCheckGen.variant</a> and <a class="fref" href="#_gt_lt">&gt;&lt;</a> to implement <a class="fref" href="#CoArbitrary.coarbitrary">CoArbitrary.coarbitrary</a>.      </p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_l__r"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l__r.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l__r.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Unit">()</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Arbitrary.shrink">Arbitrary.shrink</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_l_c_r"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b) =&gt; (a, b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_c_r.arbitrary">arbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_c_r.shrink">shrink</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <b>(α, β)</b> -&gt; [(α, β)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_l_cc_r"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b, <a class="tref" href="#Arbitrary">Arbitrary</a> c) =&gt; (a, b, c)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_cc_r.arbitrary">arbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_cc_r.shrink">shrink</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; [(α, β, γ)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_l_ccc_r"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b, <a class="tref" href="#Arbitrary">Arbitrary</a> c, <a class="tref" href="#Arbitrary">Arbitrary</a> d) =&gt; (a, b, c, d)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_ccc_r.arbitrary">arbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ, δ)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_ccc_r.shrink">shrink</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ) =&gt; <b>(α, β, γ, δ)</b> -&gt; [(α, β, γ, δ)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_l_cccc_r"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b, <a class="tref" href="#Arbitrary">Arbitrary</a> c, <a class="tref" href="#Arbitrary">Arbitrary</a> d, <a class="tref" href="#Arbitrary">Arbitrary</a> e) =&gt; (a, b, c, d, e)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_cccc_r.arbitrary">arbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ, <a class="tref" href="#Arbitrary">Arbitrary</a> ε) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ, δ, ε)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_l_cccc_r.shrink">shrink</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ, <a class="tref" href="#Arbitrary">Arbitrary</a> ε) =&gt; <b>(α, β, γ, δ, ε)</b> -&gt; [(α, β, γ, δ, ε)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary__minus_gt"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b) =&gt; a -&gt; b</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary__minus_gt.arbitrary">arbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α-&gt;β)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary__minus_gt.shrink">shrink</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; (α-&gt;β) -&gt; [α-&gt;β]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Arbitrary.shrink">Arbitrary.shrink</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Bool"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Bool.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Bool.shrink">shrink</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Char"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Char.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Char.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Double"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Double.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Double.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Double">Double</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Either"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> b) =&gt; (a | b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Either.arbitrary">arbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α | β)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Either.shrink">shrink</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <b>(α | β)</b> -&gt; [(α | β)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Float"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Float.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Float.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Float">Float</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Int"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Int.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Int.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Integer"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Integer.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Integer.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Long"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Long.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Long.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Long">Long</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Maybe"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Maybe.arbitrary">arbitrary</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Maybe.shrink">shrink</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Ordering"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Ordering.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Ordering.shrink">shrink</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_String"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_String.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_String.shrink">shrink</a> :: <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Arbitrary.shrink">Arbitrary.shrink</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary__lbrack_rbrack"> </a> <a class="tref" href="#Arbitrary">Arbitrary</a> <a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; [a]</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary__lbrack_rbrack.arbitrary">arbitrary</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [α]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary__lbrack_rbrack.shrink">shrink</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; [α] -&gt; [[α]]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Bounded_Ordering"> </a> <a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Bounded_Ordering.maxBound">maxBound</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Bounded_Ordering.minBound">minBound</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_l__r"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_l__r.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_l_c_r"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b) =&gt; (a, b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_l_c_r.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; <b>(β, α)</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_l_cc_r"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b, <a class="tref" href="#CoArbitrary">CoArbitrary</a> c) =&gt; (a, b, c)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_l_cc_r.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> δ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> δ</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_l_ccc_r"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b, <a class="tref" href="#CoArbitrary">CoArbitrary</a> c, <a class="tref" href="#CoArbitrary">CoArbitrary</a> d) =&gt; (a, b, c, d)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_l_ccc_r.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> δ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ) =&gt; <b>(α, β, δ, γ)</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ε -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ε</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_l_cccc_r"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b, <a class="tref" href="#CoArbitrary">CoArbitrary</a> c, <a class="tref" href="#CoArbitrary">CoArbitrary</a> d, <a class="tref" href="#CoArbitrary">CoArbitrary</a> e) =&gt; (a, b, c, d, e)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_l_cccc_r.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> δ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> ε) =&gt; <b>(β, γ, α, δ, ε)</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ζ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ζ</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary__minus_gt"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#Arbitrary">Arbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b) =&gt; a -&gt; b</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary__minus_gt.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; (β-&gt;α) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Bool"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Bool.coarbitrary">coarbitrary</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></b> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Char"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Char.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Double"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Double.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Either"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> (<a class="tref" href="#CoArbitrary">CoArbitrary</a> a, <a class="tref" href="#CoArbitrary">CoArbitrary</a> b) =&gt; (a | b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Either.coarbitrary">coarbitrary</a> :: (<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; <b>(β | α)</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Float"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Float.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Int"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Int.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Integer"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Integer.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Long"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Long.coarbitrary">coarbitrary</a> :: <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Maybe"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Maybe.coarbitrary">coarbitrary</a> :: <a class="tref" href="#CoArbitrary">CoArbitrary</a> α =&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_Ordering"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_Ordering.coarbitrary">coarbitrary</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></b> -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary_String"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary_String.coarbitrary">coarbitrary</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="CoArbitrary__lbrack_rbrack"> </a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> <a class="tref" href="#CoArbitrary">CoArbitrary</a> a =&gt; [a]</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="CoArbitrary__lbrack_rbrack.coarbitrary">coarbitrary</a> :: <a class="tref" href="#CoArbitrary">CoArbitrary</a> α =&gt; <b>[α]</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="_gt_lt">&gt;&lt;</a> :: (<a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a) -&gt; (<a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitraryBoundedEnum">arbitraryBoundedEnum</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitraryBoundedIntegral">arbitraryBoundedIntegral</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitraryBoundedRandom">arbitraryBoundedRandom</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../system/Random.html#Random">Random</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitrarySizedBoundedIntegral">arbitrarySizedBoundedIntegral</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitrarySizedFloating">arbitrarySizedFloating</a> :: <a class="tref" href="../prelude/Floating.html#Floating">Floating</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Generates a fractional number. The number can be positive or negative and its maximum absolute value depends on the size parameter.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="arbitrarySizedIntegral">arbitrarySizedIntegral</a> :: <a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Generates an integral number. The number can be positive or negative and its maximum absolute value depends on the size parameter.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="coarbitraryEnum">coarbitraryEnum</a> :: <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> a =&gt; a -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+<p>
+A <a class="fref" href="#CoArbitrary.coarbitrary">CoArbitrary.coarbitrary</a> implementation for enums.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="coarbitraryIntegral">coarbitraryIntegral</a> :: <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a =&gt; a -&gt; <b><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</b> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="coarbitraryShow">coarbitraryShow</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary.coarbitrary">CoArbitrary.coarbitrary</a> helper for lazy people :-).   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="orderedList">orderedList</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+Generates an ordered list of a given length.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shrinkFloating">shrinkFloating</a> :: <a class="tref" href="../prelude/Math.html#PrimitiveFloating">PrimitiveFloating</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shrinkIntegral">shrinkIntegral</a> :: <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shrinkList">shrinkList</a> :: (a -&gt; [a]) -&gt; [a] -&gt; [[a]]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shrinkNothing">shrinkNothing</a> :: a -&gt; [a]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="vector">vector</a> :: <a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<ul>
+<LI>
+---------------------------------------------------------------------- </LI>
+</ul>
+<p>
+Generates a list of a given length.   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_String.shrink">Arbitrary_String.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Unit">()</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l__r.shrink">Arbitrary_().shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Bool.shrink">Arbitrary_Bool.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Char">Char</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Char.shrink">Arbitrary_Char.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Double">Double</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Double">Double</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Double.shrink">Arbitrary_Double.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Float">Float</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Float">Float</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Float.shrink">Arbitrary_Float.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Int.shrink">Arbitrary_Int.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Integer.shrink">Arbitrary_Integer.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Long">Long</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Long.shrink">Arbitrary_Long.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Ordering.shrink">Arbitrary_Ordering.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_String.arbitrary">Arbitrary_String.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l__r.arbitrary">Arbitrary_().arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Bool.arbitrary">Arbitrary_Bool.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Char.arbitrary">Arbitrary_Char.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Double.arbitrary">Arbitrary_Double.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Float.arbitrary">Arbitrary_Float.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Int.arbitrary">Arbitrary_Int.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Integer.arbitrary">Arbitrary_Integer.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Long.arbitrary">Arbitrary_Long.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Ordering.arbitrary">Arbitrary_Ordering.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Bounded_Ordering.minBound">Bounded_Ordering.minBound</a>, <a class="fref" href="#Bounded_Ordering.maxBound">Bounded_Ordering.maxBound</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a) -&gt; (<a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_gt_lt">&gt;&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; [a]) -&gt; [a] -&gt; [[a]]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shrinkList">shrinkList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_String.coarbitrary">CoArbitrary_String.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Unit">()</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_l__r.coarbitrary">CoArbitrary_().coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Bool.coarbitrary">CoArbitrary_Bool.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Char.coarbitrary">CoArbitrary_Char.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Double.coarbitrary">CoArbitrary_Double.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Float.coarbitrary">CoArbitrary_Float.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Int.coarbitrary">CoArbitrary_Int.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Integer">Integer</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Integer.coarbitrary">CoArbitrary_Integer.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Long.coarbitrary">CoArbitrary_Long.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Ordering.coarbitrary">CoArbitrary_Ordering.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shrinkNothing">shrinkNothing</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/Math.html#PrimitiveFloating">PrimitiveFloating</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shrinkFloating">shrinkFloating</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shrinkIntegral">shrinkIntegral</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#vector">vector</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary.shrink">Arbitrary.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Maybe.shrink">Arbitrary_Maybe.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; [α] -&gt; [[α]]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary__lbrack_rbrack.shrink">Arbitrary_[].shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/Floating.html#Floating">Floating</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#arbitrarySizedFloating">arbitrarySizedFloating</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#arbitraryBoundedEnum">arbitraryBoundedEnum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#arbitraryBoundedIntegral">arbitraryBoundedIntegral</a>, <a class="fref" href="#arbitrarySizedBoundedIntegral">arbitrarySizedBoundedIntegral</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Bounded">Bounded</a> a, <a class="tref" href="../system/Random.html#Random">Random</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#arbitraryBoundedRandom">arbitraryBoundedRandom</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#arbitrarySizedIntegral">arbitrarySizedIntegral</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#orderedList">orderedList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary.arbitrary">Arbitrary.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Maybe.arbitrary">Arbitrary_Maybe.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary__lbrack_rbrack.arbitrary">Arbitrary_[].arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Enum">Enum</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#coarbitraryEnum">coarbitraryEnum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#coarbitraryIntegral">coarbitraryIntegral</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#coarbitraryShow">coarbitraryShow</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; (α, β) -&gt; [(α, β)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_c_r.shrink">Arbitrary_(,).shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; (α | β) -&gt; [(α | β)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Either.shrink">Arbitrary_Either.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#CoArbitrary">CoArbitrary</a> a =&gt; a -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> c -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> c</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary.coarbitrary">CoArbitrary.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#CoArbitrary">CoArbitrary</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Maybe.coarbitrary">CoArbitrary_Maybe.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#CoArbitrary">CoArbitrary</a> α =&gt; [α] -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary__lbrack_rbrack.coarbitrary">CoArbitrary_[].coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; (α-&gt;β) -&gt; [α-&gt;β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary__minus_gt.shrink">Arbitrary_-&gt;.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_c_r.arbitrary">Arbitrary_(,).arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α | β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Either.arbitrary">Arbitrary_Either.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α-&gt;β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary__minus_gt.arbitrary">Arbitrary_-&gt;.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ) =&gt; (α, β, γ) -&gt; [(α, β, γ)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_cc_r.shrink">Arbitrary_(,,).shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; (β-&gt;α) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary__minus_gt.coarbitrary">CoArbitrary_-&gt;.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; (β, α) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_l_c_r.coarbitrary">CoArbitrary_(,).coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α) =&gt; (β | α) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> γ</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_Either.coarbitrary">CoArbitrary_Either.coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_cc_r.arbitrary">Arbitrary_(,,).arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ) =&gt; (α, β, γ, δ) -&gt; [(α, β, γ, δ)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_ccc_r.shrink">Arbitrary_(,,,).shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ) =&gt; (α, β, γ) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> δ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> δ</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_l_cc_r.coarbitrary">CoArbitrary_(,,).coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ, δ)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_ccc_r.arbitrary">Arbitrary_(,,,).arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ, <a class="tref" href="#Arbitrary">Arbitrary</a> ε) =&gt; (α, β, γ, δ, ε) -&gt; [(α, β, γ, δ, ε)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_cccc_r.shrink">Arbitrary_(,,,,).shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> δ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ) =&gt; (α, β, δ, γ) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ε -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ε</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_l_ccc_r.coarbitrary">CoArbitrary_(,,,).coarbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Arbitrary">Arbitrary</a> α, <a class="tref" href="#Arbitrary">Arbitrary</a> β, <a class="tref" href="#Arbitrary">Arbitrary</a> γ, <a class="tref" href="#Arbitrary">Arbitrary</a> δ, <a class="tref" href="#Arbitrary">Arbitrary</a> ε) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (α, β, γ, δ, ε)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_l_cccc_r.arbitrary">Arbitrary_(,,,,).arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#CoArbitrary">CoArbitrary</a> β, <a class="tref" href="#CoArbitrary">CoArbitrary</a> γ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> α, <a class="tref" href="#CoArbitrary">CoArbitrary</a> δ, <a class="tref" href="#CoArbitrary">CoArbitrary</a> ε) =&gt; (β, γ, α, δ, ε) -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ζ -&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> ζ</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#CoArbitrary_l_cccc_r.coarbitrary">CoArbitrary_(,,,,).coarbitrary</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>
