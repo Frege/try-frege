@@ -96,7 +96,6 @@ evalScript web (Load (urlSpec@#.*?://#)) = do
     let update res = case res of
             ReplError _ -> return res
             _ -> updateExternalScript urlSpec >> return res
-    --either handleMalformedURLException (\url -> evalURL url >>= update) urle
     evalURL web urle >>= update
     
 evalScript _ (Load invalidUrl) = return $ ReplError ["Invalid URL: " ++ invalidUrl]
@@ -131,25 +130,18 @@ evalScript _ Skip = return NoOutput
 evalScript _ Help = return $ ReplMessage help
 
 evalScript _ (HelpDoc source) = do
-    state <- Repl . lift $ Interpreter.get
-    javac <- liftIO $ MemoryJavaCompiler.new state.loader state.classes
-    global <- liftIO $ javac.classLoader >>= standardOptions
-    let packDoc = fst $ StG.run (packDocumentation source) global
-    case packDoc of
-        Just doc -> return . ReplMessage $ doc
-        Nothing -> do
-            fregecRes <- Repl . lift $ compile source
-            case fregecRes of
-              CompilationSuccess (c@CompilationInfo{javaSource=jsrc,sourceInfo=sourceInfo,state=g}) ->
-                  case sourceInfo of
-                      Module -> return $ ReplMessage ""
-                      Definitions -> return $ ReplMessage ""
-                      Expression{variableName=var} -> do
-                        let symbolMay = lookupVarSymbol g.thisTab var
-                        case symbolMay of
-                          Nothing -> return $ ReplMessage ""
-                          Just symbol -> return . ReplMessage . fst $ StG.run (symbolDocumentation symbol) g
-              CompilationFailure err -> return $ ReplMessage ""
+  fregecRes <- Repl . lift $ compile "\"\"" -- Import current definitions
+  let errmsg = ReplError [source ++ " cannot be resolved!"]
+      response = return . maybe errmsg ReplMessage
+  case fregecRes of
+    CompilationSuccess (c@CompilationInfo{state=global}) -> oneof [symtDoc, symvDoc, packDoc] where
+       oneof =  response . listToMaybe . catMaybes
+       symtDoc = qnameDoc TName{pack=global.thisPack, base=source}
+       symvDoc = qnameDoc VName{pack=global.thisPack, base=source}
+       qnameDoc qname = fmap (flip symdoc global) $ qname.findit global
+       packDoc = fst $ StG.run (packDocumentation source) global
+       symdoc sym global = fst $ StG.run (symbolDocumentation sym) global
+    _ -> response $ Just ""
 
 evalScript _ Version = Repl.get >>= (\s -> return $ ReplMessage version)
 
@@ -163,9 +155,7 @@ data ReplState = ReplState {
 data Repl a = Repl {un :: StateT ReplState Interpreter a} where
     get = Repl $ StateT (\s -> return (s, s)) 
     put s = Repl $ StateT (\_ -> return ((), s))
-    modify f = do
-           s <- Repl.get
-           Repl.put (f s)
+    modify f = Repl.get >>= Repl.put . f
 
 instance Monad Repl where
     return = Repl . return
@@ -217,20 +207,20 @@ positionAndName a b = case Symbol.pos a <=> Symbol.pos b of
                                     Eq -> comparing (QName.base . Symbol.name) a b
                                     ne -> ne 
                                     
-cmdHelp = [(":type <expression>", "Display the type of an expression"),
-            (":{", "Start multiline definitions"),
-            (":}", "End multiline defintions"),
+cmdHelp = [(":type <expression>", "Display the type of an expression."),
             (":browse <module name>", "Display the names in a module if " ++
-                "a module name is provided otherwise display the names in the default REPL module"),
-            (":load <url>", "Load Frege code snippets from an URL"),
-            (":java", "Show the generated Java code for the last successful compilation"),
-            (":r", "Reload the last URL script"),
-            (":history", "Display the source history for definitions in the default REPL module"),
-            (":reset", "Reset the session discarding all evaluated scripts"),
+                "a module name is provided otherwise display the names in the default REPL module."),
+            (":load <url>", "Load Frege code snippets from an URL."),
+            (":java", "Show the generated Java code for the last successful compilation."),
+            (":r", "Reload the last URL script."),
+            (":history", "Display the source history for definitions in the default REPL module."),
+            (":reset", "Reset the session discarding all evaluated scripts."),
             (":clear", "Clear the REPL window. The session continues to be active."),
-            (":version", "Display Frege version"),
-            (":help <package name or function name>", "Display the documentation for the given package or function." ++
-                "If both package and function are not provided, display this help message")]
+            (":version", "Display Frege version."),
+            (":{", "Start multiline definitions."),
+            (":}", "End multiline defintions."),
+            (":help <name>", "Display the documentation for the given name." ++
+                " If the name is not provided, display this help message.")]
             
 f `on` g = \x \y -> f (g x) (g y)
 
@@ -243,7 +233,7 @@ renderCmdHelp cmdHelp = map render cmdHelp where
 help = intercalate newLine $ header ++ body where
     header = ["At the prompt, you can enter Frege code snippets to get them evaluated.",
             "The output or compilation errors will be printed below the prompt.",
-            "In addition to Frege code, the following commands are supported:"]
+            "In addition to Frege code, the following commands are supported:\n"]
     body = renderCmdHelp cmdHelp
             
 urlContents url = do
