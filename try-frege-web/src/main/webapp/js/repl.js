@@ -28,11 +28,23 @@ $(document).ready(function(){
   $("#tabs").height($(window).height() * 0.9);
   $("div.console").height($("#tabs").height() * 0.8);
   $("div.input").height($("#tabs").height() * 0.8);
-  $( "#dialog" ).dialog({
+  $( "#javaSourceDialog" ).dialog({
                             modal: true,
                             autoOpen: false,
-                            closeOnEscape: true
+                            closeOnEscape: true,
+                            "height": $(window).height() * 0.9,
+                           "width": $(window).width() * 0.6,
+                           "title": "Java Source",
+                           "position": { my: "right top", at: "right top", of: window }
                           });
+  $( "#helpDialog" ).dialog({
+                          modal: false,
+                          autoOpen: false,
+                          closeOnEscape: true,
+                          "height": $(window).height() * 0.4,
+                          "width": $(window).width() * 0.6,
+                          "position": { my: "right top", at: "right top", of: window }
+                            });
 
   var pasteMode = false;
   var tutorialMode = false;
@@ -63,17 +75,13 @@ $(document).ready(function(){
         var msg = $.trim($(data).find("message").text());
         if (cmd.lastIndexOf(":java", 0) == 0) {
           javaSourceEditor.setValue(msg);
-          $("#dialog").dialog({"height": $(window).height() * 0.9,
-                               "width": $(window).width() * 0.6,
-                               "title": "Java Source",
-                               "position": { my: "right top", at: "right top", of: window }})
-          $("#dialog" ).dialog("open")
+          $("#javaSourceDialog" ).dialog("open")
           javaSourceEditor.refresh();
           report([{"msg": "", "className": "jquery-console-message-info"}]);
         } else if (cmd.match(/\s*:help\s+.*/)) {
             if (msg != '') {
-                $("#help").html(msg);
-                $('#help a').not('[href^="http"],[href^="https"],[href^="mailto:"],[href^="#"]').each(function() {
+                $("#helpDialog").html(msg);
+                $('#helpDialog a').not('[href^="http"],[href^="https"],[href^="mailto:"],[href^="#"]').each(function() {
                             $(this).attr('href', function(index, value) {
                                 if (!value) return
                                 if (value.substr(0,1) !== "/") {
@@ -86,15 +94,11 @@ $(document).ready(function(){
                                 return value;
                             });
                         });
-                $('#help a').attr("target", "_blank")
-                $("#help").dialog({"height": $(window).height() * 0.4,
-                                               "width": $(window).width() * 0.6,
-                                               "title": "Frege Documentation - " + cmd.split(' ')[1],
-                                               "position": { my: "right top", at: "right top", of: window }})
-                $("#help" ).dialog("open")
+                $('#helpDialog a').attr("target", "_blank")
+                $("#helpDialog").dialog({"title": cmd.split(' ')[1] + " - Documentation"})
+                $("#helpDialog" ).dialog("open")
             }
-
-            report([{"msg": "", "className": "jquery-console-message-info"}]);
+            report([{"msg": '', "className": "jquery-console-message-info"}]);
         } else {
           report([{'msg': msg, 'className': "jquery-console-message-info"}]);
         }
