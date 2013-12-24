@@ -7,6 +7,7 @@ import frege.compiler.Import
 import frege.Version
 import frege.java.Net 
 import frege.compiler.Data
+import frege.compiler.Utilities as U()
 import frege.compiler.EclipseUtil as EU()
 import tryfrege.repl.ServletSupport
 import frege.compiler.DocUtils as DU(docit, docSym, DL, Doc, emitHtml)
@@ -131,19 +132,44 @@ evalScript _ Help = return $ ReplMessage help
 
 evalScript _ (HelpDoc source) = do
   fregecRes <- Repl . lift $ compile "\"\"" -- Import current definitions
-  let errmsg = ReplError [source ++ " cannot be resolved!"]
-      response = return . maybe errmsg ReplMessage
+  let response = return . maybe errmsg ReplMessage
+      errmsg = ReplError [source ++ " cannot be resolved!"]
   case fregecRes of
-    CompilationSuccess (c@CompilationInfo{state=global}) -> oneof [symtDoc, symvDoc, packDoc] where
-       oneof =  response . listToMaybe . catMaybes
-       symtDoc = qnameDoc TName{pack=global.thisPack, base=source}
-       symvDoc = qnameDoc VName{pack=global.thisPack, base=source}
-       qnameDoc qname = fmap (flip symdoc global) $ qname.findit global
+    CompilationSuccess (c@CompilationInfo{state=global}) -> oneof [helpdoc, packDoc] where
+       helpdoc = fst $ StG.run (helpDoc source) global
        packDoc = fst $ StG.run (packDocumentation source) global
-       symdoc sym global = fst $ StG.run (symbolDocumentation sym) global
+       oneof =  response . listToMaybe . catMaybes
     _ -> response $ Just ""
 
 evalScript _ Version = Repl.get >>= (\s -> return $ ReplMessage version)
+
+sNameToQName sName = do
+  g <- getST
+  qNames <- U.resolve (VName g.thisPack) Position.null sName
+  return (listToMaybe qNames)  -- Just taking first resolved
+
+helpDoc :: String -> StG (Maybe String)
+helpDoc source = do
+  global <- getST
+  qNameMay <- sNameToQName (createSName source)
+  let symMay = qNameMay >>= (\qname -> qname.findit global)
+  maybe (return Nothing) (\sym -> symbolDocumentation sym >>= return . Just) symMay
+
+createSName s
+  | Just m <- s =~ #(.*)\.(.*)\.([A-Z].*)# = with2con m
+  | Just m <- s =~ #(.*)\.(.*)\.(.*)#      = with2var m
+  | Just m <- s =~ #(.*)\.([A-Z].*)#       = with1con m
+  | Just m <- s =~ #(.*)\.(.*)#            = with1var m
+  | Just m <- s =~ #[A-Z].*#               = Simple (Token CONID s 1 0 0 [])
+  | otherwise                              = Simple (Token VARID s 1 0 0 []) where
+                                               with2con m = With2 (ns m) (ty 2 m) (conid 3 m)
+                                               with2var m = With2 (ns m) (ty 2 m) (varid 3 m)
+                                               with1con m = With1 (ty 1 m) (conid 2 m)
+                                               with1var m = With1 (ty 1 m) (varid 2 m)
+                                               ns m     = Token QUALIFIER (maybe "" id $ (m :: Matcher).group 1) 1 0 0 []
+                                               ty pos m = Token QUALIFIER (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
+                                               conid pos m = Token CONID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
+                                               varid pos m = Token VARID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
 
 data ReplState = ReplState {
     lastExternalScript :: Maybe String,
