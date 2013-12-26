@@ -156,20 +156,20 @@ helpDoc source = do
   maybe (return Nothing) (\sym -> symbolDocumentation sym >>= return . Just) symMay
 
 createSName s
-  | Just m <- s =~ #(.*)\.(.*)\.([A-Z].*)# = with2con m
-  | Just m <- s =~ #(.*)\.(.*)\.(.*)#      = with2var m
-  | Just m <- s =~ #(.*)\.([A-Z].*)#       = with1con m
-  | Just m <- s =~ #(.*)\.(.*)#            = with1var m
-  | Just m <- s =~ #[A-Z].*#               = Simple (Token CONID s 1 0 0 [])
-  | otherwise                              = Simple (Token VARID s 1 0 0 []) where
-                                               with2con m = With2 (ns m) (ty 2 m) (conid 3 m)
-                                               with2var m = With2 (ns m) (ty 2 m) (varid 3 m)
-                                               with1con m = With1 (ty 1 m) (conid 2 m)
-                                               with1var m = With1 (ty 1 m) (varid 2 m)
-                                               ns m     = Token QUALIFIER (maybe "" id $ (m :: Matcher).group 1) 1 0 0 []
-                                               ty pos m = Token QUALIFIER (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
-                                               conid pos m = Token CONID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
-                                               varid pos m = Token VARID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
+  | Just m <- s =~ #^(.*)\.(.*)\.(\p{Lu}.*)$# = with2con m
+  | Just m <- s =~ #^(.*)\.(.*)\.(.*)$#       = with2var m
+  | Just m <- s =~ #^(.*)\.(\p{Lu}.*)$#       = with1con m
+  | Just m <- s =~ #^(.*)\.(.*)$#             = with1var m
+  | Just m <- s =~ #^\p{Lu}.*$#               = Simple (Token CONID s 1 0 0 [])
+  | otherwise                                 = Simple (Token VARID s 1 0 0 [])
+     where with2con m = With2 (ns m) (ty 2 m) (conid 3 m)
+           with2var m = With2 (ns m) (ty 2 m) (varid 3 m)
+           with1con m = With1 (ty 1 m) (conid 2 m)
+           with1var m = With1 (ty 1 m) (varid 2 m)
+           ns m     = Token QUALIFIER (maybe "" id $ (m :: Matcher).group 1) 1 0 0 []
+           ty pos m = Token QUALIFIER (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
+           conid pos m = Token CONID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
+           varid pos m = Token VARID (maybe "" id $ (m :: Matcher).group pos) 1 0 0 []
 
 data ReplState = ReplState {
     lastExternalScript :: Maybe String,
