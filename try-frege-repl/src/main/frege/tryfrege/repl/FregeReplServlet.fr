@@ -60,7 +60,7 @@ evalScript _ (Eval line) = do
                     Repl . lift . Interpreter.put $ s.{currentScript <- (++ newLine ++ line)}
                     return NoOutput
                 Expression{variableName=var} -> do
-                    res <- Repl . lift $ evalShow line
+                    res <- Repl . lift $ showVariable line var g
                     Repl . lift $ Interpreter.put oldInterpState
                     case res of
                         Left err -> return $ ReplError err
@@ -240,7 +240,7 @@ cmdHelp = [(":type <expression>", "Display the type of an expression."),
             (":browse <module name>", "Display the names in a module if " ++
                 "a module name is provided otherwise display the names in the default REPL module."),
             (":load <url>", "Load Frege code snippets from an URL."),
-            (":java", "Show the generated Java code for the last successful compilation."),
+            (":java", "View Java translation of last compiled Frege source."),
             (":r", "Reload the last URL script."),
             (":history", "Display the source history for definitions in the default REPL module."),
             (":reset", "Reset the session discarding all evaluated scripts."),
@@ -376,7 +376,7 @@ showSymbol source var symbol g | isVariable g symbol =
     case symbol of
       SymL{alias} -> do
          state <- Interpreter.get
-         Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
+         Interpreter.put $ state.{currentScript <- (++ newLine ++ (variableDeclScript var source))}
          maybe (return . Right $ ("", "", "")) (evalShow . buildShowScript var g) $ alias.findit g
       _      -> do
             state <- Interpreter.get
@@ -396,9 +396,8 @@ showSymbol source var symbol g | isVariable g symbol =
                                          (return . toString . asObject) err
                         return $ Right (result, outStr, errStr)
             else do
-                Interpreter.put $ state.{currentScript <- (++ newLine ++ var ++ " = " ++ source)}
-                let showScript = buildShowScript var g symbol
-                evalShow showScript
+                Interpreter.put $ state.{currentScript <- (++ newLine ++ (variableDeclScript var source))}
+                evalShow $ buildShowScript var g symbol
 showSymbol _ _ symbol g = 
            return . Right $ (getSymbolType symbol g, "", "") --Not a variable
 
