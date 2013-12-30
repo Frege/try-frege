@@ -14,14 +14,14 @@
   <url>https://github.com/Frege/try-frege</url>
   <dependencies>
     <dependency>
-      <groupId>com.theoryinpractise.frege</groupId>
-      <artifactId>frege-maven-plugin</artifactId>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>frege</groupId>
+      <artifactId>frege</artifactId>
     </dependency>
   </dependencies>
 </project>
