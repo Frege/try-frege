@@ -1,0 +1,2207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.test.QuickCheckModifiers - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.test.QuickCheckModifiers</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:12 CET 2013 from source file: <SPAN CLASS="code">./frege/test/QuickCheckModifiers.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+Modifiers for test data.</p>
+<p>
+These types do things such as restricting the kind of test data that can be generated. They can be pattern-matched on in properties as a stylistic alternative to using explicit quantification.</p>
+<p>
+Examples:</p>
+<PRE>
+ -- Functions cannot be shown (but see "Test.QuickCheck.Function")
+ prop_TakeDropWhile (Blind p) (xs :: [A]) =
+  takeWhile p xs ++ dropWhile p xs == xs</PRE>
+<PRE>
+ prop_TakeDrop ('NonNegative' n) (xs :: ['A']) =
+  take n xs ++ drop n xs == xs</PRE>
+<PRE>
+ -- cycle does not work for empty lists
+ prop_Cycle ('NonNegative' n) ('NonEmpty' (xs :: ['A'])) =
+  take n (cycle xs) == take n (xs ++ cycle xs)</PRE>
+<PRE>
+ -- Instead of 'forAll' 'orderedList'
+ prop_Sort ('Ordered' (xs :: ['OrdA'])) =
+   sort xs == xs</PRE>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Arbitrary_Blind">Arbitrary_Blind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Fixed">Arbitrary_Fixed</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_NonEmptyList">Arbitrary_NonEmptyList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_NonNegative">Arbitrary_NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_NonZero">Arbitrary_NonZero</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_OrderedList">Arbitrary_OrderedList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Positive">Arbitrary_Positive</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Shrink2">Arbitrary_Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Arbitrary_Smart">Arbitrary_Smart</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Blind">Eq_Blind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Fixed">Eq_Fixed</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_NonEmptyList">Eq_NonEmptyList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_NonNegative">Eq_NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_NonZero">Eq_NonZero</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_OrderedList">Eq_OrderedList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Positive">Eq_Positive</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Shrink2">Eq_Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Blind">Ord_Blind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Fixed">Ord_Fixed</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_NonEmptyList">Ord_NonEmptyList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_NonNegative">Ord_NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_NonZero">Ord_NonZero</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_OrderedList">Ord_OrderedList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Positive">Ord_Positive</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Shrink2">Ord_Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Blind">Show_Blind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Fixed">Show_Fixed</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_NonEmptyList">Show_NonEmptyList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_NonNegative">Show_NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_NonZero">Show_NonZero</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_OrderedList">Show_OrderedList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Positive">Show_Positive</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Shrink2">Show_Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Smart">Show_Smart</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Blind">Blind</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Fixed">Fixed</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#NonEmptyList">NonEmptyList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#NonNegative">NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#NonZero">NonZero</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#OrderedList">OrderedList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Positive">Positive</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Shrink2">Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Smart">Smart</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#Arbitrary_Blind.arbitrary">Arbitrary_Blind.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Blind.shrink">Arbitrary_Blind.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Fixed.arbitrary">Arbitrary_Fixed.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Fixed.shrink">Arbitrary_Fixed.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonEmptyList.arbitrary">Arbitrary_NonEmptyList.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonEmptyList.shrink">Arbitrary_NonEmptyList.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonNegative.arbitrary">Arbitrary_NonNegative.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonNegative.shrink">Arbitrary_NonNegative.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonZero.arbitrary">Arbitrary_NonZero.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_NonZero.shrink">Arbitrary_NonZero.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_OrderedList.arbitrary">Arbitrary_OrderedList.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_OrderedList.shrink">Arbitrary_OrderedList.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Positive.arbitrary">Arbitrary_Positive.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Positive.shrink">Arbitrary_Positive.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Shrink2.arbitrary">Arbitrary_Shrink2.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Shrink2.shrink">Arbitrary_Shrink2.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Smart.arbitrary">Arbitrary_Smart.arbitrary</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Arbitrary_Smart.shrink">Arbitrary_Smart.shrink</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Blind._eq_eq">Eq_Blind.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Blind._excl_eq">Eq_Blind.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Blind.hashCode">Eq_Blind.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Fixed._eq_eq">Eq_Fixed.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Fixed._excl_eq">Eq_Fixed.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Fixed.hashCode">Eq_Fixed.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmptyList._eq_eq">Eq_NonEmptyList.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmptyList._excl_eq">Eq_NonEmptyList.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonEmptyList.hashCode">Eq_NonEmptyList.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonNegative._eq_eq">Eq_NonNegative.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonNegative._excl_eq">Eq_NonNegative.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonNegative.hashCode">Eq_NonNegative.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonZero._eq_eq">Eq_NonZero.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonZero._excl_eq">Eq_NonZero.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_NonZero.hashCode">Eq_NonZero.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_OrderedList._eq_eq">Eq_OrderedList.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_OrderedList._excl_eq">Eq_OrderedList.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_OrderedList.hashCode">Eq_OrderedList.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Positive._eq_eq">Eq_Positive.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Positive._excl_eq">Eq_Positive.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Positive.hashCode">Eq_Positive.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Shrink2._eq_eq">Eq_Shrink2.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Shrink2._excl_eq">Eq_Shrink2.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Shrink2.hashCode">Eq_Shrink2.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind._gt">Ord_Blind.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind._lt_eq">Ord_Blind.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind._lt">Ord_Blind.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind._lt_eq_gt">Ord_Blind.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind.compare">Ord_Blind.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind._gt_eq">Ord_Blind.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind.max">Ord_Blind.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Blind.min">Ord_Blind.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed._gt">Ord_Fixed.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed._lt_eq">Ord_Fixed.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed._lt">Ord_Fixed.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed._lt_eq_gt">Ord_Fixed.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed.compare">Ord_Fixed.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed._gt_eq">Ord_Fixed.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed.max">Ord_Fixed.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Fixed.min">Ord_Fixed.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList._gt">Ord_NonEmptyList.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList._lt_eq">Ord_NonEmptyList.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList._lt">Ord_NonEmptyList.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList._lt_eq_gt">Ord_NonEmptyList.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList.compare">Ord_NonEmptyList.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList._gt_eq">Ord_NonEmptyList.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList.max">Ord_NonEmptyList.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonEmptyList.min">Ord_NonEmptyList.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative._gt">Ord_NonNegative.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative._lt_eq">Ord_NonNegative.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative._lt">Ord_NonNegative.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative._lt_eq_gt">Ord_NonNegative.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative.compare">Ord_NonNegative.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative._gt_eq">Ord_NonNegative.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative.max">Ord_NonNegative.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonNegative.min">Ord_NonNegative.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero._gt">Ord_NonZero.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero._lt_eq">Ord_NonZero.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero._lt">Ord_NonZero.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero._lt_eq_gt">Ord_NonZero.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero.compare">Ord_NonZero.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero._gt_eq">Ord_NonZero.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero.max">Ord_NonZero.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_NonZero.min">Ord_NonZero.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList._gt">Ord_OrderedList.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList._lt_eq">Ord_OrderedList.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList._lt">Ord_OrderedList.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList._lt_eq_gt">Ord_OrderedList.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList.compare">Ord_OrderedList.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList._gt_eq">Ord_OrderedList.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList.max">Ord_OrderedList.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_OrderedList.min">Ord_OrderedList.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive._gt">Ord_Positive.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive._lt_eq">Ord_Positive.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive._lt">Ord_Positive.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive._lt_eq_gt">Ord_Positive.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive.compare">Ord_Positive.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive._gt_eq">Ord_Positive.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive.max">Ord_Positive.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Positive.min">Ord_Positive.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2._gt">Ord_Shrink2.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2._lt_eq">Ord_Shrink2.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2._lt">Ord_Shrink2.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2._lt_eq_gt">Ord_Shrink2.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2.compare">Ord_Shrink2.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2._gt_eq">Ord_Shrink2.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2.max">Ord_Shrink2.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Shrink2.min">Ord_Shrink2.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.showList">Show_Blind.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.show">Show_Blind.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.display">Show_Blind.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.showChars">Show_Blind.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.showsPrec">Show_Blind.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Blind.showsub">Show_Blind.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.showList">Show_Fixed.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.show">Show_Fixed.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.display">Show_Fixed.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.showChars">Show_Fixed.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.showsub">Show_Fixed.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Fixed.showsPrec">Show_Fixed.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.showList">Show_NonEmptyList.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.show">Show_NonEmptyList.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.display">Show_NonEmptyList.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.showChars">Show_NonEmptyList.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.showsub">Show_NonEmptyList.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonEmptyList.showsPrec">Show_NonEmptyList.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.showList">Show_NonNegative.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.show">Show_NonNegative.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.display">Show_NonNegative.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.showChars">Show_NonNegative.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.showsub">Show_NonNegative.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonNegative.showsPrec">Show_NonNegative.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.showList">Show_NonZero.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.show">Show_NonZero.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.display">Show_NonZero.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.showChars">Show_NonZero.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.showsub">Show_NonZero.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_NonZero.showsPrec">Show_NonZero.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.showList">Show_OrderedList.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.show">Show_OrderedList.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.display">Show_OrderedList.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.showChars">Show_OrderedList.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.showsub">Show_OrderedList.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_OrderedList.showsPrec">Show_OrderedList.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.showList">Show_Positive.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.show">Show_Positive.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.display">Show_Positive.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.showChars">Show_Positive.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.showsub">Show_Positive.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Positive.showsPrec">Show_Positive.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.showList">Show_Shrink2.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.show">Show_Shrink2.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.display">Show_Shrink2.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.showChars">Show_Shrink2.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.showsub">Show_Shrink2.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Shrink2.showsPrec">Show_Shrink2.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.showList">Show_Smart.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.show">Show_Smart.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.display">Show_Smart.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.showChars">Show_Smart.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.showsPrec">Show_Smart.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Smart.showsub">Show_Smart.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Blind.Blind">Blind.Blind</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Fixed.Fixed">Fixed.Fixed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmptyList.has$getNonEmpty">NonEmptyList.has$getNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmptyList.chg$getNonEmpty">NonEmptyList.chg$getNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmptyList.NonEmpty">NonEmptyList.NonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmptyList.getNonEmpty">NonEmptyList.getNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonEmptyList.upd$getNonEmpty">NonEmptyList.upd$getNonEmpty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonNegative.has$getNonNegative">NonNegative.has$getNonNegative</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonNegative.chg$getNonNegative">NonNegative.chg$getNonNegative</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonNegative.NonNegative">NonNegative.NonNegative</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonNegative.getNonNegative">NonNegative.getNonNegative</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonNegative.upd$getNonNegative">NonNegative.upd$getNonNegative</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonZero.has$getNonZero">NonZero.has$getNonZero</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonZero.chg$getNonZero">NonZero.chg$getNonZero</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonZero.NonZero">NonZero.NonZero</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonZero.getNonZero">NonZero.getNonZero</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#NonZero.upd$getNonZero">NonZero.upd$getNonZero</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OrderedList.has$getOrdered">OrderedList.has$getOrdered</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OrderedList.chg$getOrdered">OrderedList.chg$getOrdered</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OrderedList.Ordered">OrderedList.Ordered</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OrderedList.getOrdered">OrderedList.getOrdered</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#OrderedList.upd$getOrdered">OrderedList.upd$getOrdered</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Positive.has$getPositive">Positive.has$getPositive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Positive.chg$getPositive">Positive.chg$getPositive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Positive.Positive">Positive.Positive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Positive.getPositive">Positive.getPositive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Positive.upd$getPositive">Positive.upd$getPositive</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Shrink2.Shrink2">Shrink2.Shrink2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Smart.Smart">Smart.Smart</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/List.html">frege.data.List</a> as List</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckGen.html">frege.test.QuickCheckGen</a> as QuickCheckGen</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckArbitrary.html">frege.test.QuickCheckArbitrary</a> as QuickCheckArbitrary</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Blind"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Blind.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Blind">Blind</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Blind.shrink">shrink</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; [<a class="tref" href="#Blind">Blind</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Fixed"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Fixed.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Fixed">Fixed</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Fixed.shrink">shrink</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; [<a class="tref" href="#Fixed">Fixed</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./QuickCheckArbitrary.html#Arbitrary.shrink">Arbitrary.shrink</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_NonEmptyList"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonEmptyList.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonEmptyList">NonEmptyList</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonEmptyList.shrink">shrink</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; [<a class="tref" href="#NonEmptyList">NonEmptyList</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_NonNegative"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> a, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonNegative.arbitrary">arbitrary</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonNegative">NonNegative</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonNegative.shrink">shrink</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; [<a class="tref" href="#NonNegative">NonNegative</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_NonZero"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> a, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonZero.arbitrary">arbitrary</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonZero">NonZero</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_NonZero.shrink">shrink</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; [<a class="tref" href="#NonZero">NonZero</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_OrderedList"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> (<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_OrderedList.arbitrary">arbitrary</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#OrderedList">OrderedList</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_OrderedList.shrink">shrink</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; [<a class="tref" href="#OrderedList">OrderedList</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Positive"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> a, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a) =&gt; <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Positive.arbitrary">arbitrary</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Positive">Positive</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Positive.shrink">shrink</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; [<a class="tref" href="#Positive">Positive</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Shrink2"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Shrink2.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Shrink2">Shrink2</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Shrink2.shrink">shrink</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; [<a class="tref" href="#Shrink2">Shrink2</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Arbitrary_Smart"> </a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> a =&gt; <a class="tref" href="#Smart">Smart</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Smart.arbitrary">arbitrary</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Smart">Smart</a> α)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Arbitrary_Smart.shrink">shrink</a> :: <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; [<a class="tref" href="#Smart">Smart</a> α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Blind"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Blind._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Blind._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Blind.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Fixed"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Fixed._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Fixed._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Fixed.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_NonEmptyList"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmptyList._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmptyList._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonEmptyList.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_NonNegative"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonNegative._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonNegative._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonNegative.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_NonZero"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonZero._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonZero._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_NonZero.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_OrderedList"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_OrderedList._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_OrderedList._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_OrderedList.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Positive"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Positive._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Positive._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Positive.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Shrink2"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> a =&gt; <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Shrink2._excl_eq">!=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Shrink2._eq_eq">==</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Shrink2.hashCode">hashCode</a> :: <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Blind"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="#Blind">Blind</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Blind.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <b><a class="tref" href="#Blind">Blind</a> α</b> -&gt; <a class="tref" href="#Blind">Blind</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Fixed"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="#Fixed">Fixed</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Fixed.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="#Fixed">Fixed</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_NonEmptyList"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonEmptyList.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_NonNegative"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonNegative.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_NonZero"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="#NonZero">NonZero</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_NonZero.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="#NonZero">NonZero</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_OrderedList"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_OrderedList.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Positive"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="#Positive">Positive</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Positive.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="#Positive">Positive</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Shrink2"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> a =&gt; <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2._lt">&lt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2._lt_eq">&lt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2._gt">&gt;</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2._gt_eq">&gt;=</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2.compare">compare</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2.max">max</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Shrink2.min">min</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Blind"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.display">display</a> :: <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.show">show</a> :: <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.showChars">showChars</a> :: <a class="tref" href="#Blind">Blind</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.showList">showList</a> :: <b>[<a class="tref" href="#Blind">Blind</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Blind.showsub">showsub</a> :: <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Fixed"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#Fixed">Fixed</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Fixed.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Fixed">Fixed</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_NonEmptyList"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#NonEmptyList">NonEmptyList</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonEmptyList.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_NonNegative"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#NonNegative">NonNegative</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonNegative.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_NonZero"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#NonZero">NonZero</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_NonZero.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_OrderedList"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#OrderedList">OrderedList</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_OrderedList.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Positive"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#Positive">Positive</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Positive.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Shrink2"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#Shrink2">Shrink2</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Shrink2.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Shrink2">Shrink2</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Smart"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#Smart">Smart</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.display">display</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.show">show</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.showChars">showChars</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.showList">showList</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>[<a class="tref" href="#Smart">Smart</a> α]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Smart.showsub">showsub</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b><a class="tref" href="#Smart">Smart</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Blind"> </a> <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">Blind x</SPAN>: as x, but x does not have to be in the <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> class.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Blind.Blind">Blind</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Fixed"> </a> <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">Fixed x</SPAN>: as x, but will not be shrunk.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Fixed.Fixed">Fixed</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="NonEmptyList"> </a> <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">NonEmpty xs</SPAN>: guarantees that xs is non-empty.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonEmptyList.NonEmpty">NonEmpty</a> {getNonEmpty :: [a]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonEmptyList.getNonEmpty">getNonEmpty</a> :: <b><a class="tref" href="#NonEmptyList">NonEmptyList</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">getNonEmpty</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="NonNegative"> </a> <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">NonNegative x</SPAN>: guarantees that <SPAN CLASS="code">x &gt;= 0</SPAN>.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonNegative.NonNegative">NonNegative</a> {getNonNegative :: a}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonNegative.getNonNegative">getNonNegative</a> :: <b><a class="tref" href="#NonNegative">NonNegative</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">getNonNegative</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="NonZero"> </a> <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">NonZero x</SPAN>: guarantees that <SPAN CLASS="code">x != 0</SPAN>.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonZero.NonZero">NonZero</a> {getNonZero :: a}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="NonZero.getNonZero">getNonZero</a> :: <b><a class="tref" href="#NonZero">NonZero</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">getNonZero</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="OrderedList"> </a> <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="OrderedList.Ordered">Ordered</a> {getOrdered :: [a]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="OrderedList.getOrdered">getOrdered</a> :: <b><a class="tref" href="#OrderedList">OrderedList</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">getOrdered</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Positive"> </a> <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">Positive x</SPAN>: guarantees that <SPAN CLASS="code">x &gt; 0</SPAN>.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Positive.Positive">Positive</a> {getPositive :: a}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Positive.getPositive">getPositive</a> :: <b><a class="tref" href="#Positive">Positive</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">getPositive</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Shrink2"> </a> <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">Shrink2 x</SPAN>: allows 2 shrinking steps at the same time when shrinking x   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Shrink2.Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Smart"> </a> <a class="tref" href="#Smart">Smart</a> a</SPAN></dt>
+<dd class="data">
+<p>
+<SPAN CLASS="code">Smart _ x</SPAN>: tries a different order when shrinking.   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Smart.Smart">Smart</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>&nbsp;&nbsp; a</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Blind">Blind</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Blind.showList">Show_Blind.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmptyList.NonEmpty">NonEmptyList.NonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="#OrderedList">OrderedList</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#OrderedList.Ordered">OrderedList.Ordered</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Blind.show">Show_Blind.show</a>, <a class="fref" href="#Show_Blind.display">Show_Blind.display</a>, <a class="fref" href="#Show_Blind.showsub">Show_Blind.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Blind">Blind</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Blind.showChars">Show_Blind.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmptyList.getNonEmpty">NonEmptyList.getNonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonNegative">NonNegative</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonNegative.getNonNegative">NonNegative.getNonNegative</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonZero">NonZero</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonZero.getNonZero">NonZero.getNonZero</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#OrderedList">OrderedList</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#OrderedList.getOrdered">OrderedList.getOrdered</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Positive">Positive</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Positive.getPositive">Positive.getPositive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Blind.showsPrec">Show_Blind.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; a -&gt; <a class="tref" href="#Smart">Smart</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Smart.Smart">Smart.Smart</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#Blind">Blind</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Blind.Blind">Blind.Blind</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#Fixed">Fixed</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Fixed.Fixed">Fixed.Fixed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#NonNegative">NonNegative</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonNegative.NonNegative">NonNegative.NonNegative</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#NonZero">NonZero</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonZero.NonZero">NonZero.NonZero</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#Positive">Positive</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Positive.Positive">Positive.Positive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">a -&gt; <a class="tref" href="#Shrink2">Shrink2</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Shrink2.Shrink2">Shrink2.Shrink2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmptyList.has$getNonEmpty">NonEmptyList.has$getNonEmpty</a>, <a class="fref" href="#NonNegative.has$getNonNegative">NonNegative.has$getNonNegative</a>, <a class="fref" href="#NonZero.has$getNonZero">NonZero.has$getNonZero</a>, <a class="fref" href="#OrderedList.has$getOrdered">OrderedList.has$getOrdered</a>, <a class="fref" href="#Positive.has$getPositive">Positive.has$getPositive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Blind._eq_eq">Eq_Blind.==</a>, <a class="fref" href="#Eq_Blind._excl_eq">Eq_Blind.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Blind.hashCode">Eq_Blind.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Fixed._eq_eq">Eq_Fixed.==</a>, <a class="fref" href="#Eq_Fixed._excl_eq">Eq_Fixed.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Fixed.hashCode">Eq_Fixed.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonEmptyList._eq_eq">Eq_NonEmptyList.==</a>, <a class="fref" href="#Eq_NonEmptyList._excl_eq">Eq_NonEmptyList.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonEmptyList.hashCode">Eq_NonEmptyList.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonNegative._eq_eq">Eq_NonNegative.==</a>, <a class="fref" href="#Eq_NonNegative._excl_eq">Eq_NonNegative.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonNegative.hashCode">Eq_NonNegative.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonZero._eq_eq">Eq_NonZero.==</a>, <a class="fref" href="#Eq_NonZero._excl_eq">Eq_NonZero.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_NonZero.hashCode">Eq_NonZero.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_OrderedList._eq_eq">Eq_OrderedList.==</a>, <a class="fref" href="#Eq_OrderedList._excl_eq">Eq_OrderedList.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_OrderedList.hashCode">Eq_OrderedList.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Positive._eq_eq">Eq_Positive.==</a>, <a class="fref" href="#Eq_Positive._excl_eq">Eq_Positive.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Positive.hashCode">Eq_Positive.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Shrink2._eq_eq">Eq_Shrink2.==</a>, <a class="fref" href="#Eq_Shrink2._excl_eq">Eq_Shrink2.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Shrink2.hashCode">Eq_Shrink2.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; [<a class="tref" href="#NonNegative">NonNegative</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonNegative.shrink">Arbitrary_NonNegative.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; [<a class="tref" href="#NonZero">NonZero</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonZero.shrink">Arbitrary_NonZero.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; [<a class="tref" href="#Positive">Positive</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Positive.shrink">Arbitrary_Positive.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="#Blind">Blind</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Blind.max">Ord_Blind.max</a>, <a class="fref" href="#Ord_Blind.min">Ord_Blind.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Blind._gt">Ord_Blind.&gt;</a>, <a class="fref" href="#Ord_Blind._lt_eq">Ord_Blind.&lt;=</a>, <a class="fref" href="#Ord_Blind._lt">Ord_Blind.&lt;</a>, <a class="fref" href="#Ord_Blind._gt_eq">Ord_Blind.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Blind._lt_eq_gt">Ord_Blind.&lt;=&gt;</a>, <a class="fref" href="#Ord_Blind.compare">Ord_Blind.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="#Fixed">Fixed</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Fixed.max">Ord_Fixed.max</a>, <a class="fref" href="#Ord_Fixed.min">Ord_Fixed.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Fixed._gt">Ord_Fixed.&gt;</a>, <a class="fref" href="#Ord_Fixed._lt_eq">Ord_Fixed.&lt;=</a>, <a class="fref" href="#Ord_Fixed._lt">Ord_Fixed.&lt;</a>, <a class="fref" href="#Ord_Fixed._gt_eq">Ord_Fixed.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Fixed._lt_eq_gt">Ord_Fixed.&lt;=&gt;</a>, <a class="fref" href="#Ord_Fixed.compare">Ord_Fixed.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmptyList.max">Ord_NonEmptyList.max</a>, <a class="fref" href="#Ord_NonEmptyList.min">Ord_NonEmptyList.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmptyList._gt">Ord_NonEmptyList.&gt;</a>, <a class="fref" href="#Ord_NonEmptyList._lt_eq">Ord_NonEmptyList.&lt;=</a>, <a class="fref" href="#Ord_NonEmptyList._lt">Ord_NonEmptyList.&lt;</a>, <a class="fref" href="#Ord_NonEmptyList._gt_eq">Ord_NonEmptyList.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonEmptyList._lt_eq_gt">Ord_NonEmptyList.&lt;=&gt;</a>, <a class="fref" href="#Ord_NonEmptyList.compare">Ord_NonEmptyList.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonNegative.max">Ord_NonNegative.max</a>, <a class="fref" href="#Ord_NonNegative.min">Ord_NonNegative.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonNegative._gt">Ord_NonNegative.&gt;</a>, <a class="fref" href="#Ord_NonNegative._lt_eq">Ord_NonNegative.&lt;=</a>, <a class="fref" href="#Ord_NonNegative._lt">Ord_NonNegative.&lt;</a>, <a class="fref" href="#Ord_NonNegative._gt_eq">Ord_NonNegative.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonNegative._lt_eq_gt">Ord_NonNegative.&lt;=&gt;</a>, <a class="fref" href="#Ord_NonNegative.compare">Ord_NonNegative.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="#NonZero">NonZero</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonZero.max">Ord_NonZero.max</a>, <a class="fref" href="#Ord_NonZero.min">Ord_NonZero.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonZero._gt">Ord_NonZero.&gt;</a>, <a class="fref" href="#Ord_NonZero._lt_eq">Ord_NonZero.&lt;=</a>, <a class="fref" href="#Ord_NonZero._lt">Ord_NonZero.&lt;</a>, <a class="fref" href="#Ord_NonZero._gt_eq">Ord_NonZero.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_NonZero._lt_eq_gt">Ord_NonZero.&lt;=&gt;</a>, <a class="fref" href="#Ord_NonZero.compare">Ord_NonZero.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_OrderedList.max">Ord_OrderedList.max</a>, <a class="fref" href="#Ord_OrderedList.min">Ord_OrderedList.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_OrderedList._gt">Ord_OrderedList.&gt;</a>, <a class="fref" href="#Ord_OrderedList._lt_eq">Ord_OrderedList.&lt;=</a>, <a class="fref" href="#Ord_OrderedList._lt">Ord_OrderedList.&lt;</a>, <a class="fref" href="#Ord_OrderedList._gt_eq">Ord_OrderedList.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_OrderedList._lt_eq_gt">Ord_OrderedList.&lt;=&gt;</a>, <a class="fref" href="#Ord_OrderedList.compare">Ord_OrderedList.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="#Positive">Positive</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Positive.max">Ord_Positive.max</a>, <a class="fref" href="#Ord_Positive.min">Ord_Positive.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Positive._gt">Ord_Positive.&gt;</a>, <a class="fref" href="#Ord_Positive._lt_eq">Ord_Positive.&lt;=</a>, <a class="fref" href="#Ord_Positive._lt">Ord_Positive.&lt;</a>, <a class="fref" href="#Ord_Positive._gt_eq">Ord_Positive.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Positive._lt_eq_gt">Ord_Positive.&lt;=&gt;</a>, <a class="fref" href="#Ord_Positive.compare">Ord_Positive.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Shrink2.max">Ord_Shrink2.max</a>, <a class="fref" href="#Ord_Shrink2.min">Ord_Shrink2.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Shrink2._gt">Ord_Shrink2.&gt;</a>, <a class="fref" href="#Ord_Shrink2._lt_eq">Ord_Shrink2.&lt;=</a>, <a class="fref" href="#Ord_Shrink2._lt">Ord_Shrink2.&lt;</a>, <a class="fref" href="#Ord_Shrink2._gt_eq">Ord_Shrink2.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Shrink2._lt_eq_gt">Ord_Shrink2.&lt;=&gt;</a>, <a class="fref" href="#Ord_Shrink2.compare">Ord_Shrink2.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; [<a class="tref" href="#OrderedList">OrderedList</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_OrderedList.shrink">Arbitrary_OrderedList.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#Fixed">Fixed</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Fixed.showList">Show_Fixed.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#NonEmptyList">NonEmptyList</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmptyList.showList">Show_NonEmptyList.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#NonNegative">NonNegative</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonNegative.showList">Show_NonNegative.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#NonZero">NonZero</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonZero.showList">Show_NonZero.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#OrderedList">OrderedList</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_OrderedList.showList">Show_OrderedList.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#Positive">Positive</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Positive.showList">Show_Positive.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#Shrink2">Shrink2</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Shrink2.showList">Show_Shrink2.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [<a class="tref" href="#Smart">Smart</a> α] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Smart.showList">Show_Smart.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Fixed.show">Show_Fixed.show</a>, <a class="fref" href="#Show_Fixed.display">Show_Fixed.display</a>, <a class="fref" href="#Show_Fixed.showsub">Show_Fixed.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Fixed.showChars">Show_Fixed.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmptyList.show">Show_NonEmptyList.show</a>, <a class="fref" href="#Show_NonEmptyList.display">Show_NonEmptyList.display</a>, <a class="fref" href="#Show_NonEmptyList.showsub">Show_NonEmptyList.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmptyList.showChars">Show_NonEmptyList.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonNegative.show">Show_NonNegative.show</a>, <a class="fref" href="#Show_NonNegative.display">Show_NonNegative.display</a>, <a class="fref" href="#Show_NonNegative.showsub">Show_NonNegative.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonNegative.showChars">Show_NonNegative.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonZero.show">Show_NonZero.show</a>, <a class="fref" href="#Show_NonZero.display">Show_NonZero.display</a>, <a class="fref" href="#Show_NonZero.showsub">Show_NonZero.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonZero.showChars">Show_NonZero.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_OrderedList.show">Show_OrderedList.show</a>, <a class="fref" href="#Show_OrderedList.display">Show_OrderedList.display</a>, <a class="fref" href="#Show_OrderedList.showsub">Show_OrderedList.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_OrderedList.showChars">Show_OrderedList.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Positive.show">Show_Positive.show</a>, <a class="fref" href="#Show_Positive.display">Show_Positive.display</a>, <a class="fref" href="#Show_Positive.showsub">Show_Positive.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Positive.showChars">Show_Positive.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Shrink2.show">Show_Shrink2.show</a>, <a class="fref" href="#Show_Shrink2.display">Show_Shrink2.display</a>, <a class="fref" href="#Show_Shrink2.showsub">Show_Shrink2.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Shrink2.showChars">Show_Shrink2.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Smart">Smart</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Smart.show">Show_Smart.show</a>, <a class="fref" href="#Show_Smart.display">Show_Smart.display</a>, <a class="fref" href="#Show_Smart.showsub">Show_Smart.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="#Smart">Smart</a> α -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Smart.showChars">Show_Smart.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Fixed.showsPrec">Show_Fixed.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonEmptyList.showsPrec">Show_NonEmptyList.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#NonNegative">NonNegative</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonNegative.showsPrec">Show_NonNegative.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#NonZero">NonZero</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_NonZero.showsPrec">Show_NonZero.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#OrderedList">OrderedList</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_OrderedList.showsPrec">Show_OrderedList.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Positive">Positive</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Positive.showsPrec">Show_Positive.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Shrink2.showsPrec">Show_Shrink2.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Smart">Smart</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Smart.showsPrec">Show_Smart.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#Blind">Blind</a> α -&gt; [<a class="tref" href="#Blind">Blind</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Blind.shrink">Arbitrary_Blind.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#Fixed">Fixed</a> α -&gt; [<a class="tref" href="#Fixed">Fixed</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Fixed.shrink">Arbitrary_Fixed.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; [<a class="tref" href="#NonEmptyList">NonEmptyList</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonEmptyList.shrink">Arbitrary_NonEmptyList.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#Shrink2">Shrink2</a> α -&gt; [<a class="tref" href="#Shrink2">Shrink2</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Shrink2.shrink">Arbitrary_Shrink2.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="#Smart">Smart</a> α -&gt; [<a class="tref" href="#Smart">Smart</a> α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Smart.shrink">Arbitrary_Smart.shrink</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonNegative">NonNegative</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonNegative.arbitrary">Arbitrary_NonNegative.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonZero">NonZero</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonZero.arbitrary">Arbitrary_NonZero.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Num">Num</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Positive">Positive</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Positive.arbitrary">Arbitrary_Positive.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α) =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#OrderedList">OrderedList</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_OrderedList.arbitrary">Arbitrary_OrderedList.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Blind">Blind</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Blind.arbitrary">Arbitrary_Blind.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Fixed">Fixed</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Fixed.arbitrary">Arbitrary_Fixed.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#NonEmptyList">NonEmptyList</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_NonEmptyList.arbitrary">Arbitrary_NonEmptyList.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Shrink2">Shrink2</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Shrink2.arbitrary">Arbitrary_Shrink2.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckArbitrary.html#Arbitrary">Arbitrary</a> α =&gt; <a class="tref" href="./QuickCheckGen.html#Gen">Gen</a> (<a class="tref" href="#Smart">Smart</a> α)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Arbitrary_Smart.arbitrary">Arbitrary_Smart.arbitrary</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; ([α]-&gt;[β]) -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmptyList.chg$getNonEmpty">NonEmptyList.chg$getNonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonEmptyList">NonEmptyList</a> α -&gt; [β] -&gt; <a class="tref" href="#NonEmptyList">NonEmptyList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonEmptyList.upd$getNonEmpty">NonEmptyList.upd$getNonEmpty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonNegative">NonNegative</a> α -&gt; (α-&gt;β) -&gt; <a class="tref" href="#NonNegative">NonNegative</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonNegative.chg$getNonNegative">NonNegative.chg$getNonNegative</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonNegative">NonNegative</a> α -&gt; β -&gt; <a class="tref" href="#NonNegative">NonNegative</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonNegative.upd$getNonNegative">NonNegative.upd$getNonNegative</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonZero">NonZero</a> α -&gt; (α-&gt;β) -&gt; <a class="tref" href="#NonZero">NonZero</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonZero.chg$getNonZero">NonZero.chg$getNonZero</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#NonZero">NonZero</a> α -&gt; β -&gt; <a class="tref" href="#NonZero">NonZero</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#NonZero.upd$getNonZero">NonZero.upd$getNonZero</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#OrderedList">OrderedList</a> α -&gt; ([α]-&gt;[β]) -&gt; <a class="tref" href="#OrderedList">OrderedList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#OrderedList.chg$getOrdered">OrderedList.chg$getOrdered</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#OrderedList">OrderedList</a> α -&gt; [β] -&gt; <a class="tref" href="#OrderedList">OrderedList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#OrderedList.upd$getOrdered">OrderedList.upd$getOrdered</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Positive">Positive</a> α -&gt; (α-&gt;β) -&gt; <a class="tref" href="#Positive">Positive</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Positive.chg$getPositive">Positive.chg$getPositive</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Positive">Positive</a> α -&gt; β -&gt; <a class="tref" href="#Positive">Positive</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Positive.upd$getPositive">Positive.upd$getPositive</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

@@ -1,0 +1,1483 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.prelude.PreludeText - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.prelude.PreludeText</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:41:38 CET 2013 from source file: <SPAN CLASS="code">frege/prelude/PreludeText.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+Classes and Instances to convert values to <a class="tref" href="./PreludeBase.html#String">String</a>s (<a class="fref" href="#Show.show">Show.show</a>) and <a class="tref" href="./PreludeBase.html#String">String</a>s to values ("read").</p>
+<p>
+There are a few differences to Haskell, notably</p>
+<ul>
+<LI>
+ "Read" cannot be derived and supports only simple types </LI>
+</ul>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#type">Type Aliases</a></div>
+<div>
+<a class="tref" href="#ReadS">ReadS</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ShowS">ShowS</a></div>
+</li>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#Show">Show</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Show_l__r">Show_()</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_l_c_r">Show_(,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_l_cc_r">Show_(,,)</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Bool">Show_Bool</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Char">Show_Char</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Double">Show_Double</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Either">Show_Either</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Float">Show_Float</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Int">Show_Int</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Integer">Show_Integer</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Long">Show_Long</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Maybe">Show_Maybe</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Ordering">Show_Ordering</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_String">Show_String</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Throwable">Show_Throwable</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show__lbrack_rbrack">Show_[]</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#chomp">chomp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#joined">joined</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lineSeparator">lineSeparator</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lines">lines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#packed">packed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showChar">showChar</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showParen">showParen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showString">showString</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shows">shows</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unlines">unlines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unwords">unwords</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#words">words</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#chomp">chomp</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#joined">joined</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lineSeparator">lineSeparator</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lines">lines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#packed">packed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showChar">showChar</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showParen">showParen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#showString">showString</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#shows">shows</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unlines">unlines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unwords">unwords</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#words">words</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.showList">Show.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.show">Show.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.display">Show.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.showChars">Show.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.showsPrec">Show.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show.showsub">Show.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.showList">Show_().showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.show">Show_().show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.display">Show_().display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.showChars">Show_().showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.showsPrec">Show_().showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l__r.showsub">Show_().showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.showList">Show_(,).showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.show">Show_(,).show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.display">Show_(,).display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.showChars">Show_(,).showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.showsPrec">Show_(,).showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_c_r.showsub">Show_(,).showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.showList">Show_(,,).showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.show">Show_(,,).show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.display">Show_(,,).display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.showChars">Show_(,,).showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.showsPrec">Show_(,,).showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_l_cc_r.showsub">Show_(,,).showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.showList">Show_Bool.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.show">Show_Bool.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.display">Show_Bool.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.showChars">Show_Bool.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.showsPrec">Show_Bool.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Bool.showsub">Show_Bool.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.showList">Show_Char.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.show">Show_Char.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.display">Show_Char.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.showChars">Show_Char.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.showsPrec">Show_Char.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Char.showsub">Show_Char.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.showList">Show_Double.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.show">Show_Double.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.display">Show_Double.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.showChars">Show_Double.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.showsPrec">Show_Double.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Double.showsub">Show_Double.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.showList">Show_Either.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.show">Show_Either.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.display">Show_Either.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.showChars">Show_Either.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.showsPrec">Show_Either.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Either.showsub">Show_Either.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.showList">Show_Float.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.show">Show_Float.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.display">Show_Float.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.showChars">Show_Float.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.showsPrec">Show_Float.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Float.showsub">Show_Float.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.showList">Show_Int.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.show">Show_Int.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.display">Show_Int.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.showChars">Show_Int.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.showsPrec">Show_Int.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Int.showsub">Show_Int.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.showList">Show_Integer.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.show">Show_Integer.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.display">Show_Integer.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.showChars">Show_Integer.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.showsPrec">Show_Integer.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Integer.showsub">Show_Integer.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.showList">Show_Long.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.show">Show_Long.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.display">Show_Long.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.showChars">Show_Long.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.showsPrec">Show_Long.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Long.showsub">Show_Long.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.showList">Show_Maybe.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.show">Show_Maybe.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.display">Show_Maybe.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.showChars">Show_Maybe.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.showsPrec">Show_Maybe.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Maybe.showsub">Show_Maybe.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.showList">Show_Ordering.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.show">Show_Ordering.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.display">Show_Ordering.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.showChars">Show_Ordering.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.showsPrec">Show_Ordering.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Ordering.showsub">Show_Ordering.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.showList">Show_String.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.show">Show_String.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.display">Show_String.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.showChars">Show_String.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.showsPrec">Show_String.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_String.showsub">Show_String.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.showList">Show_Throwable.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.show">Show_Throwable.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.display">Show_Throwable.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.showChars">Show_Throwable.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.showsPrec">Show_Throwable.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Throwable.showsub">Show_Throwable.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.showList">Show_[].showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.show">Show_[].show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.display">Show_[].display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.showChars">Show_[].showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.showsPrec">Show_[].showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show__lbrack_rbrack.showsub">Show_[].showsub</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="./PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="./PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../java/Lang.html">frege.java.Lang</a> as Lang</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/Category.html">frege.control.Category</a> as Category</div>
+</li>
+<li>
+<div>
+import <a HREF="./Maybe.html">frege.prelude.Maybe</a> as Maybe</div>
+</li>
+<li>
+<div>
+import <a HREF="./PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="./PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/Semigroupoid.html">frege.control.Semigroupoid</a> as Semigroupoid</div>
+</li>
+</ul>
+<h2>
+<a name="type">Type Aliases</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>type </b><a name="ReadS">ReadS</a> a = <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> <a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; [(a, <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> <a class="tref" href="./PreludeBase.html#Char">Char</a>)]</SPAN></dt>
+<dd class="clas">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="clas">
+<SPAN CLASS="code"><b>type </b><a name="ShowS">ShowS</a>  = <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> <a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> <a class="tref" href="./PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="clas">
+<p>
+Haskell compatibility   </p>
+</dd>
+</dl>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="Show">Show</a>  show</SPAN></dt>
+<dd class="clas">
+<p>
+Class <a class="tref" href="#Show">Show</a> provides operations to convert values to <a class="tref" href="./PreludeBase.html#String">String</a>s.</p>
+<p>
+This class can be derived for all algebraic data types whose constituents are themselves instances of <a class="tref" href="#Show">Show</a>.</p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#Show__lbrack_rbrack">[]</a>, <a class="tref" href="#Show_Throwable">Throwable</a>, <a class="tref" href="#Show_Maybe">Maybe</a>, <a class="tref" href="#Show_Ordering">Ordering</a>, <a class="tref" href="#Show_String">StringJ</a>, <a class="tref" href="#Show_Integer">Integer</a>, <a class="tref" href="#Show_Float">Float</a>, <a class="tref" href="#Show_Double">Double</a>, <a class="tref" href="#Show_Either">Either</a>, <a class="tref" href="#Show_Int">Int</a>, <a class="tref" href="#Show_Long">Long</a>, <a class="tref" href="#Show_l_cc_r">(,,)</a>, <a class="tref" href="#Show_Bool">Bool</a>, <a class="tref" href="#Show_l__r">()</a>, <a class="tref" href="#Show_l_c_r">(,)</a>, <a class="tref" href="#Show_Char">Char</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.display">display</a> :: <a class="tref" href="#Show">Show</a> show =&gt; show -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.display">Show.display</a> computes an alternate string represantation of a value and is used in the <a class="tref" href="./PreludeBase.html#Char">Char</a> and <a class="tref" href="./PreludeBase.html#String">String</a> instances of <a class="tref" href="#Show">Show</a> to produce an unquoted string.</p>
+<p>
+The default implementation is to do the same as <a class="fref" href="#Show.show">Show.show</a>.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.show">show</a> :: <a class="tref" href="#Show">Show</a> show =&gt; show -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Computes the string representation of a value.</p>
+<p>
+Every instance must implement <a class="fref" href="#Show.show">Show.show</a>.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.showChars">showChars</a> :: <a class="tref" href="#Show">Show</a> show =&gt; show -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.showChars">Show.showChars</a> addresses the problem of <a class="fref" href="#Show.show">Show.show</a>ing infinite values. Because <a class="fref" href="#Show.show">Show.show</a> has type <a class="tref" href="./PreludeBase.html#String">String</a> and <a class="tref" href="./PreludeBase.html#String">String</a> is atomic, this would try to create a string with infinite length, and hence is doomed to fail.</p>
+<p>
+The default definition is</p>
+<PRE>
+ showChars = String.toList . show</PRE>
+<p>
+This is ok for all finite values. But instances for recursive types should implement it in a way that produces a lazy list of characters.</p>
+<p>
+Here is an example for the list instance:</p>
+<PRE>
+ showChars [] = ['[', ']']
+ showChars xs = '[' : ( tail [ c | x &lt;- xs, c &lt;- ',' : showChars x ] ++ [']'] )</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.showList">showList</a> :: <a class="tref" href="#Show">Show</a> show =&gt; <b>[show]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.showsPrec">showsPrec</a> :: <a class="tref" href="#Show">Show</a> show =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; show -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show.showsub">showsub</a> :: <a class="tref" href="#Show">Show</a> show =&gt; show -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.showsub">Show.showsub</a> is used for <a class="fref" href="#Show.show">Show.show</a>ing elements of a value of an allgebraic data type in derived instances of <a class="tref" href="#Show">Show</a>.</p>
+<p>
+The generated code in derived instances for types that are not enumerations is</p>
+<PRE>
+ showsub x = "(" ++ show x ++ ")"</PRE>
+<p>
+so that values are enclosed in parentheses. Certain types like records, lists, tuples and many primitive types do not need extra parentheses, and thus <a class="fref" href="#Show.showsub">Show.showsub</a> is the same as <a class="fref" href="#Show.show">Show.show</a>, which is also the default implementation.</p>
+<p>
+In short,</p>
+<ul>
+<LI>
+ in derived instances, <a class="fref" href="#Show.showsub">Show.showsub</a> will do the right thing. </LI>
+<LI>
+ in all other instances, <a class="fref" href="#Show.showsub">Show.showsub</a> will do the same as <a class="fref" href="#Show.show">Show.show</a> if not implemented differently.</LI>
+</ul>
+<p>
+Example:</p>
+<PRE>
+ derive Show ( Maybe b)</PRE>
+<p>
+implements the following:</p>
+<PRE>
+ show Nothing = "Nothing"
+ show (Just x) = "Just " ++ x.showsub
+ showsub x = "(" ++ show x ++ ")"</PRE>
+<p>
+so that</p>
+<PRE>
+ show (Just (Just 42)) == "Just (Just 42)"</PRE>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_l__r"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Unit">()</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l__r.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Unit">()</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_l_c_r"> </a> <a class="tref" href="#Show">Show</a> (<a class="tref" href="#Show">Show</a> a, <a class="tref" href="#Show">Show</a> b) =&gt; (a, b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.display">display</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α, β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.show">show</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α, β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.showChars">showChars</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α, β)</b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.showList">showList</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>[(α, β)]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.showsPrec">showsPrec</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b>(α, β)</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_c_r.showsub">showsub</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α, β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_l_cc_r"> </a> <a class="tref" href="#Show">Show</a> (<a class="tref" href="#Show">Show</a> b, <a class="tref" href="#Show">Show</a> a, <a class="tref" href="#Show">Show</a> c) =&gt; (a, b, c)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.display">display</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.show">show</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.showChars">showChars</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.showList">showList</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <b>[(α, β, γ)]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.showsPrec">showsPrec</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b>(α, β, γ)</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_l_cc_r.showsub">showsub</a> :: (<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <b>(α, β, γ)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Bool"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Bool">Bool</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Bool.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Char"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Char">Char</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+construct a string that consists of just this character   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>frege.runtime.Runtime.quoteChr</SPAN></dt>
+<dd class="func">
+<p>
+reconstructs a Java char literal from a character, i.e.</p>
+<PRE>
+ show 'a' = "'a'"   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Char">Char</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Char.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Double"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Double">Double</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.lang.Double.toString</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Double">Double</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Double.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Double">Double</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Either"> </a> <a class="tref" href="#Show">Show</a> (<a class="tref" href="#Show">Show</a> a, <a class="tref" href="#Show">Show</a> b) =&gt; (a | b)</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.display">display</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α | β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.show">show</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α | β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.showChars">showChars</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α | β)</b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.showList">showList</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>[(α | β)]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.showsPrec">showsPrec</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b>(α | β)</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Either.showsub">showsub</a> :: (<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <b>(α | β)</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Float"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Float">Float</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.lang.Float.toString</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Float">Float</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Float.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Float">Float</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Int"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.lang.String.valueOf</SPAN></dt>
+<dd class="func">
+<p>
+the <a class="tref" href="./PreludeBase.html#String">String</a> representation of the <a class="tref" href="./PreludeBase.html#Int">Int</a> argument, uses <SPAN CLASS="code">java.lang.String.valueOf</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Int">Int</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Int.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Integer"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Integer">Integer</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Integer">Integer</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Integer">Integer</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>toString</SPAN></dt>
+<dd class="func">
+<p>
+the <a class="tref" href="./PreludeBase.html#String">String</a> representation of the <a class="tref" href="./PreludeBase.html#Integer">Integer</a> argument, uses <SPAN CLASS="code">BigInteger.toString</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Integer">Integer</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Integer">Integer</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Integer">Integer</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Integer.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Integer">Integer</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Long"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Long">Long</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Long">Long</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Long">Long</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.lang.Long.toString</SPAN></dt>
+<dd class="func">
+<p>
+the <a class="tref" href="./PreludeBase.html#String">String</a> representation of the <a class="tref" href="./PreludeBase.html#Long">Long</a> argument, uses <SPAN CLASS="code">java.lang.Long.toString</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Long">Long</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Long">Long</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Long">Long</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Long.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Long">Long</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Maybe"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="#Show">Show</a> a =&gt; <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.display">display</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.show">show</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.showChars">showChars</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.showList">showList</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[<a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.showsPrec">showsPrec</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Maybe.showsub">showsub</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Ordering"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Ordering">Ordering</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Ordering.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_String"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>frege.runtime.Runtime.quoteStr</SPAN></dt>
+<dd class="func">
+<p>
+reconstructs a Java string literal from a string, i.e.</p>
+<PRE>
+ show "abc" = "\"abc\""   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#String">String</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_String.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Throwable"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.display">display</a> :: <b><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.show">show</a> :: <b><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+creates a string representation of a Java exception, consisting of the class name and the message, like</p>
+<PRE>
+ "java.lang.ArithmeticException: division by zero"</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.showChars">showChars</a> :: <b><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.showList">showList</a> :: <b>[<a class="tref" href="./PreludeBase.html#Throwable">Throwable</a>]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.showsPrec">showsPrec</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Throwable.showsub">showsub</a> :: <b><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show__lbrack_rbrack"> </a> <a class="tref" href="#Show">Show</a> <a class="tref" href="#Show">Show</a> a =&gt; [a]</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.display">display</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.show">show</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.showChars">showChars</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[α]</b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.showList">showList</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[[α]]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.showsPrec">showsPrec</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <b>[α]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show__lbrack_rbrack.showsub">showsub</a> :: <a class="tref" href="#Show">Show</a> α =&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="chomp">chomp</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+strip trailing spaces, tabs, newline and carriage return characters from a string   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="joined">joined</a> :: <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <b>[<a class="tref" href="./PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">joined sep xs</SPAN> concatenates all strings in /xs/, and inserts /sep/ between any two elements of /xs/.</p>
+<p>
+If /xs/ is empty, the result is an empty string. If /sep/ is an empty string, then the result is just the concatenation of the strings in /xs/.</p>
+<p>
+Example:</p>
+<PRE>
+ joined ", " ["aaa", "bbb", "ccc"] == "aaa, bbb, ccc"</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="lineSeparator">lineSeparator</a> :: <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+The line separator suitable for the platform the program is running on.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="lines">lines</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+splits a <a class="tref" href="./PreludeBase.html#String">String</a> on end-of-line  and returns a list of <a class="tref" href="./PreludeBase.html#String">String</a>s</p>
+<p>
+The last line may or may not be terminated by newline.</p>
+<p>
+End-of-line is signaled by a number of carriage returns followed by a new line.</p>
+<p>
+This should work for UNIX and Windows.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="packed">packed</a> :: <b>[<a class="tref" href="./PreludeBase.html#Char">Char</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+convert a list of characters to a string</p>
+<PRE>
+ packed ['a', 'b', 'c' ] == "abc"</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="showChar">showChar</a> :: <b><a class="tref" href="./PreludeBase.html#Char">Char</a></b> -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="showParen">showParen</a> :: <b><a class="tref" href="./PreludeBase.html#Bool">Bool</a></b> -&gt; (<b><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></b>) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="showString">showString</a> :: <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="shows">shows</a> :: <a class="tref" href="#Show">Show</a> a =&gt; a -&gt; <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Haskell compatibility   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unlines">unlines</a> :: <b>[<a class="tref" href="./PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unlines">unlines</a> is an inverse operation to <a class="fref" href="#lines">lines</a>.</p>
+<p>
+It joins lines, after appending a terminating newline to each.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unwords">unwords</a> :: <b>[<a class="tref" href="./PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unwords">unwords</a> is an inverse operation to <a class="fref" href="#words">words</a>.</p>
+<p>
+It joins words with separating spaces.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="words">words</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+splits a <a class="tref" href="./PreludeBase.html#String">String</a> on non empty sequences of spaces  and returns a list of <a class="tref" href="./PreludeBase.html#String">String</a>s   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#showString">showString</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="./PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#joined">joined</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#chomp">chomp</a>, <a class="fref" href="#Show_String.show">Show_String.show</a>, <a class="fref" href="#Show_String.display">Show_String.display</a>, <a class="fref" href="#Show_String.showsub">Show_String.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="./PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#lines">lines</a>, <a class="fref" href="#words">words</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_String.showChars">Show_String.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_String.showList">Show_String.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unlines">unlines</a>, <a class="fref" href="#unwords">unwords</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Unit">()</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l__r.showList">Show_().showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Bool">Bool</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Bool.showList">Show_Bool.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Char">Char</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Char.showList">Show_Char.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Char">Char</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#packed">packed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Double">Double</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Double.showList">Show_Double.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Float">Float</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Float.showList">Show_Float.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Int">Int</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Int.showList">Show_Int.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Integer">Integer</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Integer.showList">Show_Integer.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Long">Long</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Long.showList">Show_Long.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Ordering">Ordering</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Ordering.showList">Show_Ordering.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Throwable">Throwable</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Throwable.showList">Show_Throwable.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Unit">()</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l__r.show">Show_().show</a>, <a class="fref" href="#Show_l__r.display">Show_().display</a>, <a class="fref" href="#Show_l__r.showsub">Show_().showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Unit">()</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l__r.showChars">Show_().showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Bool">Bool</a> -&gt; (<a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a>) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#showParen">showParen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Bool.show">Show_Bool.show</a>, <a class="fref" href="#Show_Bool.display">Show_Bool.display</a>, <a class="fref" href="#Show_Bool.showsub">Show_Bool.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Bool">Bool</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Bool.showChars">Show_Bool.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#showChar">showChar</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Char.show">Show_Char.show</a>, <a class="fref" href="#Show_Char.display">Show_Char.display</a>, <a class="fref" href="#Show_Char.showsub">Show_Char.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Char.showChars">Show_Char.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Double.show">Show_Double.show</a>, <a class="fref" href="#Show_Double.display">Show_Double.display</a>, <a class="fref" href="#Show_Double.showsub">Show_Double.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Double.showChars">Show_Double.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Float.show">Show_Float.show</a>, <a class="fref" href="#Show_Float.display">Show_Float.display</a>, <a class="fref" href="#Show_Float.showsub">Show_Float.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Float.showChars">Show_Float.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_String.showsPrec">Show_String.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Unit">()</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l__r.showsPrec">Show_().showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Bool.showsPrec">Show_Bool.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Char">Char</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Char.showsPrec">Show_Char.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Double">Double</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Double.showsPrec">Show_Double.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Float">Float</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Float.showsPrec">Show_Float.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Int.showsPrec">Show_Int.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Integer">Integer</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Integer.showsPrec">Show_Integer.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Long.showsPrec">Show_Long.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Ordering">Ordering</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Ordering.showsPrec">Show_Ordering.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Throwable">Throwable</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Throwable.showsPrec">Show_Throwable.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Int.show">Show_Int.show</a>, <a class="fref" href="#Show_Int.display">Show_Int.display</a>, <a class="fref" href="#Show_Int.showsub">Show_Int.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Int.showChars">Show_Int.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Integer">Integer</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Integer.show">Show_Integer.show</a>, <a class="fref" href="#Show_Integer.display">Show_Integer.display</a>, <a class="fref" href="#Show_Integer.showsub">Show_Integer.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Integer">Integer</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Integer.showChars">Show_Integer.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Long">Long</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Long.show">Show_Long.show</a>, <a class="fref" href="#Show_Long.display">Show_Long.display</a>, <a class="fref" href="#Show_Long.showsub">Show_Long.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Long">Long</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Long.showChars">Show_Long.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Ordering.show">Show_Ordering.show</a>, <a class="fref" href="#Show_Ordering.display">Show_Ordering.display</a>, <a class="fref" href="#Show_Ordering.showsub">Show_Ordering.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ordering">Ordering</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Ordering.showChars">Show_Ordering.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Throwable.show">Show_Throwable.show</a>, <a class="fref" href="#Show_Throwable.display">Show_Throwable.display</a>, <a class="fref" href="#Show_Throwable.showsub">Show_Throwable.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Throwable">Throwable</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Throwable.showChars">Show_Throwable.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#lineSeparator">lineSeparator</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> a =&gt; a -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#shows">shows</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> show =&gt; [show] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> show =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; show -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> show =&gt; show -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.show">Show.show</a>, <a class="fref" href="#Show.display">Show.display</a>, <a class="fref" href="#Show.showsub">Show.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> show =&gt; show -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Maybe.show">Show_Maybe.show</a>, <a class="fref" href="#Show_Maybe.display">Show_Maybe.display</a>, <a class="fref" href="#Show_Maybe.showsub">Show_Maybe.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Maybe.showChars">Show_Maybe.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; [<a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Maybe.showList">Show_Maybe.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; [[α]] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show__lbrack_rbrack.showList">Show_[].showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show__lbrack_rbrack.show">Show_[].show</a>, <a class="fref" href="#Show__lbrack_rbrack.display">Show_[].display</a>, <a class="fref" href="#Show__lbrack_rbrack.showsub">Show_[].showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; [α] -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show__lbrack_rbrack.showChars">Show_[].showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Maybe.showsPrec">Show_Maybe.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Show">Show</a> α =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show__lbrack_rbrack.showsPrec">Show_[].showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; (α, β) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_c_r.show">Show_(,).show</a>, <a class="fref" href="#Show_l_c_r.display">Show_(,).display</a>, <a class="fref" href="#Show_l_c_r.showsub">Show_(,).showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; (α, β) -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_c_r.showChars">Show_(,).showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; (α | β) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Either.show">Show_Either.show</a>, <a class="fref" href="#Show_Either.display">Show_Either.display</a>, <a class="fref" href="#Show_Either.showsub">Show_Either.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; (α | β) -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Either.showChars">Show_Either.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; [(α, β)] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_c_r.showList">Show_(,).showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; [(α | β)] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Either.showList">Show_Either.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; (α, β) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_c_r.showsPrec">Show_(,).showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> β) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; (α | β) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Either.showsPrec">Show_Either.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; (α, β, γ) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_cc_r.show">Show_(,,).show</a>, <a class="fref" href="#Show_l_cc_r.display">Show_(,,).display</a>, <a class="fref" href="#Show_l_cc_r.showsub">Show_(,,).showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; (α, β, γ) -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_cc_r.showChars">Show_(,,).showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; [(α, β, γ)] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_cc_r.showList">Show_(,,).showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="#Show">Show</a> β, <a class="tref" href="#Show">Show</a> α, <a class="tref" href="#Show">Show</a> γ) =&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; (α, β, γ) -&gt; <a class="tref" href="./PreludeBase.html#String">String</a> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_l_cc_r.showsPrec">Show_(,,).showsPrec</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

@@ -1,0 +1,1378 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.tools.YYgen - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.tools.YYgen</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:53:25 CET 2013 from source file: <SPAN CLASS="code">./frege/tools/YYgen.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+This program creates a parser from the result of running <SPAN CLASS="code">byacc -v</SPAN> on a yacc grammar. It reads the resulting files "y.tab.c" and "y.output" in the current directory and uses the information therein to construct a frege program.</p>
+<p>
+Each grammar rule is associated with a reduction function of type</p>
+<PRE>
+  item1 -&gt; ... -&gt; item2 -&gt; result</PRE>
+<p>
+where the item types are either tokens (provided as input to the parser) or results of other grammar rules. All rules of a nonterminal grammar symbol will have the same result type. Example:</p>
+<PRE>
+ %{
+ package Calculator
+ numberFrom :: Token -&gt; Double
+ %}
+
+ %token NUMBER PI
+ %start sum
+ %%
+ sum : product '+' product { \a\_\b -&gt; a + b }  // was: $$ = $1 + $3
+       | product                                // was: $$ = $1
+       ;
+ product: term '*' term { \a\b\c -&gt; a * b }
+       | term
+       ;
+ term: NUMBER              { numberFrom }
+       | PI                { const 3.14159 }
+       | '-' term          { \_\b -&gt; negate b }
+       | '(' sum ')'       { \_\b\_ -&gt; b }
+       ;
+ %%
+ data TokenID = NUMBER | PI | OPERATOR
+ derive Show TokenID
+ derive Ord TokenID</PRE>
+<PRE>
+ data Token = N Double | Pi | Op Char
+ derive Show Token</PRE>
+<PRE>
+ yyshowToken = Token.show</PRE>
+<PRE>
+ yyniceToken (N d) = show d
+ yyniceToken Pi = "pi"
+ yyniceToken (Op c) = show c</PRE>
+<PRE>
+ yytoken :: Token -&gt; TokenID
+ yytoken (N _) = NUMBER
+ yytoken Pi    = PI
+ yytoken Op    = OPERATOR
+
+ yychar :: Token -&gt; Char
+ yychar (Op c) = c
+ yychar _ = const '§'  // paragraph symbol not used elsewhere
+
+ yyfromId NUMBER = N 42.0
+ yyfromId PI     = PI
+ // yyfromId OPERATOR = not needed, as the parser knows nothing of OPERATOR
+
+ yyfromCh :: Char -&gt; Token
+ yyfromCh c = Op c
+
+ yyline = const 0      // no way to know in this example</PRE>
+<p>
+So far, this is just a good old yacc grammar, except that the semantic actions are frege expressions, and the code before an after the "%%" markers is frege code.</p>
+<p>
+Each semantic action is expected to be a function that takes as many arguments as there are items in its rule. Hence, in the first rule of nonterminal "sum" the left product will be bound to /a/, the "+" token is ignored and the right product to /b/. A missing action is equivalent to the identity function, therefore in the second rule of nonterminal "sum", the sum will be just the product.</p>
+<p>
+The parser generated from this will have a function</p>
+<PRE>
+ yyparse :: [Token] -&gt; Maybe Double</PRE>
+<p>
+since Double is the result type of the rules associated with the start symbol and tokens are obviously of type Token (due to application of user supplied function numberFrom). The result will be <a class="fref" href="../prelude/PreludeBase.html#Maybe.Nothing">Maybe.Nothing</a> if the parser could not reduce the start symbol (i.e., when there were nonrecoverable syntax errors) and (<a class="fref" href="../prelude/PreludeBase.html#Maybe.Just">Maybe.Just</a> x) otherwise, where /x/ is the result of one of the semantic actions associated with the "%start" symbol.</p>
+<p>
+The parser itself does not make any assumptions about what a token is. Instead, it relies on the following user supplied functions:</p>
+<PRE>
+ yytoken  :: token -&gt; tid
+ yyfromId :: tid -&gt; token</PRE>
+<p>
+where /token/ is the type of tokens and /tid/ is the type of the token constants defined in the "%token" directive. The /yytoken/ function must be total, i.e. all possible token values must produce some token constant, yet this does not have to be one of the constants that is listed in the "%token" directive.</p>
+<p>
+The /yyfromId/ function must produce an example token value for each token constant the parser knows of through the "%token" diretive. Both functions have to be there only when a "%token" directive is present.</p>
+<p>
+If the grammar uses character constants, the following functions must be present:</p>
+<PRE>
+ yychar :: token -&gt; Char
+ yyfromCh :: Char -&gt; token</PRE>
+<p>
+The /yychar/ function must be total, all possible token values must be mapped to some character. Use a character value that is not used in the grammar for tokens that have no representation as a character value.</p>
+<p>
+The /yyfromCh/ function maps back characters to token values. The /yyfrom../ functions are used in error recovery to supply tokens that are expected, but missing.</p>
+<p>
+Here is an example of how the parser may determine what to do in state 42:</p>
+<PRE>
+ yyaction 42 tok = case yychar tok of
+       '*'   -&gt; Shift 57
+       _ -&gt; case yytoken tok of
+           NUMBER -&gt; Shift 96
+           _      -&gt; Reduce 5</PRE>
+<p>
+In addition, the parser needs the following functions:</p>
+<PRE>
+ yynice :: token -&gt; String
+ yyshow :: token -&gt; String
+ yyline :: token -&gt; Show:a
+ yyerror :: Show:a -&gt; String -&gt; c</PRE>
+<p>
+/yynice/ is used by the parser to construct error messages like this</p>
+<PRE>
+ "syntax error, expected ',', found " ++ yynice errortoken
+ "syntax error, expected IDENTIFIER, found " ++ yynice errortoken
+ "syntax error on " ++ yynice errortoken</PRE>
+<p>
+/yyshow/ is used in trace output and is intended for a most detailed display of tokens as they are recognized by the parser.</p>
+<p>
+/yyline/ is used to extract line number information from a token, it is thus a good idea to design the lexical analyzer so that a token is able to tell where it was found.</p>
+<p>
+/yyerror/ is used to emit messages about syntax errors. The first argument will be either the string "EOF" or the result of applying /yyline/ to a token. The second argument is a string that describes the error. The result of yyerror is evaluated, but ignored.</p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Eq_Item">Eq_Item</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Prod">Eq_Prod</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Item">Ord_Item</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Prod">Ord_Prod</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Action">Show_Action</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Item">Show_Item</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Prod">Show_Prod</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Todo">Show_Todo</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_YYState">Show_YYState</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Action">Action</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Item">Item</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Prod">Prod</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Todo">Todo</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#YYState">YYState</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#actions">actions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#altgotos">altgotos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#altgotos2">altgotos2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cantwrite">cantwrite</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collectacceptactions">collectacceptactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collecteactions">collecteactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#compiletypes">compiletypes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#eactions">eactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#extrrule">extrrule</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#extrrules">extrrules</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fileContent">fileContent</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#format1">format1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genacc">genacc</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengos">gengos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengoto1">gengoto1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengoto2">gengoto2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengotos1">gengotos1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengotos2">gengotos2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genitem">genitem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genitems">genitems</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genprod">genprod</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genrule">genrule</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genshowsi">genshowsi</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genst">genst</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genstate">genstate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listmax">listmax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listred">listred</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#loadRessource">loadRessource</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#loadUrl">loadUrl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_main">main</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mainIO">mainIO</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mkState">mkState</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#niceitem">niceitem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#numbertypes">numbertypes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#numprod">numprod</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#pracase">pracase</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printgos">printgos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printpr">printpr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printreds">printreds</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printstates">printstates</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#recoveries">recoveries</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ressource">ressource</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanlines">scanlines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanytablines">scanytablines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sortfst">sortfst</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sortgos">sortgos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#uncr">uncr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#yygenpar">yygenpar</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#actions">actions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#altgotos">altgotos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#altgotos2">altgotos2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cantwrite">cantwrite</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collectacceptactions">collectacceptactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#collecteactions">collecteactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#compiletypes">compiletypes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#eactions">eactions</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#extrrule">extrrule</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#extrrules">extrrules</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fileContent">fileContent</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#format1">format1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genacc">genacc</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengos">gengos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengoto1">gengoto1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengoto2">gengoto2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengotos1">gengotos1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#gengotos2">gengotos2</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genitem">genitem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genitems">genitems</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genprod">genprod</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genrule">genrule</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genshowsi">genshowsi</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genst">genst</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#genstate">genstate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listmax">listmax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listred">listred</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#loadRessource">loadRessource</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#loadUrl">loadUrl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_main">main</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mainIO">mainIO</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mkState">mkState</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#niceitem">niceitem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#numbertypes">numbertypes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#numprod">numprod</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#pracase">pracase</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printgos">printgos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printpr">printpr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printreds">printreds</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#printstates">printstates</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#recoveries">recoveries</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ressource">ressource</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanlines">scanlines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanytablines">scanytablines</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sortfst">sortfst</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sortgos">sortgos</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#uncr">uncr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#yygenpar">yygenpar</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Item._eq_eq">Eq_Item.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Item._excl_eq">Eq_Item.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Item.hashCode">Eq_Item.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Prod._eq_eq">Eq_Prod.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Prod._excl_eq">Eq_Prod.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Prod.hashCode">Eq_Prod.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item._gt">Ord_Item.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item._lt_eq">Ord_Item.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item._lt">Ord_Item.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item._lt_eq_gt">Ord_Item.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item.compare">Ord_Item.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item._gt_eq">Ord_Item.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item.max">Ord_Item.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Item.min">Ord_Item.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod._gt">Ord_Prod.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod._lt_eq">Ord_Prod.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod._lt">Ord_Prod.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod._lt_eq_gt">Ord_Prod.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod.compare">Ord_Prod.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod._gt_eq">Ord_Prod.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod.max">Ord_Prod.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Prod.min">Ord_Prod.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.showList">Show_Action.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.show">Show_Action.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.display">Show_Action.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.showChars">Show_Action.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.showsub">Show_Action.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Action.showsPrec">Show_Action.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.showList">Show_Item.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.show">Show_Item.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.display">Show_Item.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.showChars">Show_Item.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.showsub">Show_Item.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Item.showsPrec">Show_Item.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.showList">Show_Prod.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.show">Show_Prod.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.display">Show_Prod.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.showChars">Show_Prod.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.showsub">Show_Prod.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Prod.showsPrec">Show_Prod.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.showList">Show_Todo.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.show">Show_Todo.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.display">Show_Todo.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.showChars">Show_Todo.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.showsub">Show_Todo.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Todo.showsPrec">Show_Todo.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.showList">Show_YYState.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.show">Show_YYState.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.display">Show_YYState.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.showChars">Show_YYState.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.showsub">Show_YYState.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_YYState.showsPrec">Show_YYState.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Action.A">Action.A</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.Acc">Item.Acc</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.NT">Item.NT</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.End">Item.End</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.Def">Item.Def</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.Lit">Item.Lit</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Item.T">Item.T</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Prod.Prod">Prod.Prod</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Todo.Reduce">Todo.Reduce</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Todo.Error">Todo.Error</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Todo.Accept">Todo.Accept</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Todo.Goto">Todo.Goto</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Todo.Shift">Todo.Shift</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#YYState.St">YYState.St</a></div>
+</li>
+<li>
+<div>
+<a HREF="#of">Re-Exported Items</a></div>
+<div>
+<a class="fref" href="../prelude/PreludeList.html#ListLike._plus_plus">append</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="../prelude/PreludeList.html#filter">grep</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../java/Net.html">frege.java.Net</a> as Net</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/List.html">frege.data.List</a> as DL</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/Maybe.html">frege.data.Maybe</a> as Maybe</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../data/TreeMap.html">frege.data.TreeMap</a> as TreeMap</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Item"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Item._excl_eq">!=</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Item._eq_eq">==</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Item.hashCode">hashCode</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Prod"> </a> <a class="tref" href="../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Prod._excl_eq">!=</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Prod._eq_eq">==</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Prod.hashCode">hashCode</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Item"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item._lt">&lt;</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item._lt_eq">&lt;=</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item._lt_eq_gt">&lt;=&gt;</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item._gt">&gt;</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item._gt_eq">&gt;=</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item.compare">compare</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item.max">max</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Item.min">min</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Prod"> </a> <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod._lt">&lt;</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod._lt_eq">&lt;=</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod._lt_eq_gt">&lt;=&gt;</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod._gt">&gt;</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod._gt_eq">&gt;=</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod.compare">compare</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod.max">max</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Prod.min">min</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Action"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Action">Action</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.display">display</a> :: <b><a class="tref" href="#Action">Action</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.show">show</a> :: <b><a class="tref" href="#Action">Action</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.showChars">showChars</a> :: <b><a class="tref" href="#Action">Action</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.showList">showList</a> :: <b>[<a class="tref" href="#Action">Action</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Action">Action</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Action.showsub">showsub</a> :: <b><a class="tref" href="#Action">Action</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Item"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.display">display</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.show">show</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.showChars">showChars</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.showList">showList</a> :: <b>[<a class="tref" href="#Item">Item</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Item.showsub">showsub</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Prod"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.display">display</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.show">show</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.showChars">showChars</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.showList">showList</a> :: <b>[<a class="tref" href="#Prod">Prod</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Prod.showsub">showsub</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Todo"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Todo">Todo</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.display">display</a> :: <b><a class="tref" href="#Todo">Todo</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.show">show</a> :: <b><a class="tref" href="#Todo">Todo</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.showChars">showChars</a> :: <b><a class="tref" href="#Todo">Todo</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.showList">showList</a> :: <b>[<a class="tref" href="#Todo">Todo</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Todo">Todo</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Todo.showsub">showsub</a> :: <b><a class="tref" href="#Todo">Todo</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_YYState"> </a> <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#YYState">YYState</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.display">display</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.show">show</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.showChars">showChars</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.showList">showList</a> :: <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.showsPrec">showsPrec</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_YYState.showsub">showsub</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Action"> </a> <a class="tref" href="#Action">Action</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Action.A">A</a> <a class="tref" href="#Todo">Todo</a>&nbsp;&nbsp; <a class="tref" href="#Item">Item</a>&nbsp;&nbsp; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Item"> </a> <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.Acc">Acc</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.Def">Def</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.End">End</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.Lit">Lit</a> (<a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.NT">NT</a> (<a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Item.T">T</a> (<a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Prod"> </a> <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Prod.Prod">Prod</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>&nbsp;&nbsp; <a class="tref" href="#Item">Item</a>&nbsp;&nbsp; [<a class="tref" href="#Item">Item</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Todo"> </a> <a class="tref" href="#Todo">Todo</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Todo.Accept">Accept</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Todo.Error">Error</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Todo.Goto">Goto</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Todo.Reduce">Reduce</a> </SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Todo.Shift">Shift</a> </SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="YYState"> </a> <a class="tref" href="#YYState">YYState</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="YYState.St">St</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>&nbsp;&nbsp; [<a class="tref" href="#Prod">Prod</a>]&nbsp;&nbsp; [<a class="tref" href="#Action">Action</a>]&nbsp;&nbsp; [<a class="tref" href="#Action">Action</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="actions">actions</a> :: <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="altgotos">altgotos</a> :: [<a class="tref" href="#Prod">Prod</a>] -&gt; <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="altgotos2">altgotos2</a> :: [<a class="tref" href="#Prod">Prod</a>] -&gt; <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="cantwrite">cantwrite</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <b><a class="tref" href="../java/IO.html#FileNotFoundException">FileNotFoundException</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="collectacceptactions">collectacceptactions</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="collecteactions">collecteactions</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="compiletypes">compiletypes</a> :: <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="eactions">eactions</a> :: <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="extrrule">extrrule</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; [<a class="tref" href="#Prod">Prod</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="extrrules">extrrules</a> :: <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [<a class="tref" href="#Prod">Prod</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="fileContent">fileContent</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+give back file content as list of lines   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="format1">format1</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a><br><b>pure </b><b>native </b>java.lang.String.format</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genacc">genacc</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; α -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="gengos">gengos</a> :: (<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> δ, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> γ, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeList.html#ListSource">ListSource</a> β, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> γ, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> δ) =&gt; β (α, γ, δ) -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="gengoto1">gengoto1</a> :: α -&gt; <b><a class="tref" href="#Action">Action</a></b> -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; [(α, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="gengoto2">gengoto2</a> :: <b><a class="tref" href="#Action">Action</a></b> -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="gengotos1">gengotos1</a> :: [<a class="tref" href="#Prod">Prod</a>] -&gt; <b><a class="tref" href="#YYState">YYState</a></b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="gengotos2">gengotos2</a> :: [<a class="tref" href="#Prod">Prod</a>] -&gt; <b><a class="tref" href="#YYState">YYState</a></b> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genitem">genitem</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genitems">genitems</a> :: <b>[<a class="tref" href="#Item">Item</a>]</b> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genprod">genprod</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <b><a class="tref" href="#Prod">Prod</a></b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genrule">genrule</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genshowsi">genshowsi</a> :: [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genst">genst</a> :: <b><a class="tref" href="#YYState">YYState</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="genstate">genstate</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; α -&gt; <b>[<a class="tref" href="#Prod">Prod</a>]</b> -&gt; <a class="tref" href="#Action">Action</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="listmax">listmax</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="listred">listred</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; <b>(α, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="loadRessource">loadRessource</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a</b> -&gt; <b><a class="tref" href="../java/Net.html#URLClassLoader">URLClassLoader</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="loadUrl">loadUrl</a> :: <b><a class="tref" href="../java/Net.html#URL">URL</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_main">main</a> :: <b>[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mainIO">mainIO</a> :: <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mkState">mkState</a> :: <b>(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>])</b> -&gt; <a class="tref" href="#YYState">YYState</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="niceitem">niceitem</a> :: <b><a class="tref" href="#Item">Item</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="numbertypes">numbertypes</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b>[α]</b> -&gt; <b><a class="tref" href="../data/TreeMap.html#Tree">Tree</a> α <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> α <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="numprod">numprod</a> :: <b><a class="tref" href="#Prod">Prod</a></b> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="pracase">pracase</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, a)] -&gt; <b><a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="printgos">printgos</a> :: [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])] -&gt; <b><a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+create frege code for go tabs</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="printpr">printpr</a> :: <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; [<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <b><a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="printreds">printreds</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [(α, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="printstates">printstates</a> :: [<a class="tref" href="#YYState">YYState</a>] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="recoveries">recoveries</a> :: <a class="tref" href="../data/TreeMap.html#AVLMap">AVLMap</a> α =&gt; α <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <b>[<a class="tref" href="#YYState">YYState</a>]</b> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ressource">ressource</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanlines">scanlines</a> :: [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; ([<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>])])</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanytablines">scanytablines</a> :: [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; ([<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)], [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)], <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sortfst">sortfst</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> γ =&gt; <b>(γ, β)</b> -&gt; <b>(γ, α)</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sortgos">sortgos</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> δ, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α) =&gt; <b>(δ, β, α)</b> -&gt; <b>(δ, γ, α)</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="uncr">uncr</a> :: <b><a class="tref" href="../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+remove carriage returns from strings   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="yygenpar">yygenpar</a> :: <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../data/TreeMap.html#Tree">Tree</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#compiletypes">compiletypes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]) -&gt; <a class="tref" href="#YYState">YYState</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mkState">mkState</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mainIO">mainIO</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../java/IO.html#FileNotFoundException">FileNotFoundException</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#cantwrite">cantwrite</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#format1">format1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fileContent">fileContent</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#uncr">uncr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Item.NT">Item.NT</a>, <a class="fref" href="#Item.Lit">Item.Lit</a>, <a class="fref" href="#Item.T">Item.T</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#printgos">printgos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; ([<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)], [(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)], <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanytablines">scanytablines</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; ([<a class="tref" href="../prelude/PreludeBase.html#String">String</a>], [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>])])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanlines">scanlines</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_main">main</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="../prelude/PreludeBase.html#String">String</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genshowsi">genshowsi</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Action">Action</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Action.showList">Show_Action.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Item">Item</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Item.showList">Show_Item.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Item">Item</a>] -&gt; [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genitems">genitems</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Prod">Prod</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Prod.showList">Show_Prod.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Prod">Prod</a>] -&gt; [<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#altgotos">altgotos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Prod">Prod</a>] -&gt; [<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#altgotos2">altgotos2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Prod">Prod</a>] -&gt; <a class="tref" href="#YYState">YYState</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#gengotos2">gengotos2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Prod">Prod</a>] -&gt; <a class="tref" href="#YYState">YYState</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#gengotos1">gengotos1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Todo">Todo</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Todo.showList">Show_Todo.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#YYState">YYState</a>] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_YYState.showList">Show_YYState.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#YYState">YYState</a>] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#printstates">printstates</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#actions">actions</a>, <a class="fref" href="#eactions">eactions</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#YYState">YYState</a>] -&gt; [<a class="tref" href="#Prod">Prod</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#extrrules">extrrules</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../java/Net.html#URL">URL</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#loadUrl">loadUrl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; [<a class="tref" href="#Action">Action</a>] -&gt; [<a class="tref" href="#Action">Action</a>] -&gt; <a class="tref" href="#YYState">YYState</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#YYState.St">YYState.St</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Action">Action</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Action.showsPrec">Show_Action.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Item.showsPrec">Show_Item.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; [<a class="tref" href="#Item">Item</a>] -&gt; <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Prod.Prod">Prod.Prod</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genitem">genitem</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Prod.showsPrec">Show_Prod.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Todo">Todo</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Todo.showsPrec">Show_Todo.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#YYState">YYState</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_YYState.showsPrec">Show_YYState.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Action">Action</a> -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#gengoto2">gengoto2</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Action">Action</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Action.show">Show_Action.show</a>, <a class="fref" href="#Show_Action.display">Show_Action.display</a>, <a class="fref" href="#Show_Action.showsub">Show_Action.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Action">Action</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Action.showChars">Show_Action.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Item._eq_eq">Eq_Item.==</a>, <a class="fref" href="#Eq_Item._excl_eq">Eq_Item.!=</a>, <a class="fref" href="#Ord_Item._gt">Ord_Item.&gt;</a>, <a class="fref" href="#Ord_Item._lt_eq">Ord_Item.&lt;=</a>, <a class="fref" href="#Ord_Item._lt">Ord_Item.&lt;</a>, <a class="fref" href="#Ord_Item._gt_eq">Ord_Item.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Item._lt_eq_gt">Ord_Item.&lt;=&gt;</a>, <a class="fref" href="#Ord_Item.compare">Ord_Item.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Item.max">Ord_Item.max</a>, <a class="fref" href="#Ord_Item.min">Ord_Item.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#niceitem">niceitem</a>, <a class="fref" href="#Show_Item.show">Show_Item.show</a>, <a class="fref" href="#Show_Item.display">Show_Item.display</a>, <a class="fref" href="#Show_Item.showsub">Show_Item.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Item.showChars">Show_Item.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Item.hashCode">Eq_Item.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Prod._eq_eq">Eq_Prod.==</a>, <a class="fref" href="#Eq_Prod._excl_eq">Eq_Prod.!=</a>, <a class="fref" href="#Ord_Prod._gt">Ord_Prod.&gt;</a>, <a class="fref" href="#Ord_Prod._lt_eq">Ord_Prod.&lt;=</a>, <a class="fref" href="#Ord_Prod._lt">Ord_Prod.&lt;</a>, <a class="fref" href="#Ord_Prod._gt_eq">Ord_Prod.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Prod._lt_eq_gt">Ord_Prod.&lt;=&gt;</a>, <a class="fref" href="#Ord_Prod.compare">Ord_Prod.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="#Prod">Prod</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Prod.max">Ord_Prod.max</a>, <a class="fref" href="#Ord_Prod.min">Ord_Prod.min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#numprod">numprod</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genrule">genrule</a>, <a class="fref" href="#Show_Prod.show">Show_Prod.show</a>, <a class="fref" href="#Show_Prod.display">Show_Prod.display</a>, <a class="fref" href="#Show_Prod.showsub">Show_Prod.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Prod.showChars">Show_Prod.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Prod.hashCode">Eq_Prod.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Todo">Todo</a> -&gt; <a class="tref" href="#Item">Item</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Action">Action</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Action.A">Action.A</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Todo">Todo</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Todo.show">Show_Todo.show</a>, <a class="fref" href="#Show_Todo.display">Show_Todo.display</a>, <a class="fref" href="#Show_Todo.showsub">Show_Todo.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Todo">Todo</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Todo.showChars">Show_Todo.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#YYState">YYState</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genst">genst</a>, <a class="fref" href="#Show_YYState.show">Show_YYState.show</a>, <a class="fref" href="#Show_YYState.display">Show_YYState.display</a>, <a class="fref" href="#Show_YYState.showsub">Show_YYState.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#YYState">YYState</a> -&gt; [<a class="tref" href="../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_YYState.showChars">Show_YYState.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#YYState">YYState</a> -&gt; [<a class="tref" href="#Prod">Prod</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#extrrule">extrrule</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#YYState">YYState</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#collectacceptactions">collectacceptactions</a>, <a class="fref" href="#collecteactions">collecteactions</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#listmax">listmax</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Item">Item</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Item.Acc">Item.Acc</a>, <a class="fref" href="#Item.End">Item.End</a>, <a class="fref" href="#Item.Def">Item.Def</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Todo">Todo</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Todo.Reduce">Todo.Reduce</a>, <a class="fref" href="#Todo.Error">Todo.Error</a>, <a class="fref" href="#Todo.Accept">Todo.Accept</a>, <a class="fref" href="#Todo.Goto">Todo.Goto</a>, <a class="fref" href="#Todo.Shift">Todo.Shift</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a -&gt; <a class="tref" href="../java/Net.html#URLClassLoader">URLClassLoader</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#loadRessource">loadRessource</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [<a class="tref" href="../prelude/PreludeBase.html#String">String</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#yygenpar">yygenpar</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; [<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#printpr">printpr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genprod">genprod</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> α -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ressource">ressource</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="#Action">Action</a> -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; [(α, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#gengoto1">gengoto1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../data/TreeMap.html#AVLMap">AVLMap</a> α =&gt; α <a class="tref" href="../prelude/PreludeBase.html#String">String</a> <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="#YYState">YYState</a>] -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#recoveries">recoveries</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α =&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; [α] -&gt; <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> α <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../data/TreeMap.html#Tree">Tree</a> α <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#numbertypes">numbertypes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a> -&gt; [(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, a)] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#pracase">pracase</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; (α, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>) -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#listred">listred</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; [(α, <a class="tref" href="../prelude/PreludeBase.html#String">String</a>)] -&gt; <a class="tref" href="../java/IO.html#PrintWriter">PrintWriter</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#printreds">printreds</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; α -&gt; [<a class="tref" href="#Prod">Prod</a>] -&gt; <a class="tref" href="#Action">Action</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genstate">genstate</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α =&gt; α -&gt; <a class="tref" href="#Prod">Prod</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#genacc">genacc</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> γ =&gt; (γ, β) -&gt; (γ, α) -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sortfst">sortfst</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> δ, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α) =&gt; (δ, β, α) -&gt; (δ, γ, α) -&gt; <a class="tref" href="../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sortgos">sortgos</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeText.html#Show">Show</a> δ, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> γ, <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> α, <a class="tref" href="../prelude/PreludeList.html#ListSource">ListSource</a> β, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> α, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> γ, <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> δ) =&gt; β (α, γ, δ) -&gt; <a class="tref" href="../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#gengos">gengos</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

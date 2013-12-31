@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.test.QuickCheckState - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.test.QuickCheckState</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:21 CET 2013 from source file: <SPAN CLASS="code">./frege/test/QuickCheckState.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#State">State</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#State.has$numSuccessShrinks">State.has$numSuccessShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numTryShrinks">State.chg$numTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$maxSuccessTests">State.chg$maxSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$expectedFailure">State.chg$expectedFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$collected">State.chg$collected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.MkState">State.MkState</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$computeSize">State.chg$computeSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$maxDiscardedTests">State.chg$maxDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numRecentlyDiscardedTests">State.chg$numRecentlyDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numDiscardedTests">State.chg$numDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numSuccessTests">State.chg$numSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numSuccessShrinks">State.chg$numSuccessShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$numTotTryShrinks">State.chg$numTotTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$collected">State.has$collected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.collected">State.collected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$terminal">State.chg$terminal</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.chg$randomSeed">State.chg$randomSeed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.computeSize">State.computeSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.expectedFailure">State.expectedFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$maxDiscardedTests">State.has$maxDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$expectedFailure">State.has$expectedFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$computeSize">State.has$computeSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$numDiscardedTests">State.has$numDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$maxSuccessTests">State.has$maxSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$numRecentlyDiscardedTests">State.has$numRecentlyDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$collected">State.upd$collected</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numDiscardedTests">State.numDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$randomSeed">State.has$randomSeed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$numTotTryShrinks">State.has$numTotTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$numSuccessTests">State.has$numSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$numTryShrinks">State.has$numTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.maxDiscardedTests">State.maxDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.has$terminal">State.has$terminal</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.maxSuccessTests">State.maxSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numTotTryShrinks">State.numTotTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numSuccessShrinks">State.numSuccessShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numRecentlyDiscardedTests">State.numRecentlyDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numSuccessTests">State.numSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.randomSeed">State.randomSeed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.numTryShrinks">State.numTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.terminal">State.terminal</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numSuccessTests">State.upd$numSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$maxSuccessTests">State.upd$maxSuccessTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$expectedFailure">State.upd$expectedFailure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$computeSize">State.upd$computeSize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$maxDiscardedTests">State.upd$maxDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numRecentlyDiscardedTests">State.upd$numRecentlyDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numDiscardedTests">State.upd$numDiscardedTests</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numSuccessShrinks">State.upd$numSuccessShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numTryShrinks">State.upd$numTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$numTotTryShrinks">State.upd$numTotTryShrinks</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$randomSeed">State.upd$randomSeed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#State.upd$terminal">State.upd$terminal</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="./QuickCheckText.html">frege.test.QuickCheckText</a> as QuickCheckText</div>
+</li>
+<li>
+<div>
+import <a HREF="../system/Random.html">frege.system.Random</a> as Random</div>
+</li>
+</ul>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="State"> </a> <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="State.MkState">MkState</a> {terminal :: <a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a>, maxSuccessTests :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, maxDiscardedTests :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, computeSize :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, numSuccessTests :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, numDiscardedTests :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, numRecentlyDiscardedTests :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, collected :: [[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]], expectedFailure :: <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>, randomSeed :: <a class="tref" href="../system/Random.html#StdGen">StdGen</a>, numSuccessShrinks :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, numTryShrinks :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, numTotTryShrinks :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="State.collected">collected</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; [[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">collected</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.computeSize">computeSize</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">computeSize</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.expectedFailure">expectedFailure</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">expectedFailure</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.maxDiscardedTests">maxDiscardedTests</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">maxDiscardedTests</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.maxSuccessTests">maxSuccessTests</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">maxSuccessTests</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numDiscardedTests">numDiscardedTests</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numDiscardedTests</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numRecentlyDiscardedTests">numRecentlyDiscardedTests</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numRecentlyDiscardedTests</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numSuccessShrinks">numSuccessShrinks</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numSuccessShrinks</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numSuccessTests">numSuccessTests</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numSuccessTests</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numTotTryShrinks">numTotTryShrinks</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numTotTryShrinks</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.numTryShrinks">numTryShrinks</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">numTryShrinks</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.randomSeed">randomSeed</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">randomSeed</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="State.terminal">terminal</a> :: <b><a class="tref" href="#State">State</a></b> -&gt; <a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">terminal</SPAN></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Function">-&gt;</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$computeSize">State.chg$computeSize</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; ([[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]]-&gt;[[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]]) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$collected">State.chg$collected</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$expectedFailure">State.chg$expectedFailure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$computeSize">State.upd$computeSize</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$numTryShrinks">State.chg$numTryShrinks</a>, <a class="fref" href="#State.chg$maxSuccessTests">State.chg$maxSuccessTests</a>, <a class="fref" href="#State.chg$maxDiscardedTests">State.chg$maxDiscardedTests</a>, <a class="fref" href="#State.chg$numRecentlyDiscardedTests">State.chg$numRecentlyDiscardedTests</a>, <a class="fref" href="#State.chg$numDiscardedTests">State.chg$numDiscardedTests</a>, <a class="fref" href="#State.chg$numSuccessTests">State.chg$numSuccessTests</a>, <a class="fref" href="#State.chg$numSuccessShrinks">State.chg$numSuccessShrinks</a>, <a class="fref" href="#State.chg$numTotTryShrinks">State.chg$numTotTryShrinks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="../system/Random.html#StdGen">StdGen</a>-&gt;<a class="tref" href="../system/Random.html#StdGen">StdGen</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$randomSeed">State.chg$randomSeed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; (<a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a>-&gt;<a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a>) -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.chg$terminal">State.chg$terminal</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; [[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]] -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$collected">State.upd$collected</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$expectedFailure">State.upd$expectedFailure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.computeSize">State.computeSize</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$numSuccessTests">State.upd$numSuccessTests</a>, <a class="fref" href="#State.upd$maxSuccessTests">State.upd$maxSuccessTests</a>, <a class="fref" href="#State.upd$maxDiscardedTests">State.upd$maxDiscardedTests</a>, <a class="fref" href="#State.upd$numRecentlyDiscardedTests">State.upd$numRecentlyDiscardedTests</a>, <a class="fref" href="#State.upd$numDiscardedTests">State.upd$numDiscardedTests</a>, <a class="fref" href="#State.upd$numSuccessShrinks">State.upd$numSuccessShrinks</a>, <a class="fref" href="#State.upd$numTryShrinks">State.upd$numTryShrinks</a>, <a class="fref" href="#State.upd$numTotTryShrinks">State.upd$numTotTryShrinks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$randomSeed">State.upd$randomSeed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a> -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.upd$terminal">State.upd$terminal</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; [[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.collected">State.collected</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.expectedFailure">State.expectedFailure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.numDiscardedTests">State.numDiscardedTests</a>, <a class="fref" href="#State.maxDiscardedTests">State.maxDiscardedTests</a>, <a class="fref" href="#State.maxSuccessTests">State.maxSuccessTests</a>, <a class="fref" href="#State.numTotTryShrinks">State.numTotTryShrinks</a>, <a class="fref" href="#State.numSuccessShrinks">State.numSuccessShrinks</a>, <a class="fref" href="#State.numRecentlyDiscardedTests">State.numRecentlyDiscardedTests</a>, <a class="fref" href="#State.numSuccessTests">State.numSuccessTests</a>, <a class="fref" href="#State.numTryShrinks">State.numTryShrinks</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.randomSeed">State.randomSeed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#State">State</a> -&gt; <a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.terminal">State.terminal</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./QuickCheckText.html#Terminal">Terminal</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>) -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; [[(<a class="tref" href="../prelude/PreludeBase.html#String">String</a>, <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>)]] -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#State">State</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.MkState">State.MkState</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#State.has$numSuccessShrinks">State.has$numSuccessShrinks</a>, <a class="fref" href="#State.has$collected">State.has$collected</a>, <a class="fref" href="#State.has$maxDiscardedTests">State.has$maxDiscardedTests</a>, <a class="fref" href="#State.has$expectedFailure">State.has$expectedFailure</a>, <a class="fref" href="#State.has$computeSize">State.has$computeSize</a>, <a class="fref" href="#State.has$numDiscardedTests">State.has$numDiscardedTests</a>, <a class="fref" href="#State.has$maxSuccessTests">State.has$maxSuccessTests</a>, <a class="fref" href="#State.has$numRecentlyDiscardedTests">State.has$numRecentlyDiscardedTests</a>, <a class="fref" href="#State.has$randomSeed">State.has$randomSeed</a>, <a class="fref" href="#State.has$numTotTryShrinks">State.has$numTotTryShrinks</a>, <a class="fref" href="#State.has$numSuccessTests">State.has$numSuccessTests</a>, <a class="fref" href="#State.has$numTryShrinks">State.has$numTryShrinks</a>, <a class="fref" href="#State.has$terminal">State.has$terminal</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

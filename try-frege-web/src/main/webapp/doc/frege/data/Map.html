@@ -1,0 +1,466 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.data.Map - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.data.Map</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:56:05 CET 2013 from source file: <SPAN CLASS="code">./frege/data/Map.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#type">Type Aliases</a></div>
+<div>
+<a class="tref" href="#Size">Size</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Map">Map</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#_excl_excl">!!</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#assocs">assocs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#balanceL">balanceL</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#balanceR">balanceR</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#bin">bin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#deleteFindMax">deleteFindMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#deleteFindMin">deleteFindMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#delta">delta</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elems">elems</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#empty">empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filter">filter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filterWithKey">filterWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#find">find</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldlStrict">foldlStrict</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldlWithKey">foldlWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldrWithKey">foldrWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromList">fromList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromListWith">fromListWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromListWithKey">fromListWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#glue">glue</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insert">insert</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertMax">insertMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertMin">insertMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertWith">insertWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertWithKey">insertWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#join">join</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#keys">keys</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lookup">lookup</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#map">map</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapWithKey">mapWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#member">member</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#merge">merge</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_null">null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ratio">ratio</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#singleton">singleton</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#size">size</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toAscList">toAscList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toDescList">toDescList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toList">toList</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#_excl_excl">!!</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#assocs">assocs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#balanceL">balanceL</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#balanceR">balanceR</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#bin">bin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#deleteFindMax">deleteFindMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#deleteFindMin">deleteFindMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#delta">delta</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elems">elems</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#empty">empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filter">filter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filterWithKey">filterWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#find">find</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldlStrict">foldlStrict</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldlWithKey">foldlWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldrWithKey">foldrWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromList">fromList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromListWith">fromListWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fromListWithKey">fromListWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#glue">glue</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insert">insert</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertMax">insertMax</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertMin">insertMin</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertWith">insertWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#insertWithKey">insertWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#join">join</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#keys">keys</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#lookup">lookup</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#map">map</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#mapWithKey">mapWithKey</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#member">member</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#merge">merge</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_null">null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ratio">ratio</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#singleton">singleton</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#size">size</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toAscList">toAscList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toDescList">toDescList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#toList">toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Map.Tip">Map.Tip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Map.Bin">Map.Bin</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="type">Type Aliases</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>type </b><a name="Size">Size</a>  = <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="clas">
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Map"> </a> <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Map.Bin">Bin</a> <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>&nbsp;&nbsp; k&nbsp;&nbsp; a&nbsp;&nbsp; (<a class="tref" href="#Map">Map</a> k a)&nbsp;&nbsp; (<a class="tref" href="#Map">Map</a> k a)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Map.Tip">Tip</a> </SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="_excl_excl">!!</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; k -&gt; a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="assocs">assocs</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [(k, a)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="balanceL">balanceL</a> :: k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="balanceR">balanceR</a> :: k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="bin">bin</a> :: k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="deleteFindMax">deleteFindMax</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; ((k, a), <a class="tref" href="#Map">Map</a> k a)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="deleteFindMin">deleteFindMin</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; ((k, a), <a class="tref" href="#Map">Map</a> k a)</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="delta">delta</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="elems">elems</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [a]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="empty">empty</a> :: <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="filter">filter</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="filterWithKey">filterWithKey</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="find">find</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldlStrict">foldlStrict</a> :: (a -&gt; b -&gt; a) -&gt; a -&gt; <b>[b]</b> -&gt; a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldlWithKey">foldlWithKey</a> :: (a -&gt; k -&gt; b -&gt; a) -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k b</b> -&gt; a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldrWithKey">foldrWithKey</a> :: (k -&gt; a -&gt; b -&gt; b) -&gt; b -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; b</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="fromList">fromList</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; <b>[(k, v)]</b> -&gt; <a class="tref" href="#Map">Map</a> k v</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="fromListWith">fromListWith</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; a -&gt; a) -&gt; <b>[(k, a)]</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="fromListWithKey">fromListWithKey</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; a -&gt; a) -&gt; <b>[(k, a)]</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="glue">glue</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insert">insert</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insertMax">insertMax</a> :: k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insertMin">insertMin</a> :: k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insertWith">insertWith</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; a -&gt; a) -&gt; k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="insertWithKey">insertWithKey</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; a -&gt; a) -&gt; k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="join">join</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; a -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="keys">keys</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [k]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="lookup">lookup</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="map">map</a> :: (a -&gt; b) -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k b</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="mapWithKey">mapWithKey</a> :: (k -&gt; a -&gt; b) -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k b</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="member">member</a> :: <a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="merge">merge</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_null">null</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ratio">ratio</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="singleton">singleton</a> :: k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="size">size</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="toAscList">toAscList</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [(k, a)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="toDescList">toDescList</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [(k, a)]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="toList">toList</a> :: <b><a class="tref" href="#Map">Map</a> k a</b> -&gt; [(k, a)]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#delta">delta</a>, <a class="fref" href="#ratio">ratio</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; b -&gt; a) -&gt; a -&gt; [b] -&gt; a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldlStrict">foldlStrict</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#glue">glue</a>, <a class="fref" href="#merge">merge</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; ((k, a), <a class="tref" href="#Map">Map</a> k a)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#deleteFindMax">deleteFindMax</a>, <a class="fref" href="#deleteFindMin">deleteFindMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; [(k, a)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#assocs">assocs</a>, <a class="fref" href="#toAscList">toAscList</a>, <a class="fref" href="#toDescList">toDescList</a>, <a class="fref" href="#toList">toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#elems">elems</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; [k]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#keys">keys</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_null">null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#size">size</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Map.Bin">Map.Bin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#balanceL">balanceL</a>, <a class="fref" href="#balanceR">balanceR</a>, <a class="fref" href="#bin">bin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#insertMax">insertMax</a>, <a class="fref" href="#insertMin">insertMin</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#singleton">singleton</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; a -&gt; a) -&gt; [(k, a)] -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fromListWith">fromListWith</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; a -&gt; a) -&gt; k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#insertWith">insertWith</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#filter">filter</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; a -&gt; a) -&gt; [(k, a)] -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fromListWithKey">fromListWithKey</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; a -&gt; a) -&gt; k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#insertWithKey">insertWithKey</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; (k -&gt; a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#filterWithKey">filterWithKey</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; <a class="tref" href="#Map">Map</a> k a -&gt; k -&gt; a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_excl_excl">!!</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; [(k, v)] -&gt; <a class="tref" href="#Map">Map</a> k v</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fromList">fromList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#lookup">lookup</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#member">member</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#find">find</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#join">join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Ord">Ord</a> k =&gt; k -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#insert">insert</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Map">Map</a> k a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#empty">empty</a>, <a class="fref" href="#Map.Tip">Map.Tip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; k -&gt; b -&gt; a) -&gt; a -&gt; <a class="tref" href="#Map">Map</a> k b -&gt; a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldlWithKey">foldlWithKey</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(a -&gt; b) -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#map">map</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(k -&gt; a -&gt; b -&gt; b) -&gt; b -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldrWithKey">foldrWithKey</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(k -&gt; a -&gt; b) -&gt; <a class="tref" href="#Map">Map</a> k a -&gt; <a class="tref" href="#Map">Map</a> k b</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#mapWithKey">mapWithKey</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

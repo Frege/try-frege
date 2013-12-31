@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.test.QuickCheckGen - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.test.QuickCheckGen</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:43:00 CET 2013 from source file: <SPAN CLASS="code">./frege/test/QuickCheckGen.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+Test case generation.   </p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Applicative_Gen">Applicative_Gen</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Functor_Gen">Functor_Gen</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monad_Gen">Monad_Gen</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#Gen">Gen</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#choose">choose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elements">elements</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#frequency">frequency</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#growingElements">growingElements</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listOf">listOf</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listOf1">listOf1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#oneof">oneof</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#promote">promote</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#resize">resize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sample">sample</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sample_tick">sample'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sized">sized</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#suchThat">suchThat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#suchThatMaybe">suchThatMaybe</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#variant">variant</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#vectorOf">vectorOf</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#choose">choose</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elements">elements</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#frequency">frequency</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#growingElements">growingElements</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listOf">listOf</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#listOf1">listOf1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#oneof">oneof</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#promote">promote</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#resize">resize</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sample">sample</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sample_tick">sample'</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sized">sized</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#suchThat">suchThat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#suchThatMaybe">suchThatMaybe</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#variant">variant</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#vectorOf">vectorOf</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_Gen._lt_star">Applicative_Gen.&lt;*</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_Gen._star_gt">Applicative_Gen.*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_Gen._lt_star_gt">Applicative_Gen.&lt;*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_Gen.pure">Applicative_Gen.pure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Functor_Gen.fmap">Functor_Gen.fmap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Gen._gt_gt_eq">Monad_Gen.&gt;&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Gen._gt_gt">Monad_Gen.&gt;&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Gen.join">Monad_Gen.join</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monad_Gen._return">Monad_Gen.return</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Gen.chg$unGen">Gen.chg$unGen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Gen.MkGen">Gen.MkGen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Gen.has$unGen">Gen.has$unGen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Gen.unGen">Gen.unGen</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Gen.upd$unGen">Gen.upd$unGen</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/Math.html">frege.prelude.Math</a> as Math</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/Floating.html">frege.prelude.Floating</a> as Floating</div>
+</li>
+<li>
+<div>
+import <a HREF="../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="../system/Random.html">frege.system.Random</a> as Random</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Applicative_Gen"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Applicative">Applicative</a> <a class="tref" href="#Gen">Gen</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_Gen._star_gt">*&gt;</a> :: <a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._star_gt">Applicative.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_Gen._lt_star">&lt;*</a> :: <a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Applicative._lt_star">Applicative.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_Gen._lt_star_gt">&lt;*&gt;</a> :: <a class="tref" href="#Gen">Gen</a> (α-&gt;β) -&gt; <a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_Gen.pure">pure</a> :: <b>α</b> -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Functor_Gen"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Functor">Functor</a> <a class="tref" href="#Gen">Gen</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Functor_Gen.fmap">fmap</a> :: (α -&gt; β) -&gt; <b><a class="tref" href="#Gen">Gen</a> α</b> -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monad_Gen"> </a> <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> <a class="tref" href="#Gen">Gen</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Gen._gt_gt">&gt;&gt;</a> :: <b><a class="tref" href="#Gen">Gen</a> α</b> -&gt; <a class="tref" href="#Gen">Gen</a> β -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad._gt_gt">Monad.&gt;&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Gen._gt_gt_eq">&gt;&gt;=</a> :: <b><a class="tref" href="#Gen">Gen</a> α</b> -&gt; (α -&gt; <a class="tref" href="#Gen">Gen</a> β) -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Gen.join">join</a> :: <b><a class="tref" href="#Gen">Gen</a> (<a class="tref" href="#Gen">Gen</a> α)</b> -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../prelude/PreludeMonad.html#Monad.join">Monad.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monad_Gen._return">return</a> :: α -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Gen"> </a> <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="data">
+<p>
+Generator type   </p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Gen.MkGen">MkGen</a> {unGen :: <a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; a}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Gen.unGen">unGen</a> :: <b><a class="tref" href="#Gen">Gen</a> α</b> -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">unGen</SPAN></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="choose">choose</a> :: <a class="tref" href="../system/Random.html#Random">Random</a> a =&gt; (a, a) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Generates a random element in the given inclusive range.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="elements">elements</a> :: <b>[a]</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Generates one of the given values. The input list must be non-empty.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="frequency">frequency</a> :: <b>[(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="#Gen">Gen</a> a)]</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Chooses one of the given generators, with a weighted random distribution. The input list must be non-empty.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="growingElements">growingElements</a> :: <b>[a]</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Takes a list of elements of increasing size, and chooses among an initial segment of the list. The size of this initial segment increases with the size parameter. The input list must be non-empty.      </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="listOf">listOf</a> :: <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+Generates a list of random length.</p>
+<p>
+The maximum length depends on the size parameter.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="listOf1">listOf1</a> :: <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+Generates a non-empty list of random length.</p>
+<p>
+The maximum length depends on the size parameter.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="oneof">oneof</a> :: <b>[<a class="tref" href="#Gen">Gen</a> a]</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Randomly uses one of the given generators. The input list must be non-empty.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="promote">promote</a> :: <a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> m =&gt; m (<a class="tref" href="#Gen">Gen</a> a) -&gt; <a class="tref" href="#Gen">Gen</a> (m a)</SPAN></dt>
+<dd class="func">
+<p>
+Promotes a monadic generator to a generator of monadic values.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="resize">resize</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Gen">Gen</a> a</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Overrides the size parameter. Returns a generator which uses the given size instead of the runtime-size parameter.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sample">sample</a> :: <a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <b><a class="tref" href="#Gen">Gen</a> a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+Generates some example values and prints them to <a class="fref" href="../java/IO.html#stdout">IO.stdout</a>.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sample_tick">sample'</a> :: <b><a class="tref" href="#Gen">Gen</a> a</b> -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+Generates some example values.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sized">sized</a> :: (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Gen">Gen</a> a) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Used to construct generators that depend on the size parameter.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="suchThat">suchThat</a> :: <a class="tref" href="#Gen">Gen</a> a -&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+Generates a value that satisfies a predicate.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="suchThatMaybe">suchThatMaybe</a> :: <a class="tref" href="#Gen">Gen</a> a -&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Gen">Gen</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a)</SPAN></dt>
+<dd class="func">
+<p>
+Tries to generate a value that satisfies a predicate.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="variant">variant</a> :: <a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> n =&gt; n -&gt; <b><a class="tref" href="#Gen">Gen</a> a</b> -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="vectorOf">vectorOf</a> :: <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+Generates a list of the given length.   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Gen">Gen</a> a) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sized">sized</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(<a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; a) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Gen.MkGen">Gen.MkGen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[(<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>, <a class="tref" href="#Gen">Gen</a> a)] -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#frequency">frequency</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Gen">Gen</a> a] -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#oneof">oneof</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#elements">elements</a>, <a class="fref" href="#growingElements">growingElements</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> (<a class="tref" href="#Gen">Gen</a> α) -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Gen.join">Monad_Gen.join</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> a -&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Gen">Gen</a> (<a class="tref" href="../prelude/PreludeBase.html#Maybe">Maybe</a> a)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#suchThatMaybe">suchThatMaybe</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> a -&gt; (a -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#suchThat">suchThat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sample_tick">sample'</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#listOf">listOf</a>, <a class="fref" href="#listOf1">listOf1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="../system/Random.html#StdGen">StdGen</a> -&gt; <a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Gen.unGen">Gen.unGen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#vectorOf">vectorOf</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#resize">resize</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_Gen.pure">Applicative_Gen.pure</a>, <a class="fref" href="#Monad_Gen._return">Monad_Gen.return</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Gen.has$unGen">Gen.has$unGen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeText.html#Show">Show</a> a =&gt; <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="../prelude/PreludeBase.html#IO">IO</a> <a class="tref" href="../prelude/PreludeBase.html#Unit">()</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#sample">sample</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../system/Random.html#Random">Random</a> a =&gt; (a, a) -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#choose">choose</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β) -&gt; <a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Functor_Gen.fmap">Functor_Gen.fmap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> (α-&gt;β) -&gt; <a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_Gen._lt_star_gt">Applicative_Gen.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; (α -&gt; <a class="tref" href="#Gen">Gen</a> β) -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monad_Gen._gt_gt_eq">Monad_Gen.&gt;&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; (<a class="tref" href="../prelude/PreludeBase.html#Function">-&gt;</a> <a class="tref" href="../system/Random.html#StdGen">StdGen</a> (<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;α)-&gt;<a class="tref" href="../system/Random.html#StdGen">StdGen</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;β) -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Gen.chg$unGen">Gen.chg$unGen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; (<a class="tref" href="../system/Random.html#StdGen">StdGen</a>-&gt;<a class="tref" href="../prelude/PreludeBase.html#Int">Int</a>-&gt;β) -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Gen.upd$unGen">Gen.upd$unGen</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β -&gt; <a class="tref" href="#Gen">Gen</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_Gen._lt_star">Applicative_Gen.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Gen">Gen</a> α -&gt; <a class="tref" href="#Gen">Gen</a> β -&gt; <a class="tref" href="#Gen">Gen</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_Gen._star_gt">Applicative_Gen.*&gt;</a>, <a class="fref" href="#Monad_Gen._gt_gt">Monad_Gen.&gt;&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeBase.html#Integral">Integral</a> n =&gt; n -&gt; <a class="tref" href="#Gen">Gen</a> a -&gt; <a class="tref" href="#Gen">Gen</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#variant">variant</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../prelude/PreludeMonad.html#Monad">Monad</a> m =&gt; m (<a class="tref" href="#Gen">Gen</a> a) -&gt; <a class="tref" href="#Gen">Gen</a> (m a)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#promote">promote</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.data.wrapper.Boolean - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.data.wrapper.Boolean</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:55:17 CET 2013 from source file: <SPAN CLASS="code">./frege/data/wrapper/Boolean.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+Provide wrappers <a class="tref" href="#Any">Any</a> and <a class="tref" href="#All">All</a> for <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> <a class="tref" href="../Monoid.html#Monoid">Monoid</a>s   </p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Eq_All">Eq_All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Eq_Any">Eq_Any</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monoid_All">Monoid_All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monoid_Any">Monoid_Any</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_All">Ord_All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord_Any">Ord_Any</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Semigroup_All">Semigroup_All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Semigroup_Any">Semigroup_Any</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_All">Show_All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Show_Any">Show_Any</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#All">All</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Any">Any</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#prop_all_conjunction">prop_all_conjunction</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_all_empty_left">prop_all_empty_left</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_all_empty_right">prop_all_empty_right</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_disjunction">prop_any_disjunction</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_empty_left">prop_any_empty_left</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_empty_right">prop_any_empty_right</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#prop_all_conjunction">prop_all_conjunction</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_all_empty_left">prop_all_empty_left</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_all_empty_right">prop_all_empty_right</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_disjunction">prop_any_disjunction</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_empty_left">prop_any_empty_left</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#prop_any_empty_right">prop_any_empty_right</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_All._eq_eq">Eq_All.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_All._excl_eq">Eq_All.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_All.hashCode">Eq_All.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Any._eq_eq">Eq_Any.==</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Any._excl_eq">Eq_Any.!=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Eq_Any.hashCode">Eq_Any.hashCode</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_All.mempty">Monoid_All.mempty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_All.mconcat">Monoid_All.mconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_All.mtimes">Monoid_All.mtimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_Any.mempty">Monoid_Any.mempty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_Any.mconcat">Monoid_Any.mconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_Any.mtimes">Monoid_Any.mtimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All._gt">Ord_All.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All._lt_eq">Ord_All.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All._lt">Ord_All.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All._lt_eq_gt">Ord_All.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All.compare">Ord_All.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All._gt_eq">Ord_All.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All.max">Ord_All.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_All.min">Ord_All.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any._gt">Ord_Any.&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any._lt_eq">Ord_Any.&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any._lt">Ord_Any.&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any._lt_eq_gt">Ord_Any.&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any.compare">Ord_Any.compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any._gt_eq">Ord_Any.&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any.max">Ord_Any.max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord_Any.min">Ord_Any.min</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_All.sconcat">Semigroup_All.sconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_All.mappend">Semigroup_All.mappend</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_All.stimes">Semigroup_All.stimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_Any.sconcat">Semigroup_Any.sconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_Any.mappend">Semigroup_Any.mappend</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_Any.stimes">Semigroup_Any.stimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.showList">Show_All.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.show">Show_All.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.display">Show_All.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.showChars">Show_All.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.showsub">Show_All.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_All.showsPrec">Show_All.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.showList">Show_Any.showList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.show">Show_Any.show</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.display">Show_Any.display</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.showChars">Show_Any.showChars</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.showsub">Show_Any.showsub</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Show_Any.showsPrec">Show_Any.showsPrec</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#All.has$unwrap">All.has$unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#All.chg$unwrap">All.chg$unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#All.All">All.All</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#All.unwrap">All.unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#All.upd$unwrap">All.upd$unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Any.has$unwrap">Any.has$unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Any.chg$unwrap">Any.chg$unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Any.Any">Any.Any</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Any.unwrap">Any.unwrap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Any.upd$unwrap">Any.upd$unwrap</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../Monoid.html">frege.data.Monoid</a> as Monoid</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+<li>
+<div>
+import <a HREF="../../test/QuickCheck.html">frege.test.QuickCheck</a> as QuickCheck</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_All"> </a> <a class="tref" href="../../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_All._excl_eq">!=</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_All._eq_eq">==</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_All.hashCode">hashCode</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Eq_Any"> </a> <a class="tref" href="../../prelude/PreludeBase.html#Eq">Eq</a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Any._excl_eq">!=</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Eq._excl_eq">Eq.!=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Any._eq_eq">==</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Eq_Any.hashCode">hashCode</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monoid_All"> </a> <a class="tref" href="../Monoid.html#Monoid">Monoid</a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="inst">
+<p>
+The <a class="tref" href="../Monoid.html#Monoid">Monoid</a> for <a class="tref" href="#All">All</a> uses <SPAN CLASS="code">true</SPAN> as identity.   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_All.mconcat">mconcat</a> :: <b>[<a class="tref" href="#All">All</a>]</b> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mconcat">Monoid.mconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_All.mempty">mempty</a> :: <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="tref" href="#All">All</a> <SPAN CLASS="code">true</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_All.mtimes">mtimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mtimes">Monoid.mtimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monoid_Any"> </a> <a class="tref" href="../Monoid.html#Monoid">Monoid</a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="inst">
+<p>
+The <a class="tref" href="../Monoid.html#Monoid">Monoid</a> for <a class="tref" href="#Any">Any</a> uses <SPAN CLASS="code">false</SPAN> as identity.   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_Any.mconcat">mconcat</a> :: <b>[<a class="tref" href="#Any">Any</a>]</b> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mconcat">Monoid.mconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_Any.mempty">mempty</a> :: <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="tref" href="#Any">Any</a> <SPAN CLASS="code">false</SPAN>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_Any.mtimes">mtimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mtimes">Monoid.mtimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_All"> </a> <a class="tref" href="../../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All._lt">&lt;</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All._lt_eq">&lt;=</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All._lt_eq_gt">&lt;=&gt;</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All._gt">&gt;</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All._gt_eq">&gt;=</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All.compare">compare</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All.max">max</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_All.min">min</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord_Any"> </a> <a class="tref" href="../../prelude/PreludeBase.html#Ord">Ord</a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any._lt">&lt;</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any._lt_eq">&lt;=</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any._lt_eq_gt">&lt;=&gt;</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any._gt">&gt;</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any._gt_eq">&gt;=</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any.compare">compare</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any.max">max</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord_Any.min">min</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Semigroup_All"> </a> <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="inst">
+<p>
+The <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> instance for <a class="tref" href="#All">All</a> uses operation <a class="fref" href="../../prelude/PreludeBase.html#_amp_amp">&amp;&amp;</a>.   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_All.mappend">mappend</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+Conjunction   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_All.sconcat">sconcat</a> :: <b>[<a class="tref" href="#All">All</a>]</b> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.sconcat">Semigroup.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_All.stimes">stimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.stimes">Semigroup.stimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Semigroup_Any"> </a> <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="inst">
+<p>
+The <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> instance for <a class="tref" href="#Any">Any</a> uses operation <a class="fref" href="../../prelude/PreludeBase.html#_bar_bar">||</a>.   </p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_Any.mappend">mappend</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+Disjunction   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_Any.sconcat">sconcat</a> :: <b>[<a class="tref" href="#Any">Any</a>]</b> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.sconcat">Semigroup.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_Any.stimes">stimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.stimes">Semigroup.stimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_All"> </a> <a class="tref" href="../../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.display">display</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.show">show</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.showChars">showChars</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; [<a class="tref" href="../../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.showList">showList</a> :: <b>[<a class="tref" href="#All">All</a>]</b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.showsPrec">showsPrec</a> :: <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#All">All</a></b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_All.showsub">showsub</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Show_Any"> </a> <a class="tref" href="../../prelude/PreludeText.html#Show">Show</a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.display">display</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.display">Show.display</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.show">show</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.showChars">showChars</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; [<a class="tref" href="../../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showChars">Show.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.showList">showList</a> :: <b>[<a class="tref" href="#Any">Any</a>]</b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showList">Show.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.showsPrec">showsPrec</a> :: <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <b><a class="tref" href="#Any">Any</a></b> -&gt; <b><a class="tref" href="../../prelude/PreludeBase.html#String">String</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeText.html#Show.showsPrec">Show.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Show_Any.showsub">showsub</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="All"> </a> <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="data">
+<p>
+<a class="tref" href="../Monoid.html#Monoid">Monoid</a> for <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> with operation <a class="fref" href="../../prelude/PreludeBase.html#_amp_amp">&amp;&amp;</a> and identity <SPAN CLASS="code">true</SPAN></p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="All.All">All</a> {unwrap :: <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>}</SPAN></dt>
+<dd class="func">
+<p>
+wrap a <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> value   </p>
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="All.unwrap">unwrap</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">unwrap</SPAN></p>
+</dd>
+</dl>
+</dd>
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="Any"> </a> <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="data">
+<p>
+<a class="tref" href="../Monoid.html#Monoid">Monoid</a> for <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> with operation <a class="fref" href="../../prelude/PreludeBase.html#_bar_bar">||</a> and identity <SPAN CLASS="code">false</SPAN></p>
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Any.Any">Any</a> {unwrap :: <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>}</SPAN></dt>
+<dd class="func">
+<p>
+wrap a <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> value   </p>
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Any.unwrap">unwrap</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">unwrap</SPAN></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_all_conjunction">prop_all_conjunction</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_all_empty_left">prop_all_empty_left</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_all_empty_right">prop_all_empty_right</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_any_disjunction">prop_any_disjunction</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_any_empty_left">prop_any_empty_left</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="prop_any_empty_right">prop_any_empty_right</a> :: <a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="getAll">getAll</a> :: <b><a class="tref" href="#All">All</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Alias for <a class="fref" href="#All.unwrap">All.unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="getAny">getAny</a> :: <b><a class="tref" href="#Any">Any</a></b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+Alias for <a class="fref" href="#Any.unwrap">Any.unwrap</a></p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#All">All</a>] -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_All.showList">Show_All.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#All">All</a>] -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_All.mconcat">Monoid_All.mconcat</a>, <a class="fref" href="#Semigroup_All.sconcat">Semigroup_All.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Any">Any</a>] -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Any.showList">Show_Any.showList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#Any">Any</a>] -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_Any.mconcat">Monoid_Any.mconcat</a>, <a class="fref" href="#Semigroup_Any.sconcat">Semigroup_Any.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; (<a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#All.chg$unwrap">All.chg$unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_All.max">Ord_All.max</a>, <a class="fref" href="#Ord_All.min">Ord_All.min</a>, <a class="fref" href="#Semigroup_All.mappend">Semigroup_All.mappend</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_All._eq_eq">Eq_All.==</a>, <a class="fref" href="#Eq_All._excl_eq">Eq_All.!=</a>, <a class="fref" href="#Ord_All._gt">Ord_All.&gt;</a>, <a class="fref" href="#Ord_All._lt_eq">Ord_All.&lt;=</a>, <a class="fref" href="#Ord_All._lt">Ord_All.&lt;</a>, <a class="fref" href="#Ord_All._gt_eq">Ord_All.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_All._lt_eq_gt">Ord_All.&lt;=&gt;</a>, <a class="fref" href="#Ord_All.compare">Ord_All.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#All.upd$unwrap">All.upd$unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_All.show">Show_All.show</a>, <a class="fref" href="#Show_All.display">Show_All.display</a>, <a class="fref" href="#Show_All.showsub">Show_All.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; [<a class="tref" href="../../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_All.showChars">Show_All.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#All.unwrap">All.unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_All.hashCode">Eq_All.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; (<a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>-&gt;<a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a>) -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Any.chg$unwrap">Any.chg$unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Any.max">Ord_Any.max</a>, <a class="fref" href="#Ord_Any.min">Ord_Any.min</a>, <a class="fref" href="#Semigroup_Any.mappend">Semigroup_Any.mappend</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Any._eq_eq">Eq_Any.==</a>, <a class="fref" href="#Eq_Any._excl_eq">Eq_Any.!=</a>, <a class="fref" href="#Ord_Any._gt">Ord_Any.&gt;</a>, <a class="fref" href="#Ord_Any._lt_eq">Ord_Any.&lt;=</a>, <a class="fref" href="#Ord_Any._lt">Ord_Any.&lt;</a>, <a class="fref" href="#Ord_Any._gt_eq">Ord_Any.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord_Any._lt_eq_gt">Ord_Any.&lt;=&gt;</a>, <a class="fref" href="#Ord_Any.compare">Ord_Any.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Any.upd$unwrap">Any.upd$unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Any.show">Show_Any.show</a>, <a class="fref" href="#Show_Any.display">Show_Any.display</a>, <a class="fref" href="#Show_Any.showsub">Show_Any.showsub</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; [<a class="tref" href="../../prelude/PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Any.showChars">Show_Any.showChars</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Any.unwrap">Any.unwrap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Eq_Any.hashCode">Eq_Any.hashCode</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#All.All">All.All</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Any.Any">Any.Any</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_All.showsPrec">Show_All.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#All">All</a> -&gt; <a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_All.mtimes">Monoid_All.mtimes</a>, <a class="fref" href="#Semigroup_All.stimes">Semigroup_All.stimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Show_Any.showsPrec">Show_Any.showsPrec</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#Any">Any</a> -&gt; <a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_Any.mtimes">Monoid_Any.mtimes</a>, <a class="fref" href="#Semigroup_Any.stimes">Semigroup_Any.stimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../test/QuickCheckProperty.html#Property">Property</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#prop_all_conjunction">prop_all_conjunction</a>, <a class="fref" href="#prop_all_empty_left">prop_all_empty_left</a>, <a class="fref" href="#prop_all_empty_right">prop_all_empty_right</a>, <a class="fref" href="#prop_any_disjunction">prop_any_disjunction</a>, <a class="fref" href="#prop_any_empty_left">prop_any_empty_left</a>, <a class="fref" href="#prop_any_empty_right">prop_any_empty_right</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#All">All</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_All.mempty">Monoid_All.mempty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Any">Any</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_Any.mempty">Monoid_Any.mempty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#All.has$unwrap">All.has$unwrap</a>, <a class="fref" href="#Any.has$unwrap">Any.has$unwrap</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

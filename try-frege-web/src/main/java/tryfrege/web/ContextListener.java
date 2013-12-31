@@ -23,10 +23,6 @@ import frege.scriptengine.FregeScriptEngine;
 
 public class ContextListener implements ServletContextListener {
 
-  private static final String modulePrelude = "import frege.Prelude hiding "
-      + "(stdout, stderr, print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn)\n"
-      + "import scripting.PreludeScripting";
-
   @Override
   public void contextDestroyed(final ServletContextEvent arg0) {
 
@@ -41,8 +37,6 @@ public class ContextListener implements ServletContextListener {
 
   private void evalPrelude(final String prelude, final ServletContext context) {
     final SimpleScriptContext scontext = new SimpleScriptContext();
-    scontext.setAttribute("modulePrelude", modulePrelude,
-        ScriptContext.ENGINE_SCOPE);
     final Lambda io = FregeScriptEngine.load(prelude, scontext);
     final TEither intpRes = io.apply(1).result().<TEither> forced();
     final int cons = intpRes._constructor();

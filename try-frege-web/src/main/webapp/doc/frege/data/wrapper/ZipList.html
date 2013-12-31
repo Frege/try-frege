@@ -1,0 +1,524 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.data.wrapper.ZipList - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.data.wrapper.ZipList</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:56:08 CET 2013 from source file: <SPAN CLASS="code">./frege/data/wrapper/ZipList.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#Applicative_ZipList">Applicative_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Empty_ZipList">Empty_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Foldable_ZipList">Foldable_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Functor_ZipList">Functor_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListLike_ZipList">ListLike_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource_ZipList">ListSource_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Monoid_ZipList">Monoid_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Semigroup_ZipList">Semigroup_ZipList</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Traversable_ZipList">Traversable_ZipList</a></div>
+</li>
+<li>
+<div>
+<a HREF="#data">Data Types</a></div>
+<div>
+<a class="tref" href="#ZipList">ZipList</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#Applicative_ZipList._lt_star">Applicative_ZipList.&lt;*</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_ZipList._star_gt">Applicative_ZipList.*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_ZipList._lt_star_gt">Applicative_ZipList.&lt;*&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Applicative_ZipList.pure">Applicative_ZipList.pure</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Empty_ZipList.empty">Empty_ZipList.empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Empty_ZipList._null">Empty_ZipList.null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldMap1">Foldable_ZipList.foldMap1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.fold1">Foldable_ZipList.fold1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.fold">Foldable_ZipList.fold</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldMap">Foldable_ZipList.foldMap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldl1">Foldable_ZipList.foldl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldl">Foldable_ZipList.foldl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldr">Foldable_ZipList.foldr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Foldable_ZipList.foldr1">Foldable_ZipList.foldr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Functor_ZipList.fmap">Functor_ZipList.fmap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_ZipList.head">ListLike_ZipList.head</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_ZipList._plus_plus">ListLike_ZipList.++</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_ZipList.tail">ListLike_ZipList.tail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_ZipList.length">ListLike_ZipList.length</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource_ZipList.toList">ListSource_ZipList.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_ZipList.mempty">Monoid_ZipList.mempty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_ZipList.mconcat">Monoid_ZipList.mconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Monoid_ZipList.mtimes">Monoid_ZipList.mtimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_ZipList.sconcat">Semigroup_ZipList.sconcat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_ZipList.mappend">Semigroup_ZipList.mappend</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Semigroup_ZipList.stimes">Semigroup_ZipList.stimes</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_ZipList.sequence">Traversable_ZipList.sequence</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_ZipList.mapM">Traversable_ZipList.mapM</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_ZipList.traverse">Traversable_ZipList.traverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Traversable_ZipList.sequenceA">Traversable_ZipList.sequenceA</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ZipList.chg$get">ZipList.chg$get</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ZipList.ZipList">ZipList.ZipList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ZipList.get">ZipList.get</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ZipList.has$get">ZipList.has$get</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ZipList.upd$get">ZipList.upd$get</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeNative.html">frege.prelude.PreludeNative</a> as PreludeNative</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../Monoid.html">frege.data.Monoid</a> as Monoid</div>
+</li>
+<li>
+<div>
+import <a HREF="../Foldable.html">frege.data.Foldable</a> as F</div>
+</li>
+<li>
+<div>
+import <a HREF="../../Prelude.html">frege.Prelude</a> as Prelude</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeList.html">frege.prelude.PreludeList</a> as PreludeList</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeIO.html">frege.prelude.PreludeIO</a> as PreludeIO</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeMonad.html">frege.prelude.PreludeMonad</a> as PreludeMonad</div>
+</li>
+<li>
+<div>
+import <a HREF="../Traversable.html">frege.data.Traversable</a> as T</div>
+</li>
+<li>
+<div>
+import <a HREF="../../prelude/PreludeText.html">frege.prelude.PreludeText</a> as PreludeText</div>
+</li>
+</ul>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Applicative_ZipList"> </a> <a class="tref" href="../../prelude/PreludeMonad.html#Applicative">Applicative</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_ZipList._star_gt">*&gt;</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> β</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeMonad.html#Applicative._star_gt">Applicative.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_ZipList._lt_star">&lt;*</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> β</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../../prelude/PreludeMonad.html#Applicative._lt_star">Applicative.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_ZipList._lt_star_gt">&lt;*&gt;</a> :: <b><a class="tref" href="#ZipList">ZipList</a> (α-&gt;β)</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Applicative_ZipList.pure">pure</a> :: α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Empty_ZipList"> </a> <a class="tref" href="../../prelude/PreludeList.html#Empty">Empty</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty_ZipList.empty">empty</a> :: <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty_ZipList._null">null</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Foldable_ZipList"> </a> <a class="tref" href="../Foldable.html#Foldable">Foldable</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.fold">fold</a> :: <a class="tref" href="../Monoid.html#Monoid">Monoid</a> α =&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.fold">Foldable.fold</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.fold1">fold1</a> :: <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> α =&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.fold1">Foldable.fold1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldMap">foldMap</a> :: <a class="tref" href="../Monoid.html#Monoid">Monoid</a> β =&gt; (α -&gt; β) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.foldMap">Foldable.foldMap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldMap1">foldMap1</a> :: <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> β =&gt; (α -&gt; β) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.foldMap1">Foldable.foldMap1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldl">foldl</a> :: (α -&gt; β -&gt; α) -&gt; <b>α</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> β</b> -&gt; α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldl1">foldl1</a> :: (α -&gt; α -&gt; α) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.foldl1">Foldable.foldl1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldr">foldr</a> :: (α -&gt; β -&gt; β) -&gt; β -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; β</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Foldable_ZipList.foldr1">foldr1</a> :: (α -&gt; α -&gt; α) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Foldable.html#Foldable.foldr1">Foldable.foldr1</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Functor_ZipList"> </a> <a class="tref" href="../../prelude/PreludeMonad.html#Functor">Functor</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Functor_ZipList.fmap">fmap</a> :: (α -&gt; β) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListLike_ZipList"> </a> <a class="tref" href="../../prelude/PreludeList.html#ListLike">ListLike</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_ZipList._plus_plus">++</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_ZipList.head">head</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_ZipList.length">length</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_ZipList.tail">tail</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource_ZipList"> </a> <a class="tref" href="../../prelude/PreludeList.html#ListSource">ListSource</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource_ZipList.toList">toList</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Monoid_ZipList"> </a> <a class="tref" href="../Monoid.html#Monoid">Monoid</a> <a class="tref" href="#ZipList">ZipList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_ZipList.mconcat">mconcat</a> :: <b>[<a class="tref" href="#ZipList">ZipList</a> α]</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mconcat">Monoid.mconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_ZipList.mempty">mempty</a> :: <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Monoid_ZipList.mtimes">mtimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Monoid.mtimes">Monoid.mtimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Semigroup_ZipList"> </a> <a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> <a class="tref" href="#ZipList">ZipList</a> a</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_ZipList.mappend">mappend</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_ZipList.sconcat">sconcat</a> :: <b>[<a class="tref" href="#ZipList">ZipList</a> α]</b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.sconcat">Semigroup.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Semigroup_ZipList.stimes">stimes</a> :: <b><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Monoid.html#Semigroup.stimes">Semigroup.stimes</a></p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Traversable_ZipList"> </a> <a class="tref" href="../Traversable.html#Traversable">Traversable</a> <a class="tref" href="#ZipList">ZipList</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_ZipList.mapM">mapM</a> :: <a class="tref" href="../../prelude/PreludeMonad.html#Monad">Monad</a> γ =&gt; (α -&gt; γ β) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; γ (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Traversable.html#Traversable.mapM">Traversable.mapM</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_ZipList.sequence">sequence</a> :: <a class="tref" href="../../prelude/PreludeMonad.html#Monad">Monad</a> α =&gt; <b><a class="tref" href="#ZipList">ZipList</a> (α β)</b> -&gt; α (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Traversable.html#Traversable.sequence">Traversable.sequence</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_ZipList.sequenceA">sequenceA</a> :: <a class="tref" href="../../prelude/PreludeMonad.html#Applicative">Applicative</a> α =&gt; <b><a class="tref" href="#ZipList">ZipList</a> (α β)</b> -&gt; α (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="../Traversable.html#Traversable.sequenceA">Traversable.sequenceA</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Traversable_ZipList.traverse">traverse</a> :: <a class="tref" href="../../prelude/PreludeMonad.html#Applicative">Applicative</a> γ =&gt; (α -&gt; γ β) -&gt; <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; γ (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="data">Data Types</a></h2>
+<dl class="data">
+<dt class="data">
+<SPAN CLASS="code"><b>data </b><a name="ZipList"> </a> <a class="tref" href="#ZipList">ZipList</a> a</SPAN></dt>
+<dd class="data">
+<h3>
+Constructors</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ZipList.ZipList">ZipList</a> {get :: [a]}</SPAN></dt>
+<dd class="func">
+</dd>
+</dl>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ZipList.get">get</a> :: <b><a class="tref" href="#ZipList">ZipList</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+access field <SPAN CLASS="code">get</SPAN></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; α -&gt; α) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.foldl1">Foldable_ZipList.foldl1</a>, <a class="fref" href="#Foldable_ZipList.foldr1">Foldable_ZipList.foldr1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_ZipList._plus_plus">ListLike_ZipList.++</a>, <a class="fref" href="#Semigroup_ZipList.mappend">Semigroup_ZipList.mappend</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_ZipList.tail">ListLike_ZipList.tail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource_ZipList.toList">ListSource_ZipList.toList</a>, <a class="fref" href="#ZipList.get">ZipList.get</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty_ZipList._null">Empty_ZipList.null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_ZipList.length">ListLike_ZipList.length</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_ZipList.head">ListLike_ZipList.head</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="#ZipList">ZipList</a> α] -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_ZipList.mconcat">Monoid_ZipList.mconcat</a>, <a class="fref" href="#Semigroup_ZipList.sconcat">Semigroup_ZipList.sconcat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; <a class="tref" href="#ZipList">ZipList</a> a</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ZipList.ZipList">ZipList.ZipList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Monoid_ZipList.mtimes">Monoid_ZipList.mtimes</a>, <a class="fref" href="#Semigroup_ZipList.stimes">Semigroup_ZipList.stimes</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_ZipList.pure">Applicative_ZipList.pure</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; <a class="tref" href="../../prelude/PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ZipList.has$get">ZipList.has$get</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../Monoid.html#Monoid">Monoid</a> α =&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.fold">Foldable_ZipList.fold</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> α =&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.fold1">Foldable_ZipList.fold1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty_ZipList.empty">Empty_ZipList.empty</a>, <a class="fref" href="#Monoid_ZipList.mempty">Monoid_ZipList.mempty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β -&gt; α) -&gt; α -&gt; <a class="tref" href="#ZipList">ZipList</a> β -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.foldl">Foldable_ZipList.foldl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β -&gt; β) -&gt; β -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.foldr">Foldable_ZipList.foldr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Functor_ZipList.fmap">Functor_ZipList.fmap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> (α-&gt;β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_ZipList._lt_star_gt">Applicative_ZipList.&lt;*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; ([α]-&gt;[β]) -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ZipList.chg$get">ZipList.chg$get</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> β -&gt; <a class="tref" href="#ZipList">ZipList</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_ZipList._lt_star">Applicative_ZipList.&lt;*</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; <a class="tref" href="#ZipList">ZipList</a> β -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Applicative_ZipList._star_gt">Applicative_ZipList.*&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ZipList">ZipList</a> α -&gt; [β] -&gt; <a class="tref" href="#ZipList">ZipList</a> β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ZipList.upd$get">ZipList.upd$get</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../Monoid.html#Monoid">Monoid</a> β =&gt; (α -&gt; β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.foldMap">Foldable_ZipList.foldMap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../Monoid.html#Semigroup">Semigroup</a> β =&gt; (α -&gt; β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Foldable_ZipList.foldMap1">Foldable_ZipList.foldMap1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeMonad.html#Applicative">Applicative</a> α =&gt; <a class="tref" href="#ZipList">ZipList</a> (α β) -&gt; α (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_ZipList.sequenceA">Traversable_ZipList.sequenceA</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeMonad.html#Monad">Monad</a> α =&gt; <a class="tref" href="#ZipList">ZipList</a> (α β) -&gt; α (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_ZipList.sequence">Traversable_ZipList.sequence</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeMonad.html#Applicative">Applicative</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; γ (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_ZipList.traverse">Traversable_ZipList.traverse</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="../../prelude/PreludeMonad.html#Monad">Monad</a> γ =&gt; (α -&gt; γ β) -&gt; <a class="tref" href="#ZipList">ZipList</a> α -&gt; γ (<a class="tref" href="#ZipList">ZipList</a> β)</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Traversable_ZipList.mapM">Traversable_ZipList.mapM</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>

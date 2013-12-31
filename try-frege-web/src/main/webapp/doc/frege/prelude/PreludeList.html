@@ -1,0 +1,1152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+<META http-equiv="Content-Type" content="text/html;charset=utf-8">
+<TITLE>frege.prelude.PreludeList - frege documentation</TITLE>
+<style TYPE="text/css">
+body { font-family: helvetica, arial, sans-serif }
+pre { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+h3  { font-weight: lighter }
+dt.func { background: rgb(95%, 95%, 80%); margin-top: 10px }
+dt.clas { background: rgb(80%, 95%, 95%); margin-top: 10px }
+dt.inst { background: rgb(95%, 90%, 95%); margin-top: 10px }
+dt.data { background: rgb(95%, 95%, 95%); margin-top: 10px }
+span.code { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(0%,0%,60%) }
+span.unknown { font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: red }
+a.fref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(30%, 30%, 0%) }
+a.tref { text-decoration: none; font-family: "lucida console", "courier new", monospaced; font-size: 100%; color: rgb(40%, 0%,  40%) }
+</style>
+<BODY>
+<h1>
+<a name="package">Package <SPAN CLASS="code">frege.prelude.PreludeList</SPAN></a></h1>
+<p>
+Compiled: Mon Nov 18 01:41:23 CET 2013 from source file: <SPAN CLASS="code">frege/prelude/PreludeList.fr</SPAN></p>
+<h3>
+Package Documentation</h3>
+<p>
+This package provides common list functions for the Frege language.</p>
+<p>
+It contains all functions described in section 9.1 of the <i>Haskell 2010 Language Report</i>, except for <a HREF="../../Data/List.html#lookup">lookup</a>, which has been moved to <SPAN CLASS="code">frege.data.List</SPAN> (the equivalent of Haskell's <SPAN CLASS="code">Data.List</SPAN>).</p>
+<p>
+In addition to the common list functions, three type classes capture common properties of types that are like ordinary lists:</p>
+<dl>
+<dt>
+<a class="tref" href="#Empty">Empty</a></dt>
+<dd>
+<div>
+ provides <a class="fref" href="#Empty._null">Empty.null</a> to test for empty containers and <a class="fref" href="#Empty.empty">Empty.empty</a> to create one. </div>
+</dd>
+<dt>
+<a class="tref" href="#ListLike">ListLike</a></dt>
+<dd>
+<div>
+ provides <a class="fref" href="#ListLike.length">ListLike.length</a>, <a class="fref" href="#ListLike.head">ListLike.head</a>, <a class="fref" href="#ListLike.tail">ListLike.tail</a> and <a class="fref" href="#ListLike._plus_plus">ListLike.++</a> </div>
+</dd>
+<dt>
+<a class="tref" href="#ListSource">ListSource</a></dt>
+<dd>
+<div>
+ is the type class for types that can be converted to lists (<a class="fref" href="#ListSource.toList">ListSource.toList</a>). There are instances for <a class="tref" href="./PreludeBase.html#String">String</a>, <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a>, <a class="tref" href="./PreludeBase.html#Either">Either</a> and arrays.</div>
+</dd>
+</dl>
+<p>
+This module is <i>implementation specific</i> insofar as the compiler may assume that certain items are defined here in a certain way. Changes may thus lead to compiler crashes or java code that will be rejected by the java compiler.</p>
+<p>
+In particular, desugared list comprehensions will reference <a class="fref" href="#ListSource.toList">ListSource.toList</a>.</p>
+<p>
+This package is implicitly imported.</p>
+<h3>
+Table of Content</h3>
+<ul>
+<li>
+<div>
+<a HREF="#class">Classes</a></div>
+<div>
+<a class="tref" href="#Empty">Empty</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListLike">ListLike</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource">ListSource</a></div>
+</li>
+<li>
+<div>
+<a HREF="#instance">Instances</a></div>
+<div>
+<a class="tref" href="#ListLike_StringJ">ListLike_StringJ</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListLike__lbrack_rbrack">ListLike_[]</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource_Either">ListSource_Either</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource_Maybe">ListSource_Maybe</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource_StringJ">ListSource_StringJ</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#ListSource__lbrack_rbrack">ListSource_[]</a>&nbsp;&nbsp;&nbsp; <a class="tref" href="#Ord__lbrack_rbrack">Ord_[]</a></div>
+</li>
+<li>
+<div>
+<a HREF="#let">Functions and Values (alphabetically)</a></div>
+<div>
+<a class="fref" href="#_excl_excl">!!</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#all">all</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#and">and</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#any">any</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_break">break</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#concat">concat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#concatMap">concatMap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cycle">cycle</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#drop">drop</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#dropWhile">dropWhile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elem">elem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filter">filter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fold">fold</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldl">foldl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldl1">foldl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldr">foldr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldr1">foldr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldrs">foldrs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#init">init</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#intersperse">intersperse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#iterate">iterate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#last">last</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#map">map</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#maximum">maximum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#minimum">minimum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#notElem">notElem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#or">or</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#packed">packed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#product">product</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#repeat">repeat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#replicate">replicate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reverse">reverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl">scanl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl1">scanl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr">scanr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr1">scanr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#span">span</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#splitAt">splitAt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#strhead">strhead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sum">sum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#take">take</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#takeWhile">takeWhile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unpacked">unpacked</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip">unzip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip3">unzip3</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip">zip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip3">zip3</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zipWith">zipWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zipWith3">zipWith3</a></div>
+</li>
+<li>
+<div>
+<a HREF="#case">Functions and Values (by type)</a></div>
+<div>
+<a class="fref" href="#_excl_excl">!!</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#all">all</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#and">and</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#any">any</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#_break">break</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#concat">concat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#concatMap">concatMap</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#cycle">cycle</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#drop">drop</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#dropWhile">dropWhile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#elem">elem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#filter">filter</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#fold">fold</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldl">foldl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldl1">foldl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldr">foldr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldr1">foldr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#foldrs">foldrs</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#init">init</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#intersperse">intersperse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#iterate">iterate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#last">last</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#map">map</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#maximum">maximum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#minimum">minimum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#notElem">notElem</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#or">or</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#packed">packed</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#product">product</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#repeat">repeat</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#replicate">replicate</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#reverse">reverse</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl">scanl</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanl1">scanl1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr">scanr</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#scanr1">scanr1</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#span">span</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#splitAt">splitAt</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#strhead">strhead</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#sum">sum</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#take">take</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#takeWhile">takeWhile</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unpacked">unpacked</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip">unzip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#unzip3">unzip3</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip">zip</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zip3">zip3</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zipWith">zipWith</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#zipWith3">zipWith3</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Empty._null">Empty.null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Empty.empty">Empty.empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike.head">ListLike.head</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike._plus_plus">ListLike.++</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike.length">ListLike.length</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike.tail">ListLike.tail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource.toList">ListSource.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_StringJ.head">ListLike_StringJ.head</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_StringJ.empty">ListLike_StringJ.empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_StringJ._null">ListLike_StringJ.null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike_StringJ.tail">ListLike_StringJ.tail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack.length">ListLike_[].length</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack.empty">ListLike_[].empty</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack._plus_plus">ListLike_[].++</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack.head">ListLike_[].head</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack.tail">ListLike_[].tail</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListLike__lbrack_rbrack._null">ListLike_[].null</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource_Either.toList">ListSource_Either.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource_Maybe.toList">ListSource_Maybe.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource_StringJ.toList">ListSource_StringJ.toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#ListSource__lbrack_rbrack.toList">ListSource_[].toList</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack._gt">Ord_[].&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack._lt_eq">Ord_[].&lt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack._lt">Ord_[].&lt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack._lt_eq_gt">Ord_[].&lt;=&gt;</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack.compare">Ord_[].compare</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack._gt_eq">Ord_[].&gt;=</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack.max">Ord_[].max</a>&nbsp;&nbsp;&nbsp; <a class="fref" href="#Ord__lbrack_rbrack.min">Ord_[].min</a></div>
+</li>
+</ul>
+<h3>
+Imports</h3>
+<ul>
+<li>
+<div>
+import <a HREF="./PreludeBase.html">frege.prelude.PreludeBase</a> as PreludeBase</div>
+</li>
+<li>
+<div>
+import <a HREF="../control/Semigroupoid.html">frege.control.Semigroupoid</a> as Semigroupoid</div>
+</li>
+</ul>
+<h2>
+<a name="class">Classes</a></h2>
+<dl class="clas">
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="Empty">Empty</a>  c</SPAN></dt>
+<dd class="clas">
+<p>
+A class for containers/collections that have an empty value.</p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#ListLike_StringJ">StringJ</a>, <a class="tref" href="#ListLike__lbrack_rbrack">[]</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty.empty">empty</a> :: <a class="tref" href="#Empty">Empty</a> c =&gt; c e</SPAN></dt>
+<dd class="func">
+<p>
+the empty container   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Empty._null">null</a> :: <a class="tref" href="#Empty">Empty</a> c =&gt; c e -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<b>true</b> if and only if the container is <a class="fref" href="#Empty.empty">Empty.empty</a>   </p>
+</dd>
+</dl>
+</dd>
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="ListLike">ListLike</a> <a class="tref" href="#Empty">Empty</a> list =&gt;  list</SPAN></dt>
+<dd class="clas">
+<p>
+A class for data types that can be viewed as list.</p>
+<p>
+Such data types are instances of <a class="tref" href="#Empty">Empty</a> and support <a class="fref" href="#ListLike.head">ListLike.head</a>, <a class="fref" href="#ListLike.tail">ListLike.tail</a>, <a class="fref" href="#ListLike.length">ListLike.length</a> and concatenation (<a class="fref" href="#ListLike._plus_plus">ListLike.++</a>)</p>
+<p>
+This class provides no means to construct a list.</p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#ListLike_StringJ">StringJ</a>, <a class="tref" href="#ListLike__lbrack_rbrack">[]</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike._plus_plus">++</a> :: <a class="tref" href="#ListLike">ListLike</a> list =&gt; list e -&gt; list e -&gt; list e</SPAN></dt>
+<dd class="func">
+<p>
+concatenate two lists, strings or whatever</p>
+<PRE>
+ empty ++ x == x &amp;&amp; x ++ empty == x   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike.head">head</a> :: <a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; elem</SPAN></dt>
+<dd class="func">
+<p>
+Get the element at the head of a non empty list, otherwise <a class="fref" href="./PreludeBase.html#undefined">undefined</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike.length">length</a> :: <a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+computes the length of a list in a type dependend way   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike.tail">tail</a> :: <a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; list elem</SPAN></dt>
+<dd class="func">
+<p>
+Get the tail elements. This is <a class="fref" href="./PreludeBase.html#undefined">undefined</a> if the list is empty.   </p>
+</dd>
+</dl>
+</dd>
+<dt class="clas">
+<SPAN CLASS="code"><b>class </b><a name="ListSource">ListSource</a>  t</SPAN></dt>
+<dd class="clas">
+<p>
+A class for things we can make a list from</p>
+<h3>
+Known Instances</h3>
+<p>
+<a class="tref" href="#ListSource_StringJ">StringJ</a>, <a class="tref" href="#ListSource_Either">Either</a>, <a class="tref" href="#ListSource_Maybe">Maybe</a>, <a class="tref" href="#ListSource__lbrack_rbrack">[]</a></p>
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource.toList">toList</a> :: <a class="tref" href="#ListSource">ListSource</a> t =&gt; t e -&gt; [e]</SPAN></dt>
+<dd class="func">
+<p>
+converts the value to a list   </p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="instance">Instances</a></h2>
+<dl class="inst">
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListLike_StringJ"> </a> <a class="tref" href="#ListLike">ListLike</a> <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ._plus_plus">++</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> a</b> -&gt; <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> a</b> -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> a<br><b>pure </b><b>native </b>+</SPAN></dt>
+<dd class="func">
+<p>
+Alias for <a class="fref" href="#ListLike._plus_plus">ListLike.++</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ.empty">empty</a> :: <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α<br><b>pure </b><b>native </b>frege.runtime.Runtime.emptyString</SPAN></dt>
+<dd class="func">
+<p>
+A polymorphic empty string.</p>
+<p>
+This is the only string value whose type is not <a class="tref" href="./PreludeBase.html#String">String</a> that must ever exist.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ.head">head</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The first element of a <a class="tref" href="./PreludeBase.html#String">String</a> or <a class="fref" href="./PreludeBase.html#undefined">undefined</a> if the string is empty.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ.length">length</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> a</b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a><br><b>pure </b><b>native </b>length</SPAN></dt>
+<dd class="func">
+<p>
+Alias for <a class="fref" href="#ListLike.length">ListLike.length</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ._null">null</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">true</SPAN> if and only if the length of the string is 0   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike_StringJ.tail">tail</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</b> -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</SPAN></dt>
+<dd class="func">
+<p>
+The tail of a <a class="tref" href="./PreludeBase.html#String">String</a> or undefined if it is empty   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListLike__lbrack_rbrack"> </a> <a class="tref" href="#ListLike">ListLike</a> <a class="tref" href="./PreludeBase.html#List">[]</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack._plus_plus">++</a> :: <b>[α]</b> -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+Concatenation of 2 lists   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack.empty">empty</a> :: [α]</SPAN></dt>
+<dd class="func">
+<p>
+the empty list   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack.head">head</a> :: <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The first element of a list or <a class="fref" href="./PreludeBase.html#undefined">undefined</a> if it is empty.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack.length">length</a> :: <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+Get the length of a list   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack._null">null</a> :: <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<b>true</b> for the empty list, false otherwise   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="ListLike__lbrack_rbrack.tail">tail</a> :: <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+The tail of a list or undefined if it is empty   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource_Either"> </a> <a class="tref" href="#ListSource">ListSource</a> <a class="tref" href="./PreludeBase.html#Either">Either</a> l</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource_Either.toList">toList</a> :: <b>(α | β)</b> -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+Singleton with element from <a class="fref" href="./PreludeBase.html#Either.Right">Either.Right</a> or empty list for <a class="fref" href="./PreludeBase.html#Either.Left">Either.Left</a>   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource_Maybe"> </a> <a class="tref" href="#ListSource">ListSource</a> <a class="tref" href="./PreludeBase.html#Maybe">Maybe</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource_Maybe.toList">toList</a> :: <b><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+Singleton with element from <a class="fref" href="./PreludeBase.html#Maybe.Just">Maybe.Just</a> or empty list for <a class="fref" href="./PreludeBase.html#Maybe.Nothing">Maybe.Nothing</a>    </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource_StringJ"> </a> <a class="tref" href="#ListSource">ListSource</a> <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource_StringJ.toList">toList</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+List of characters, computed lazily in contrast to <a class="fref" href="#unpacked">unpacked</a>   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="ListSource__lbrack_rbrack"> </a> <a class="tref" href="#ListSource">ListSource</a> <a class="tref" href="./PreludeBase.html#List">[]</a></SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="ListSource__lbrack_rbrack.toList">toList</a> :: <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+The list itself.   </p>
+</dd>
+</dl>
+</dd>
+<dt class="inst">
+<SPAN CLASS="code"><b>instance </b><a name="Ord__lbrack_rbrack"> </a> <a class="tref" href="./PreludeBase.html#Ord">Ord</a> <a class="tref" href="./PreludeBase.html#Ord">Ord</a> a =&gt; [a]</SPAN></dt>
+<dd class="inst">
+<h3>
+Member Functions</h3>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack._lt">&lt;</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord._lt">Ord.&lt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack._lt_eq">&lt;=</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord._lt_eq">Ord.&lt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack._lt_eq_gt">&lt;=&gt;</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+Function generated for derived istance.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack._gt">&gt;</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord._gt">Ord.&gt;</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack._gt_eq">&gt;=</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord._gt_eq">Ord.&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack.compare">compare</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord.compare">Ord.compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack.max">max</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord.max">Ord.max</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="Ord__lbrack_rbrack.min">min</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+inherited from <a class="fref" href="./PreludeBase.html#Ord.min">Ord.min</a></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<h2>
+<a name="let">Functions and Values</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a name="_excl_excl">!!</a> :: <b>[α]</b> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">xs !! n</SPAN> is the element with index /n/ of the list /xs/, where the head element of a list has index 0.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="all">all</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">all p xs</SPAN> tells if all elements of /xs/ have property /p/. This is equivalent to <SPAN CLASS="code">fold (&amp;&amp;) true (map p xs)</SPAN> except that <a class="fref" href="#all">all</a> stops at the first element that hasn't property /p/.</p>
+<p>
+Note that, according to the identity above, <SPAN CLASS="code">all p []</SPAN> is always <SPAN CLASS="code">true</SPAN>.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="and">and</a> :: <b>[<a class="tref" href="./PreludeBase.html#Bool">Bool</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#and">and</a> returns the conjunction of a Boolean list. For the result to be <b>true</b>, the list must be finite; <b>false</b>, however, results from a <b>false</b> value at a finite index of a finite or infinite list.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="any">any</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">any p xs</SPAN> tells if any element of /xs/ has property /p/. This is equivalent to <SPAN CLASS="code">fold (||) false (map p xs)</SPAN> except that <a class="fref" href="#any">any</a> stops at the first element that has property /p/.</p>
+<p>
+Note that, according to the identity above,  <SPAN CLASS="code">any p []</SPAN> is always <SPAN CLASS="code">false</SPAN>.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="_break">break</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; [α] -&gt; ([α], [α])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_break">break</a>, applied to a predicate /p/ and a list /xs/, returns a tuple where the first element is the longest prefix (possibly empty) of /xs/ elements that do <b>not</b> satisfy /p/ and the second element is the remainder of the list.</p>
+<p>
+<SPAN CLASS="code">break p</SPAN> is equivalent to <SPAN CLASS="code">span (not • p)</SPAN>.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="concat">concat</a> :: <a class="tref" href="#ListLike">ListLike</a> α =&gt; <b>[α β]</b> -&gt; α β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#concat">concat</a> concatenates the subitems of the argument which is a list of list or a list of strings. It is ok if the argument is an infinite list or any of the sublists is infinite. In either case, the result will also be infinite.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="concatMap">concatMap</a> :: <a class="tref" href="#ListLike">ListLike</a> β =&gt; (γ-&gt;β α) -&gt; <b>[γ]</b> -&gt; β α</SPAN></dt>
+<dd class="func">
+<p>
+Map a function over a list and concatenate the list or string results.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="cycle">cycle</a> :: <b>[a]</b> -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">cycle xs</SPAN> builds a value that is an infinite repetition of /xs/, which must not be empty.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="drop">drop</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">drop n xs</SPAN> returns what remains from /xs/ after the /n/ leading elements have been dropped. If /n/ is greater than the <a class="fref" href="#ListLike.length">ListLike.length</a> of /xs/, the result is the empty list.</p>
+<p>
+For negative /n/, the result is undefined.</p>
+<p>
+The following property holds for all lists /xs/ and non negative /n/:</p>
+<PRE>
+ take n xs ++ drop n xs == xs</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="dropWhile">dropWhile</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">dropWhile p xs</SPAN> drops leading elements from /xs/ that satisfy the predicate /p/.</p>
+<p>
+The following holds for all lists /xs/</p>
+<PRE>
+ takeWhile p xs ++ dropWhile p xs == xs</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="elem">elem</a> :: <a class="tref" href="./PreludeBase.html#Eq">Eq</a> α =&gt; α -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">e `elem` xs</SPAN> is true if and only if at least one of the elements of /xs/ equals /e/.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="filter">filter</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">filter p xs</SPAN> returns the list of elements /x/ from /xs/ where (/p/ /x/) holds.</p>
+<p>
+<a class="fref" href="#filter">filter</a> will not stop to evaluate its argument list until the first element with the property asked for is found. For example</p>
+<PRE>
+ filter (==true) (repeat false)</PRE>
+<p>
+will loop forever, whereas</p>
+<PRE>
+ filter iseven (iterate succ 1n) where iseven n = n `band` 1n == 0n</PRE>
+<p>
+will faithfully deliver the list of positive integers that are divisible by 2, one by one.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="fold">fold</a> :: (α-&gt;β-&gt;α) -&gt; <b>α</b> -&gt; <b>[β]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fold">fold</a>, applied to a binary operator, a starting value (typically the left identity of the operator), and a list, reduces the list using the binary operator, from left to right:</p>
+<PRE>
+ fold f z [x1, x2, ..., xn] = (((z `f` x1) `f` x2) `f` ...) `f` xn</PRE>
+<p>
+<a class="fref" href="#fold">fold</a> runs in constant stack space, but consumes the entire list before returning a result, so it must not be applied to infinite lists.</p>
+<p>
+This function is known as <SPAN CLASS="code">foldl'</SPAN> in Haskell where there is a bias in favour of using <a class="fref" href="#foldr">foldr</a>.</p>
+<p>
+In the environment of the JVM stack space is precious, hence one should prefer <a class="fref" href="#fold">fold</a> when one has the choice.</p>
+<p>
+<a class="fref" href="#fold">fold</a> is strict in the accumulator, hence in every recursion the intermediate result is evaluated, thus preventing build up of possibly huge thunks that result in stack overflows on evaluation.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldl">foldl</a> :: (α-&gt;β-&gt;α) -&gt; α -&gt; <b>[β]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+warning: It is strongly advised to use <a class="fref" href="#fold">fold</a> instead - beware of stack overflow!</p>
+<p>
+<a class="fref" href="#foldl">foldl</a>, applied to a binary operator, a starting value (typically the left identity of the operator), and a list, reduces the list using the binary operator, from left to right:</p>
+<PRE>
+ fold f z [x1, x2, ..., xn] = (((z `f` x1) `f` x2) `f` ...) `f` xn</PRE>
+<p>
+Because the operator is applied lazily, <a class="fref" href="#foldl">foldl</a> typically builds up large thunks which, when finally evaluated, may overflow the stack space. Therefore, the use of <a class="fref" href="#fold">fold</a> instead of <a class="fref" href="#foldl">foldl</a> is strogly suggested.</p>
+<p>
+This function exists merely for compatibility with Haskell.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldl1">foldl1</a> :: (α-&gt;α-&gt;α) -&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldl1">foldl1</a> is a variant of <a class="fref" href="#fold">fold</a> that has no starting value argument and thus must be applied to nonempty lists only.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldr">foldr</a> :: (α-&gt;β-&gt;β) -&gt; β -&gt; <b>[α]</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+Fold over a list from right to left.</p>
+<PRE>
+ foldr f a (x1:x2:x3:[])</PRE>
+<p>
+is the same as</p>
+<PRE>
+ x1 `f` (x2 `f` (x3 `f` a))</PRE>
+<p>
+Note that, if /f/ is strict in the second argument, <SPAN CLASS="code">foldr f</SPAN> will need stack space proportional to the length of the list. But if /f/ is lazy in it's second argument, <a class="fref" href="#foldr">foldr</a> works on infinite lists.</p>
+<p>
+If /f/ is commutative, the list finite and lazyness not an issue, <a class="fref" href="#fold">fold</a> may be the better choice since it runs with constant stack space. Otherwise, if /f/ is not commutative, <a class="fref" href="#foldrs">foldrs</a> will trade time and heap space for stack space by <a class="fref" href="#fold">fold</a>ing the <a class="fref" href="./PreludeBase.html#flip">flip</a>ped /f/ over the <a class="fref" href="#reverse">reverse</a>d list.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldr1">foldr1</a> :: (α-&gt;α-&gt;α) -&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldr1">foldr1</a> is a variant of <a class="fref" href="#foldr">foldr</a> that has no starting argument, and thus must be applied to a non-empty list    </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="foldrs">foldrs</a> :: (α-&gt;β-&gt;β) -&gt; <b>β</b> -&gt; <b>[α]</b> -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+This function may be used in place of</p>
+<PRE>
+ foldr f z xs</PRE>
+<p>
+if /f/ is strict in its right operand and /xs/ is a finite list, in cases where <a class="fref" href="#foldr">foldr</a> exceeds the stack size, which is usually quite limited in the JVM.</p>
+<p>
+<a class="fref" href="#foldrs">foldrs</a> will need extra CPU cycles and maybe (temporary) heap space for <a class="fref" href="#reverse">reverse</a>-ing its list argument, before <a class="fref" href="#fold">fold</a>ing the <a class="fref" href="./PreludeBase.html#flip">flip</a>ped /f/ over it.</p>
+<p>
+If /f/ is commutative, you may simply use <a class="fref" href="#fold">fold</a> instead.</p>
+<p>
+The following property holds for all finite lists /xs/:</p>
+<PRE>
+ foldr f z xs == foldrs f z xs</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="init">init</a> :: <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+Returns all but the last element from a list.</p>
+<p>
+The following property holds for all non-empty finite lists /xs/:</p>
+<PRE>
+ init xs ++ [last xs] == xs   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="intersperse">intersperse</a> :: α -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">intersperse a xs</SPAN> inserts /a/ between every two elements of /xs/</p>
+<PRE>
+ intersperse 0 (1..3) == [1,0,2,0,3]</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="iterate">iterate</a> :: (α-&gt;α) -&gt; α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">iterate f a</SPAN> builds the infinite list <SPAN CLASS="code">[a, f a, f (f a), ...]</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="last">last</a> :: <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+Returns the last element of a list by taking the <a class="fref" href="#ListLike.head">ListLike.head</a> of the <a class="fref" href="#reverse">reverse</a>d list.</p>
+<p>
+See also <a class="fref" href="#init">init</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="map">map</a> :: (α-&gt;β) -&gt; <b>[α]</b> -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">map f xs</SPAN> applies /f/ to each element of /xs/ and builds a new list from the results.</p>
+<p>
+Usage of <a class="fref" href="#map">map</a> is safe on infinite lists, it delivers the result list one by one as it is demanded.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="maximum">maximum</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The maximal value of a non empty list, same as (<a class="fref" href="#foldl1">foldl1</a> <a class="fref" href="./PreludeBase.html#Ord.max">Ord.max</a>)    </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="minimum">minimum</a> :: <a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The minimal value of a non empty list, same as (<a class="fref" href="#foldl1">foldl1</a> <a class="fref" href="./PreludeBase.html#Ord.min">Ord.min</a>)    </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="notElem">notElem</a> :: <a class="tref" href="./PreludeBase.html#Eq">Eq</a> α =&gt; α -&gt; <b>[α]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+opposite of <a class="fref" href="#elem">elem</a>   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="or">or</a> :: <b>[<a class="tref" href="./PreludeBase.html#Bool">Bool</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#or">or</a> returns the disjunction of a Boolean list. For the result to be <b>false</b>, the list must be finite; <b>true</b>, however, results from a <b>true</b> value at a finite index of a finite or infinite list.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="packed">packed</a> :: <b>[<a class="tref" href="./PreludeBase.html#Char">Char</a>]</b> -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+convert a list of characters to a string</p>
+<PRE>
+ packed ['a', 'b', 'c' ] == "abc"</PRE>
+<p>
+Not very efficient, may be replaced by a java function that does it with a string buffer later.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="product">product</a> :: <a class="tref" href="./PreludeBase.html#Num">Num</a> α =&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The product of the numbers in a list, same as (<a class="fref" href="#fold">fold</a> (<a class="fref" href="./PreludeBase.html#Num._star">Num.*</a>) <a class="fref" href="./PreludeBase.html#Num.one">Num.one</a>)   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="repeat">repeat</a> :: α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">repeat a</SPAN> builds an infinite list where all elements are /a/.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="replicate">replicate</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; α -&gt; [α]</SPAN></dt>
+<dd class="func">
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="reverse">reverse</a> :: <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+reverses a list</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanl">scanl</a> :: (α-&gt;β-&gt;α) -&gt; <b>α</b> -&gt; <b>[β]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl">scanl</a> is similar to <a class="fref" href="#fold">fold</a> but returns a list of successive reduced values from the left:</p>
+<PRE>
+ scanl f z [x1, x2, ...] = [z, z `f` x1, (z `f` x1) `f` x2, ... ]</PRE>
+<p>
+The follwoing property holds for all finite lists /xs/:</p>
+<PRE>
+ last (scanl f z xs) == fold f z xs</PRE>
+<p>
+In contrast to <a class="fref" href="#fold">fold</a>, <a class="fref" href="#scanl">scanl</a> can operate on infinite lists.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanl1">scanl1</a> :: (α-&gt;α-&gt;α) -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl1">scanl1</a> is similar to <a class="fref" href="#scanl">scanl</a>, but takes the <a class="fref" href="#ListLike.head">ListLike.head</a> of the list as starting element and is thus only applicable to non-empty lists.</p>
+<PRE>
+ scanl1 f [x1, x2, ...] = [x1, x1 `f` x2, (x1 `f` x2) `f` ...]</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanr">scanr</a> :: (α -&gt; β -&gt; β) -&gt; β -&gt; <b>[α]</b> -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanr">scanr</a> is the right-to-left dual of <a class="fref" href="#scanl">scanl</a>.</p>
+<p>
+Note that</p>
+<PRE>
+ head (scanr f z xs) == foldr f z xs.   </PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="scanr1">scanr1</a> :: (α-&gt;α-&gt;α) -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanr1">scanr1</a> is a variant of <a class="fref" href="#scanr">scanr</a> that has no starting value argument.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="span">span</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; [α] -&gt; ([α], [α])</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">span p xs</SPAN> returns a tuple whose first element is the longest prefix of <SPAN CLASS="code">xs</SPAN> elements that satisfy <SPAN CLASS="code">p</SPAN> and whose second element is the remainder of the list.</p>
+<PRE>
+ span p xs == (takeWhile p xs, dropWhile p xs)</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="splitAt">splitAt</a> :: <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; [α] -&gt; ([α], [α])</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">splitAt n xs</SPAN> returns a tuple where first element is /xs/ prefix of length /n/ and the second element is the remainder of the list.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="strhead">strhead</a> :: <b><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</b> -&gt; <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">strhead s n</SPAN> returns the initial portion of s with at most n characters. if s.<a class="fref" href="#ListLike.length">ListLike.length</a> is lower than n, only so much characters are returned.</p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="sum">sum</a> :: <a class="tref" href="./PreludeBase.html#Num">Num</a> α =&gt; <b>[α]</b> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+The sum of the numbers in a list, same as (<a class="fref" href="#fold">fold</a> (<a class="fref" href="./PreludeBase.html#Num._plus">Num.+</a>) <a class="fref" href="./PreludeBase.html#Num.zero">Num.zero</a>)   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="take">take</a> :: <b><a class="tref" href="./PreludeBase.html#Int">Int</a></b> -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">take n xs</SPAN> returns the starting sequence of /xs/ with at most /n/ elements. If /n/ is greater than the <a class="fref" href="#ListLike.length">ListLike.length</a> of /xs/, the result is /xs/.</p>
+<p>
+For negative /n/, the result is undefined.</p>
+<p>
+The following property holds for all lists /xs/ and non negative /n/:</p>
+<PRE>
+ take n xs ++ drop n xs == xs</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="takeWhile">takeWhile</a> :: (α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; <b>[α]</b> -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">takeWhile p xs</SPAN> takes leading elements from /xs/ while they satisfy the predicate /p/.</p>
+<p>
+Example:</p>
+<PRE>
+ takeWhile (&lt;7) [1,2,3,9,4] == [1,2,3]</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unpacked">unpacked</a> :: <b><a class="tref" href="./PreludeBase.html#String">String</a></b> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+Eagerly converts a <a class="tref" href="./PreludeBase.html#String">String</a> to a list.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unzip">unzip</a> :: <b>[(α, β)]</b> -&gt; ([α], [β])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unzip">unzip</a> turns a list of tuples into a tuple of lists. It is the opposite of <a class="fref" href="#zip">zip</a> and the follwoing holds for genuine lists</p>
+<PRE>
+ (curry zip @ unzip) xs == xs</PRE>
+<p>
+But note that</p>
+<PRE>
+ (unzip @ curry zip) (as, bs) == (as,bs)</PRE>
+<p>
+will only hold if <SPAN CLASS="code">length as == length bs</SPAN></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="unzip3">unzip3</a> :: <b>[(β, α, γ)]</b> -&gt; ([β], [α], [γ])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unzip3">unzip3</a> unzips a list of triples and returns a triple of lists.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="zip">zip</a> :: <b>[α]</b> -&gt; <b>[β]</b> -&gt; [(α, β)]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">zip as bs</SPAN> builds a list of tuples of corresponding elements of /as/ and /bs/. Trailing elements of the longer list are ignored.</p>
+<PRE>
+ zip (1,2,3) "ab" = [(1, "a"), (2, "b")]</PRE>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="zip3">zip3</a> :: <b>[β]</b> -&gt; <b>[α]</b> -&gt; <b>[γ]</b> -&gt; [(β, α, γ)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zip3">zip3</a> zips 3 lists in the same way as <a class="fref" href="#zip">zip</a> does it.   </p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="zipWith">zipWith</a> :: (α-&gt;γ-&gt;β) -&gt; <b>[α]</b> -&gt; <b>[γ]</b> -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<SPAN CLASS="code">zipWith f xs ys</SPAN> zips two lists with function /f/ instead of the standard <a class="tref" href="./PreludeBase.html#Tuple2">(,)</a> that is used by <a class="fref" href="#zip">zip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a name="zipWith3">zipWith3</a> :: (β-&gt;α-&gt;δ-&gt;γ) -&gt; <b>[β]</b> -&gt; <b>[α]</b> -&gt; <b>[δ]</b> -&gt; [γ]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zipWith3">zipWith3</a> /f/ zips 3 lists with function /f/ instead of the standard <a class="tref" href="./PreludeBase.html#Tuple3">(,,)</a> that is used by <a class="fref" href="#zip3">zip3</a>   </p>
+</dd>
+</dl>
+<h2>
+<a name="case">Functions and Values by Type</a></h2>
+<dl class="func">
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#String">String</a> -&gt; [<a class="tref" href="./PreludeBase.html#Char">Char</a>]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unpacked">unpacked</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Bool">Bool</a>] -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#and">and</a>, <a class="fref" href="#or">or</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[<a class="tref" href="./PreludeBase.html#Char">Char</a>] -&gt; <a class="tref" href="./PreludeBase.html#String">String</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#packed">packed</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;α-&gt;α) -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl1">scanl1</a>, <a class="fref" href="#scanr1">scanr1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;α-&gt;α) -&gt; [α] -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldl1">foldl1</a>, <a class="fref" href="#foldr1">foldr1</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; [α] -&gt; ([α], [α])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_break">break</a>, <a class="fref" href="#span">span</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#dropWhile">dropWhile</a>, <a class="fref" href="#filter">filter</a>, <a class="fref" href="#takeWhile">takeWhile</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;<a class="tref" href="./PreludeBase.html#Bool">Bool</a>) -&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#all">all</a>, <a class="fref" href="#any">any</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;α) -&gt; α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#iterate">iterate</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Maybe">Maybe</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource_Maybe.toList">ListSource_Maybe.toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#strhead">strhead</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α -&gt; <a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_StringJ.tail">ListLike_StringJ.tail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource_StringJ.toList">ListSource_StringJ.toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_StringJ._null">ListLike_StringJ.null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_StringJ.head">ListLike_StringJ.head</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[a] -&gt; [a]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#cycle">cycle</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike__lbrack_rbrack._plus_plus">ListLike_[].++</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#_excl_excl">!!</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#init">init</a>, <a class="fref" href="#reverse">reverse</a>, <a class="fref" href="#ListLike__lbrack_rbrack.tail">ListLike_[].tail</a>, <a class="fref" href="#ListSource__lbrack_rbrack.toList">ListSource_[].toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike__lbrack_rbrack._null">ListLike_[].null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike__lbrack_rbrack.length">ListLike_[].length</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#last">last</a>, <a class="fref" href="#ListLike__lbrack_rbrack.head">ListLike_[].head</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; [α] -&gt; ([α], [α])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#splitAt">splitAt</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#drop">drop</a>, <a class="fref" href="#take">take</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Int">Int</a> -&gt; α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#replicate">replicate</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#intersperse">intersperse</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">α -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#repeat">repeat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Eq">Eq</a> α =&gt; α -&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#elem">elem</a>, <a class="fref" href="#notElem">notElem</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Num">Num</a> α =&gt; [α] -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#product">product</a>, <a class="fref" href="#sum">sum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; [α] -&gt; [α] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord__lbrack_rbrack.max">Ord_[].max</a>, <a class="fref" href="#Ord__lbrack_rbrack.min">Ord_[].min</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; [α] -&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord__lbrack_rbrack._gt">Ord_[].&gt;</a>, <a class="fref" href="#Ord__lbrack_rbrack._lt_eq">Ord_[].&lt;=</a>, <a class="fref" href="#Ord__lbrack_rbrack._lt">Ord_[].&lt;</a>, <a class="fref" href="#Ord__lbrack_rbrack._gt_eq">Ord_[].&gt;=</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; [α] -&gt; [α] -&gt; <a class="tref" href="./PreludeBase.html#Ordering">Ordering</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Ord__lbrack_rbrack._lt_eq_gt">Ord_[].&lt;=&gt;</a>, <a class="fref" href="#Ord__lbrack_rbrack.compare">Ord_[].compare</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#Ord">Ord</a> α =&gt; [α] -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#maximum">maximum</a>, <a class="fref" href="#minimum">minimum</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="./PreludeBase.html#StringJ">StringJ</a> α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike_StringJ.empty">ListLike_StringJ.empty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike__lbrack_rbrack.empty">ListLike_[].empty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α -&gt; β -&gt; β) -&gt; β -&gt; [α] -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanr">scanr</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;β-&gt;α) -&gt; α -&gt; [β] -&gt; [α]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#scanl">scanl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;β-&gt;α) -&gt; α -&gt; [β] -&gt; α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#fold">fold</a>, <a class="fref" href="#foldl">foldl</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;β-&gt;β) -&gt; β -&gt; [α] -&gt; β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#foldr">foldr</a>, <a class="fref" href="#foldrs">foldrs</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;β) -&gt; [α] -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#map">map</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α | β) -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource_Either.toList">ListSource_Either.toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[(α, β)] -&gt; ([α], [β])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unzip">unzip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[α] -&gt; [β] -&gt; [(α, β)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zip">zip</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Empty">Empty</a> c =&gt; c e -&gt; <a class="tref" href="./PreludeBase.html#Bool">Bool</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty._null">Empty.null</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> list =&gt; list e -&gt; list e -&gt; list e</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike._plus_plus">ListLike.++</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; list elem</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike.tail">ListLike.tail</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; <a class="tref" href="./PreludeBase.html#Int">Int</a></SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike.length">ListLike.length</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> list =&gt; list elem -&gt; elem</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListLike.head">ListLike.head</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> α =&gt; [α β] -&gt; α β</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#concat">concat</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListSource">ListSource</a> t =&gt; t e -&gt; [e]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#ListSource.toList">ListSource.toList</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#Empty">Empty</a> c =&gt; c e</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#Empty.empty">Empty.empty</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(α-&gt;γ-&gt;β) -&gt; [α] -&gt; [γ] -&gt; [β]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zipWith">zipWith</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[(β, α, γ)] -&gt; ([β], [α], [γ])</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#unzip3">unzip3</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">[β] -&gt; [α] -&gt; [γ] -&gt; [(β, α, γ)]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zip3">zip3</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code"><a class="tref" href="#ListLike">ListLike</a> β =&gt; (γ-&gt;β α) -&gt; [γ] -&gt; β α</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#concatMap">concatMap</a></p>
+</dd>
+<dt class="func">
+<SPAN CLASS="code">(β-&gt;α-&gt;δ-&gt;γ) -&gt; [β] -&gt; [α] -&gt; [δ] -&gt; [γ]</SPAN></dt>
+<dd class="func">
+<p>
+<a class="fref" href="#zipWith3">zipWith3</a></p>
+</dd>
+</dl>
+<p>
+<a HREF="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01 Strict" height="31" width="88"></a></p>
+</BODY>
+</HTML>
