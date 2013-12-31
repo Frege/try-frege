@@ -40,8 +40,10 @@ initClasses (Web{servlet=servlet}) = do
   m <- maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
   return m
 
-initModuleName = currentTimeMillis () >>= (\id -> return $ "repl" ++ show id ++ ".Repl")
-                 
+initModuleName = currentTimeMillis () >>= (\long -> return $ "repl" ++ longToString long 36 ++ ".Repl")
+
+pure native longToString Long.toString :: Long -> Int -> String
+
 initScript = "import frege.Prelude hiding " ++
            "(stdout, stderr, print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn)\n" ++
            "import scripting.PreludeScripting"
