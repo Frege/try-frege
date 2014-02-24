@@ -25,13 +25,18 @@ read web state = do
 print :: Command -> ReplResult -> ReplEnv -> IO [Message]
 print Java (JavaSource src) _ = return [Message.info src]
 print (HelpDoc src) (DocHelp doc) _ = return [Message.info doc]
-print _ (ReplInfo msgs) _ = return msgs
+print _ (ReplInfo msgs) env = return msgs
 print (cmd@(Eval line)) (CodeInfo sourceRepr g msgs) env = case sourceRepr of
   Expression sym | isVariable g sym =
     if isString g sym
       then do
               valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym) env.state.classLoader
-              return $ maybe [Message.error "undefined"] (\m -> [Message.info m]) valMaybe
+              outMaybe <- fieldValue "scripting.PreludeScripting" "stdoutWriter" env.state.classLoader
+              errMaybe <- fieldValue "scripting.PreludeScripting" "stderrWriter" env.state.classLoader
+              let out = maybe "" (toString . asObject) outMaybe
+                  err = maybe "" (toString . asObject) errMaybe
+              return $ maybe [Message.error "undefined"]
+                             (\m -> [Message.info m, Message.hint out, Message.error err]) valMaybe
            `catch` (\err -> return [Message.error $ showThrowableCause err])
       else do
         let evalShow = do
@@ -46,7 +51,10 @@ print (cmd@(Eval line)) (CodeInfo sourceRepr g msgs) env = case sourceRepr of
   Expression sym = return [Message.info (":: " ++ (getSymbolType g sym))]
   Definitions syms = do
     let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) syms
-    return (Message.info (intercalate newLine symLabels) : msgs)
+        lineStart = case env.config.predefs of
+                  [] -> 0
+                  (_:xs) -> fold (\z \x -> z + length (lines x)) 2 xs -- Ignore module line and import PreludeScripting
+    return (Message.info (intercalate newLine symLabels) : filter (\msg -> msg.pos.line > lineStart) msgs)
   Module moduleName = return (Message.info ("Module " ++ moduleName) : msgs)
 print (LoadExternal path script) res env = print (Eval script) res env
 print _ _ _ = return []
@@ -55,7 +63,7 @@ preludeImport = ImpDcl {pos=Position.null, pack="scripting.PreludeScripting", as
 
 transformDefs defs = do
   uniqdefs <- removeDuplicateDefs defs
-  return (uniqdefs ++ [preludeImport])
+  return (preludeImport : uniqdefs)
 
 doGet :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 doGet = doPost
@@ -64,7 +72,7 @@ doPost :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO Htt
 doPost !servlet !request !response = do
   let web = Web servlet request response
   session <- request.getSession
-  env <- buildReplEnv session
+  env <- buildReplEnv web
   input <- read web env
   case input of
     Left msgs -> sendReplResult response msgs
@@ -74,8 +82,9 @@ doPost !servlet !request !response = do
        saveSession newEnv session
        sendReplResult response msgs
 
-buildReplEnv :: Mutable s HttpSession -> ST s ReplEnv
-buildReplEnv session = do
+buildReplEnv :: Web -> IO ReplEnv
+buildReplEnv (Web{servlet=servlet,request=request}) = do
+  session <- request.getSession
   lastExpr <- sessionAttr session (return . Just . asString) (return Nothing) "lastExpr"
   lastExternalScript <- sessionAttr session (return . Just . asString) (return Nothing) "lastExternalScript"
   let stringArrToList s = do
@@ -83,7 +92,8 @@ buildReplEnv session = do
                             arr <- readonly id sarr
                             return arr.toList
   predefs <- sessionAttr session stringArrToList (return []) "predefs"
-  classes <- sessionAttr session asClassesMap (HashMap.new () :: STMutable s (JMap String ByteArr)) "classes"
+  context <- servlet.getServletContext
+  classes <- sessionAttr session asClassesMap (initClasses context) "classes"
   classLoader <- InterpreterClassLoader.new classes >>= Mutable.freeze
   return $ ReplEnv {
                      lastExpr = lastExpr,
@@ -92,6 +102,11 @@ buildReplEnv session = do
                      config = InterpreterConfig predefs transformDefs,
                      state = InterpreterState classLoader
                    }
+
+initClasses :: MutableIO ServletContext -> IOMutable (JMap String ByteArr)
+initClasses context = do
+  preludeClassesMaybe <- context.getAttribute "classes"
+  maybe (HashMap.new () :: STMutable s (JMap String ByteArr)) asClassesMap preludeClassesMaybe
 
 sessionAttr :: Mutable s HttpSession -> (Object -> ST s b) -> ST s b -> String -> ST s b
 sessionAttr session f default name = do
@@ -103,7 +118,7 @@ saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
   let extScriptStr = maybe "" id replEnv.lastExternalScript
       lastExpr = maybe "" id replEnv.lastExpr
-  putSession session "script" (StringArr.fromList replEnv.config.predefs)
+  putSession session "predefs" (StringArr.fromList replEnv.config.predefs)
   putSession session "classes" replEnv.state.classLoader.classes
   putSession session "lastExternalScript" extScriptStr
   putSession session "lastExpr" lastExpr
@@ -122,7 +137,7 @@ messagesToXml msgs = render [
                       "<repl>",
                       "  <messages>",
                            msgsToXml,
-                      "  </messages",
+                      "  </messages>",
                       "</repl>"
                      ] where
   render = unlines
@@ -135,9 +150,9 @@ messagesToXml msgs = render [
                           "  <position>",
                                show $ msg.pos,
                           "  </position>",
-                          "  <text>",
+                          "  <text><![CDATA[",
                                msg.text,
-                          "  </text>",
+                          "  ]]></text>",
                           "</message>"
                         ]
 
@@ -149,3 +164,5 @@ pure native asString "(java.lang.String)" :: Object -> String
 native asStringArr "(java.lang.String[])" :: Object -> STMutable s StringArr
 
 pure native asObject "(Object)" :: a -> Object
+
+pure native toString :: Object -> String

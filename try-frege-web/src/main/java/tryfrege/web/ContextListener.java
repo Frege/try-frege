@@ -5,6 +5,7 @@ import frege.interpreter.javasupport.InterpreterClassLoader;
 import frege.prelude.PreludeBase;
 import frege.runtime.Lambda;
 
+import javax.script.ScriptException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -34,7 +35,7 @@ public class ContextListener implements ServletContextListener {
     private void evalPrelude(final String prelude, final ServletContext context) {
         final Lambda res = FregeInterpreter.interpret(prelude);
         final FregeInterpreter.TInterpreterConfig config = toJavaValue(FregeInterpreter.TInterpreterConfig._default);
-        final FregeInterpreter.TInterpreterClassLoader classLoader =
+        final InterpreterClassLoader classLoader =
             toJavaValue(FregeInterpreter.TInterpreterClassLoader._default);
         final PreludeBase.TTuple2 intpRes = FregeInterpreter.TInterpreter.run(
             res, config, classLoader).forced();
@@ -55,6 +56,12 @@ public class ContextListener implements ServletContextListener {
                     classes = new HashMap<>();
                 }
                 break;
+            case 1:
+                FregeInterpreter.TInterpreterResult.DFailure failure = interpRes._Failure();
+                final PreludeBase.TList msgs = toJavaValue(failure.mem1);
+                final String errorMsg = toJavaValue(
+                    FregeInterpreter.TMessage.showMessages(FregeInterpreter.IShow_Message.it, msgs));
+                System.out.println(errorMsg);
             default:
                 classes = new HashMap<>();
                 break;
