@@ -1,8 +1,8 @@
 module tryfrege.repl.FregeReplServlet where
 
 import frege.Prelude hiding (print)
-import Compiler.Data (Symbol, linkAll, DefinitionT)
-import Compiler.BaseTypes (Position)
+import Compiler.Data (Symbol, linkAll, DefinitionT, ImportList, ImportItem, SName)
+import Compiler.BaseTypes (Position, TokenID, Token)
 import Compiler.Import
 import Data.List (intercalate)
 import Interpreter.FregeInterpreter
@@ -47,23 +47,41 @@ print (cmd@(Eval line)) (CodeInfo sourceRepr g msgs) env = case sourceRepr of
         let (res, newEnv) = Repl.run evalShow env
         case res of
           CodeInfo{} -> print cmd res newEnv
-          _ -> return [Message.info (":: " ++ (getSymbolType g sym))]
-  Expression sym = return [Message.info (":: " ++ (getSymbolType g sym))]
+          _ -> return [Message.hint (":: " ++ (getSymbolType g sym))]
+  Expression sym = return [Message.hint (":: " ++ (getSymbolType g sym))]
   Definitions syms = do
-    let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) syms
+    let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) newSyms
+        newSyms = filter (\sym -> sym.pos.line > lineStart) syms
         lineStart = case env.config.predefs of
                   [] -> 0
-                  (_:xs) -> fold (\z \x -> z + length (lines x)) 2 xs -- Ignore module line and import PreludeScripting
-    return (Message.info (intercalate newLine symLabels) : filter (\msg -> msg.pos.line > lineStart) msgs)
+                  (_:xs) -> fold (\z \x -> z + length (lines x)) 1 xs -- Ignore module line and import PreludeScripting
+    return (Message.hint (intercalate newLine symLabels) : filter (\msg -> msg.pos.line > lineStart) msgs)
   Module moduleName = return (Message.info ("Module " ++ moduleName) : msgs)
 print (LoadExternal path script) res env = print (Eval script) res env
 print _ _ _ = return []
 
-preludeImport = ImpDcl {pos=Position.null, pack="scripting.PreludeScripting", as=Nothing, imports = linkAll}
+scriptingPreludeImport = ImpDcl {pos=Position.null, pack="scripting.PreludeScripting", as=Nothing, imports = linkAll}
+
+preludeHidingImport = ImpDcl {
+  pos = Position.null,
+  pack = "frege.Prelude",
+  as = Nothing,
+  imports = Imports {
+              publik = false,
+              except = true,
+              items = [
+                fnImport "print", fnImport "println", fnImport "printStr", fnImport "printStrLn",
+                fnImport "trace", fnImport "traceLn", fnImport "traceStr", fnImport "traceStrLn",
+                fnImport "stderr", fnImport "stdout"
+              ]
+            }
+} where
+  fnImport name = Item {publik = false, name = fn name, members = Nothing, alias=""}
+  fn name = Simple {id = Token VARID name 1 0 0 []}
 
 transformDefs defs = do
   uniqdefs <- removeDuplicateDefs defs
-  return (preludeImport : uniqdefs)
+  return (scriptingPreludeImport : preludeHidingImport : uniqdefs)
 
 doGet :: MutableIO HttpServlet -> MutableIO HttpServletRequest -> MutableIO HttpServletResponse -> IO ()
 doGet = doPost
@@ -76,6 +94,7 @@ doPost !servlet !request !response = do
   input <- read web env
   case input of
     Left msgs -> sendReplResult response msgs
+    Right Reset -> clearSession session >> sendReplResult response []
     Right cmd -> do
        let (res, newEnv) = Repl.run (eval cmd) env
        msgs <- print cmd res newEnv
@@ -85,8 +104,10 @@ doPost !servlet !request !response = do
 buildReplEnv :: Web -> IO ReplEnv
 buildReplEnv (Web{servlet=servlet,request=request}) = do
   session <- request.getSession
-  lastExpr <- sessionAttr session (return . Just . asString) (return Nothing) "lastExpr"
-  lastExternalScript <- sessionAttr session (return . Just . asString) (return Nothing) "lastExternalScript"
+  let strToMaybe "" = Nothing
+      strToMaybe s = Just s
+  lastExpr <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExpr"
+  lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
   let stringArrToList s = do
                             sarr <- asStringArr s
                             arr <- readonly id sarr
@@ -122,6 +143,13 @@ saveSession replEnv session = do
   putSession session "classes" replEnv.state.classLoader.classes
   putSession session "lastExternalScript" extScriptStr
   putSession session "lastExpr" lastExpr
+
+clearSession :: MutableIO HttpSession -> IO ()
+clearSession session = do
+  session.removeAttribute "predefs"
+  session.removeAttribute "classes"
+  session.removeAttribute "lastExternalScript"
+  session.removeAttribute "lastExpr"
 
 sendReplResult :: MutableIO HttpServletResponse -> [Message] -> IO ()
 sendReplResult response msgs = do

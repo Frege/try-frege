@@ -44,6 +44,11 @@ div.console div.jquery-console-message-info {
     padding: 0.2em;
 }
 
+div.console div.jquery-console-message-warning {
+    color: #ECAA1F;
+    padding: 0.2em;
+}
+
 div.console span.jquery-console-prompt-label {
     font-weight: bold
 }

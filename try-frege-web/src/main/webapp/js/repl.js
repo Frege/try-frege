@@ -91,17 +91,23 @@ $(document).ready(function(){
         var className;
         if (msgType == "ERROR") {
           className = "jquery-console-message-error";
-        } else if (msgType == "INFO") {
-          className = "jquery-console-message-success";
-        } else {
+        } else if (msgType == "HINT") {
           className = "jquery-console-message-info";
+        } else if (msgType == "WARNING") {
+          className = "jquery-console-message-warning";
+        } else {
+          className = "jquery-console-message-success";
         }
         if (text.length != 0) {
           msgs.unshift({'msg':text, 'className': className});
         }
       });
       if (cmd == ":java") {
-        showJavaSource(msgs[0].msg);
+        if (msgs[0] && msgs[0].msg && $.trim(msgs[0].msg).length != 0) {
+          showJavaSource(msgs[0].msg);
+        } else {
+          report({'msg': '', 'className': 'jquery-console-message-info'})
+        }
       } else if (cmd.match(/\s*:help\s+.*/)) {
         showHelp(msgs[0].msg);
       } else {
