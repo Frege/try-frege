@@ -45,7 +45,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>jfrege-script-engine</artifactId>
-            <version>${frege.scripting.version}</version>
+            <version>${frege.interpreter.version}</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>

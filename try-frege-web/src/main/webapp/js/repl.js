@@ -21,8 +21,43 @@ $(document).ready(function(){
           theme: 'blackboard',
           lineNumbers: true,
           readOnly: true,
-          mode: "text/x-java"
+          mode: "text/x-java",
+          extraKeys: {
+            "Ctrl-Q": function(cm) {
+              var src = cm.getValue()
+              var start = metaStart(src)
+              var end = metaEnd(src)
+              if (cm.getCursor().line == start || cm.getCursor().line == end) {
+                if (!javaSourceEditor.showRuntimeAnnotations) {
+                  collapseJavaSourceEditor(start, end)
+                  javaSourceEditor.showRuntimeAnnotations = true
+                } else {
+                  javaSourceEditor.runtimeAnnMarker.clear()
+                  javaSourceEditor.showRuntimeAnnotations = false
+                }
+              } else {
+                cm.foldCode(cm.getCursor());
+              }
+            }
+          },
+          foldGutter: {
+                          rangeFinder: new CodeMirror.fold.combine(
+                            CodeMirror.fold.brace,
+                            CodeMirror.fold.comment,
+                            CodeMirror.fold.indent
+                          )
+                      },
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     })
+
+
+  function collapseJavaSourceEditor(start, end) {
+    javaSourceEditor.runtimeAnnMarker = javaSourceEditor.markText({line: start, ch: 0}, {line: end, ch: 0}, {
+                          replacedWith: document.createTextNode("@(\u2194)"),
+                          clearOnEnter: true
+                        }
+                      )
+  }
 
   $("#tabs" ).tabs();
   $("#tabs").height($(window).height() * 0.9);
@@ -52,58 +87,68 @@ $(document).ready(function(){
   var console = $('div.console');
 
   function successHandler(cmd, report) {
+    function showJavaSource(src) {
+      javaSourceEditor.setValue(src);
+      $("#javaSourceDialog" ).dialog("open")
+      javaSourceEditor.refresh();
+      collapseJavaSourceEditor(metaStart(src), metaEnd(src))
+      javaSourceEditor.showRuntimeAnnotations = true
+      report([{"msg": "", "className": "jquery-console-message-info"}]);
+    }
+
+    function showHelp(msg) {
+      if (msg != '') {
+          $("#helpDialog").html(msg);
+          $('#helpDialog a').not('[href^="http"],[href^="https"],[href^="mailto:"],[href^="#"]').each(function() {
+                      $(this).attr('href', function(index, value) {
+                          if (!value) return
+                          if (value.substr(0,1) !== "/") {
+                              if (value.substr(0,2) == "..") {
+                                  value = window.location.pathname + "doc" + value.substr(2)
+                              } else {
+                                  value = window.location.pathname + "doc" + value;
+                              }
+                          }
+                          return value;
+                      });
+                  });
+          $('#helpDialog a').attr("target", "_blank")
+          $("#helpDialog").dialog({"title": cmd.split(' ')[1] + " - Documentation"})
+          $("#helpDialog" ).dialog("open")
+      }
+      report([{"msg": '', "className": "jquery-console-message-info"}]);
+    }
     return function(data) {
       document.body.style.cursor = 'default';
-      var msgType = $(data).find("type").text();
-      if (msgType == "ERROR") {
-        var msg = $(data).find("message").text();
-        report([{'msg': msg, 'className': "jquery-console-message-error"}])
-      } else if (msgType == "SUCCESS") {
-        var msg = $(data).find("message").text();
-        var out = $(data).find("out").text();
-        var err = $(data).find("err").text();
-        var msgs = [{'msg':msg, 'className': "jquery-console-message-success"}];
-        if ($.trim(err) != "") {
-           msgs.unshift({'msg':err, 'className': "jquery-console-message-error"});
-        }
-
-        if ($.trim(out) != "") {
-           msgs.unshift({'msg':out, 'className': "jquery-console-message-success"});
-        }
-        report(msgs);
-      } else if (msgType == "MESSAGE") {
-        var msg = $.trim($(data).find("message").text());
-        if (cmd.lastIndexOf(":java", 0) == 0) {
-          javaSourceEditor.setValue(msg);
-          $("#javaSourceDialog" ).dialog("open")
-          javaSourceEditor.refresh();
-          report([{"msg": "", "className": "jquery-console-message-info"}]);
-        } else if (cmd.match(/\s*:help\s+.*/)) {
-            if (msg != '') {
-                $("#helpDialog").html(msg);
-                $('#helpDialog a').not('[href^="http"],[href^="https"],[href^="mailto:"],[href^="#"]').each(function() {
-                            $(this).attr('href', function(index, value) {
-                                if (!value) return
-                                if (value.substr(0,1) !== "/") {
-                                    if (value.substr(0,2) == "..") {
-                                        value = window.location.pathname + "doc" + value.substr(2)
-                                    } else {
-                                        value = window.location.pathname + "doc" + value;
-                                    }
-                                }
-                                return value;
-                            });
-                        });
-                $('#helpDialog a').attr("target", "_blank")
-                $("#helpDialog").dialog({"title": cmd.split(' ')[1] + " - Documentation"})
-                $("#helpDialog" ).dialog("open")
-            }
-            report([{"msg": '', "className": "jquery-console-message-info"}]);
+      var msgs = []
+      $('message', $('messages', data)).each(function() {
+        var msgType = $.trim($(this).find("type").text());
+        var position = $.trim($(this).find("position").text());
+        var text = $.trim($(this).find("text").text());
+        var className;
+        if (msgType == "ERROR") {
+          className = "jquery-console-message-error";
+        } else if (msgType == "HINT") {
+          className = "jquery-console-message-info";
+        } else if (msgType == "WARNING") {
+          className = "jquery-console-message-warning";
         } else {
-          report([{'msg': msg, 'className': "jquery-console-message-info"}]);
+          className = "jquery-console-message-success";
         }
+        if (text.length != 0) {
+          msgs.unshift({'msg':text, 'className': className});
+        }
+      });
+      if (cmd == ":java") {
+        if (msgs[0] && msgs[0].msg && $.trim(msgs[0].msg).length != 0) {
+          showJavaSource(msgs[0].msg);
+        } else {
+          report({'msg': '', 'className': 'jquery-console-message-info'})
+        }
+      } else if (cmd.match(/\s*:help\s+.*/)) {
+        showHelp(msgs[0].msg);
       } else {
-        report([{'msg': "", 'className': "jquery-console-message-success"}]);
+        report(msgs);
       }
       scrollDown();
     }
@@ -225,3 +270,21 @@ function navigateTutorial(cmd) {
     });
   }
 }
+
+function metaStart(src) {
+    var lines = src.split("\n")
+    for (var i = 0; i < lines.length; i++) {
+      var metaStartIndex = lines[i].indexOf("@frege.runtime.Meta.FregePackage")
+      if (metaStartIndex != -1) return i - 1;
+    }
+    return -1;
+  }
+
+  function metaEnd(src) {
+      var lines = src.split("\n")
+      for (var i = 0; i < lines.length; i++) {
+        var metaEndIndex = lines[i].indexOf("final public class")
+        if (metaEndIndex != -1) return i - 1;
+      }
+      return -1;
+    }

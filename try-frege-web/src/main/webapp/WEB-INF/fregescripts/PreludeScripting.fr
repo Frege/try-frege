@@ -1,7 +1,6 @@
 module scripting.PreludeScripting where
 
-native getEnv System.getProperty :: String -> IO String
-newLine = getEnv "line.separator" 
+import frege.Prelude hiding (print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn, stderr, stdout)
 
 stdoutWriter :: StringWriter
 stdoutWriter = IO.performUnsafe $ StringWriter.new ()
@@ -30,9 +29,8 @@ printStr str = stdout.write str
   
 printStrLn :: String -> IO ()
 printStrLn str = do
-  newLine <- newLine
   printStr str
-  printStr newLine
+  printStr "\n"
   return ()
   
 traceStr :: String -> IO ()
@@ -40,9 +38,8 @@ traceStr str = stderr.write str
   
 traceStrLn :: String -> IO ()
 traceStrLn str = do
-  newLine <- newLine
   traceStr str
-  traceStr newLine
+  traceStr "\n"
   return ()
   
 stdoutStr = IO.performUnsafe $ stdoutWriter.toString

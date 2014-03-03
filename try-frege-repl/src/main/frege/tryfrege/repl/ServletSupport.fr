@@ -3,7 +3,9 @@ module tryfrege.repl.ServletSupport where
 data ServletRequest = native javax.servlet.ServletRequest where
   native getRequestDispatcher :: (MutableIO ServletRequest) -> String -> IO RequestDispatcher
 
-data ServletResponse = mutable native javax.servlet.ServletResponse
+data ServletResponse = mutable native javax.servlet.ServletResponse where
+  native getWriter :: MutableIO ServletResponse -> IO PrintWriter throws IOException
+  native setContentType :: MutableIO ServletResponse -> String -> IO ()
 
 data HttpServletRequest = native javax.servlet.http.HttpServletRequest where
   native getParameter :: (MutableIO HttpServletRequest) -> String -> IO (Maybe String)
@@ -34,3 +36,8 @@ data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
 data ServletException = native javax.servlet.ServletException
 
 derive Exceptional ServletException
+
+data Web = Web {
+     servlet :: MutableIO HttpServlet,
+     request :: MutableIO HttpServletRequest,
+     response :: MutableIO HttpServletResponse }
