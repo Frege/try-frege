@@ -21,8 +21,43 @@ $(document).ready(function(){
           theme: 'blackboard',
           lineNumbers: true,
           readOnly: true,
-          mode: "text/x-java"
+          mode: "text/x-java",
+          extraKeys: {
+            "Ctrl-Q": function(cm) {
+              var src = cm.getValue()
+              var start = metaStart(src)
+              var end = metaEnd(src)
+              if (cm.getCursor().line == start || cm.getCursor().line == end) {
+                if (!javaSourceEditor.showRuntimeAnnotations) {
+                  collapseJavaSourceEditor(start, end)
+                  javaSourceEditor.showRuntimeAnnotations = true
+                } else {
+                  javaSourceEditor.runtimeAnnMarker.clear()
+                  javaSourceEditor.showRuntimeAnnotations = false
+                }
+              } else {
+                cm.foldCode(cm.getCursor());
+              }
+            }
+          },
+          foldGutter: {
+                          rangeFinder: new CodeMirror.fold.combine(
+                            CodeMirror.fold.brace,
+                            CodeMirror.fold.comment,
+                            CodeMirror.fold.indent
+                          )
+                      },
+          gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     })
+
+
+  function collapseJavaSourceEditor(start, end) {
+    javaSourceEditor.runtimeAnnMarker = javaSourceEditor.markText({line: start, ch: 0}, {line: end, ch: 0}, {
+                          replacedWith: document.createTextNode("@(\u2194)"),
+                          clearOnEnter: true
+                        }
+                      )
+  }
 
   $("#tabs" ).tabs();
   $("#tabs").height($(window).height() * 0.9);
@@ -56,6 +91,8 @@ $(document).ready(function(){
       javaSourceEditor.setValue(src);
       $("#javaSourceDialog" ).dialog("open")
       javaSourceEditor.refresh();
+      collapseJavaSourceEditor(metaStart(src), metaEnd(src))
+      javaSourceEditor.showRuntimeAnnotations = true
       report([{"msg": "", "className": "jquery-console-message-info"}]);
     }
 
@@ -233,3 +270,21 @@ function navigateTutorial(cmd) {
     });
   }
 }
+
+function metaStart(src) {
+    var lines = src.split("\n")
+    for (var i = 0; i < lines.length; i++) {
+      var metaStartIndex = lines[i].indexOf("@frege.runtime.Meta.FregePackage")
+      if (metaStartIndex != -1) return i - 1;
+    }
+    return -1;
+  }
+
+  function metaEnd(src) {
+      var lines = src.split("\n")
+      for (var i = 0; i < lines.length; i++) {
+        var metaEndIndex = lines[i].indexOf("final public class")
+        if (metaEndIndex != -1) return i - 1;
+      }
+      return -1;
+    }

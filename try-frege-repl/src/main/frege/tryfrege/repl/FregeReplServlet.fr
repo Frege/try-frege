@@ -6,7 +6,7 @@ import Compiler.BaseTypes (Position, TokenID, Token)
 import Compiler.Import
 import Data.List (intercalate)
 import Interpreter.FregeInterpreter
-import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command)
+import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help)
 import tryfrege.repl.ServletSupport
 
 read :: Web -> ReplEnv -> IO ([Message] | Command)
@@ -95,6 +95,7 @@ doPost !servlet !request !response = do
   case input of
     Left msgs -> sendReplResult response msgs
     Right Reset -> clearSession session >> sendReplResult response []
+    Right Help -> sendReplResult response [Message.info (help cmdHelp)]
     Right cmd -> do
        let (res, newEnv) = Repl.run (eval cmd) env
        msgs <- print cmd res newEnv
@@ -106,7 +107,7 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
   session <- request.getSession
   let strToMaybe "" = Nothing
       strToMaybe s = Just s
-  lastExpr <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExpr"
+  lastJavaGenSrc <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastJavaGenSrc"
   lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
   let stringArrToList s = do
                             sarr <- asStringArr s
@@ -117,7 +118,7 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
   classes <- sessionAttr session asClassesMap (initClasses context) "classes"
   classLoader <- InterpreterClassLoader.new classes >>= Mutable.freeze
   return $ ReplEnv {
-                     lastExpr = lastExpr,
+                     lastJavaGenSrc = lastJavaGenSrc,
                      lastExternalScript = lastExternalScript,
                      prompt = "",
                      config = InterpreterConfig predefs transformDefs,
@@ -138,18 +139,18 @@ sessionAttr session f default name = do
 saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
   let extScriptStr = maybe "" id replEnv.lastExternalScript
-      lastExpr = maybe "" id replEnv.lastExpr
+      lastJavaGenSrc = maybe "" id replEnv.lastJavaGenSrc
   putSession session "predefs" (StringArr.fromList replEnv.config.predefs)
   putSession session "classes" replEnv.state.classLoader.classes
   putSession session "lastExternalScript" extScriptStr
-  putSession session "lastExpr" lastExpr
+  putSession session "lastJavaGenSrc" lastJavaGenSrc
 
 clearSession :: MutableIO HttpSession -> IO ()
 clearSession session = do
   session.removeAttribute "predefs"
   session.removeAttribute "classes"
   session.removeAttribute "lastExternalScript"
-  session.removeAttribute "lastExpr"
+  session.removeAttribute "lastJavaGenSrc"
 
 sendReplResult :: MutableIO HttpServletResponse -> [Message] -> IO ()
 sendReplResult response msgs = do
@@ -159,6 +160,21 @@ sendReplResult response msgs = do
 
 putSession :: Mutable s HttpSession -> String -> a -> ST s ()
 putSession session name value = session.setAttribute name (asObject value)
+
+cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
+            (":browse <module name>", "Display the names in a module if " ++
+                "a module name is provided otherwise display the names in the default REPL module."),
+            (":load <url>", "Load Frege code snippets from an URL."),
+            (":java", "View Java translation of last compiled Frege source. In the source window, " ++
+                      "press ctrl+q to expand or collapse a line."),
+            (":r", "Reload the last url source."),
+            (":history", "Display the source history for definitions in the default REPL module."),
+            (":reset", "Reset the session discarding all evaluated scripts."),
+            (":version", "Display Frege version."),
+            (":{", "Start multiline definitions."),
+            (":}", "End multiline defintions."),
+            (":help <name>", "Display the documentation for the given name." ++
+                            " If the name is not provided, display this help message.")]
 
 messagesToXml :: [Message] -> String
 messagesToXml msgs = render [

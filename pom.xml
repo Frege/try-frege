@@ -10,7 +10,7 @@
     <url>https://github.com/Frege/try-frege</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frege.version>3.21.297-g6b54457</frege.version>
+        <frege.version>3.21.402-g0b89544</frege.version>
         <frege.plugin.version>1.0.5</frege.plugin.version>
         <frege.interpreter.version>1.0.2-SNAPSHOT</frege.interpreter.version>
         <frege.repl.version>1.0.2-SNAPSHOT</frege.repl.version>
