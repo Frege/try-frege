@@ -57,7 +57,7 @@
 			8:  backDelete,
 			// delete
 			46: forwardDelete,
-				// end
+			// end
 			35: moveToEnd,
 			// start
 			36: moveToStart,
@@ -86,6 +86,9 @@
 			// C-k
 			75: deleteUntilEnd
 		};
+        if(config.ctrlCodes) {
+            $.extend(ctrlCodes, config.ctrlCodes);
+        }
 		var altCodes = {
 			// M-f
 			70: moveToNextWord,
@@ -93,6 +96,10 @@
 			66: moveToPreviousWord,
 			// M-d
 			68: deleteNextWord
+		};
+		var shiftCodes = {
+			// return
+			13: newLine,
 		};
 		var cursor = '<span class="jquery-console-cursor">&nbsp;</span>';
 
@@ -113,6 +120,7 @@
 		var promptText = '';
 		var restoreText = '';
 		var continuedText = '';
+		var fadeOnReset = config.fadeOnReset !== undefined ? config.fadeOnReset : true;
 		// Prompt history stack
 		var history = [];
 		var ringn = 0;
@@ -158,20 +166,34 @@
 		// Reset terminal
 		extern.reset = function(){
 			var welcome = (typeof config.welcomeMessage != 'undefined');
-			inner.parent().fadeOut(function(){
+
+			var removeElements = function() {
 				inner.find('div').each(function(){
 					if (!welcome) {
 						$(this).remove();
-			} else {
-			welcome = false;
+					} else {
+						welcome = false;
+					}
+				});
+			};
+
+			var focusConsole = function() {
+				inner.addClass('jquery-console-focus');
+				typer.focus();
+			};
+
+			if (fadeOnReset) {
+				inner.parent().fadeOut(function() {
+					removeElements();
+					newPromptBox();
+					inner.parent().fadeIn(focusConsole);
+				});
 			}
-				});
+			else {
+				removeElements();
 				newPromptBox();
-				inner.parent().fadeIn(function(){
-					inner.addClass('jquery-console-focus');
-					typer.focus();
-				});
-			});
+				focusConsole();
+			}
 		};
 
 		////////////////////////////////////////////////////////////////////////
@@ -223,10 +245,15 @@
 		////////////////////////////////////////////////////////////////////////
 		// Handle setting focus
 		container.click(function(){
+			// Don't mess with the focus if there is an active selection
+			if (window.getSelection().toString()) {
+				return false;
+			}
+
 			inner.addClass('jquery-console-focus');
 			inner.removeClass('jquery-console-nofocus');
 			if (isWebkit) {
-				container.focusWithoutScrolling(typer);
+				typer.focusWithoutScrolling();
 			} else {
 				typer.css('position', 'fixed').focus();
 			}
@@ -269,17 +296,21 @@
 				return false;
 			}
 			if (acceptInput) {
-				if (keyCode in keyCodes) {
+				if (e.shiftKey && keyCode in shiftCodes) {
 					cancelKeyPress = keyCode;
-					(keyCodes[keyCode])();
+					(shiftCodes[keyCode])();
+					return false;
+				} else if (e.altKey  && keyCode in altCodes) {
+					cancelKeyPress = keyCode;
+					(altCodes[keyCode])();
 					return false;
 				} else if (e.ctrlKey && keyCode in ctrlCodes) {
 					cancelKeyPress = keyCode;
 					(ctrlCodes[keyCode])();
 					return false;
-				} else if (e.altKey  && keyCode in altCodes) {
+				} else if (keyCode in keyCodes) {
 					cancelKeyPress = keyCode;
-					(altCodes[keyCode])();
+					(keyCodes[keyCode])();
 					return false;
 				}
 			}
@@ -405,6 +436,12 @@
 				updatePromptDisplay();
 			}
 		};
+		
+		function newLine() {
+			promptText += "\n";
+			moveColumn(1);
+			updatePromptDisplay();
+		};
 
 		////////////////////////////////////////////////////////////////////////
 		// Validate command and trigger it if valid, or show a validation error
@@ -426,7 +463,12 @@
 
 		// Scroll to the bottom of the view
 		function scrollToBottom() {
-			if (jQuery.fn.jquery > "1.6") {
+			var version = jQuery.fn.jquery.split('.');
+			var major = parseInt(version[0]);
+			var minor = parseInt(version[1]);
+			
+			// check if we're using jquery > 1.6
+			if ((major == 1 && minor > 6) || major > 1) {
 				inner.prop({ scrollTop: inner.prop("scrollHeight") });
 			}
 			else {
@@ -700,13 +742,14 @@
 	// Simple utility for printing messages
 	$.fn.filledText = function(txt){
 		$(this).text(txt);
-		$(this).html($(this).html().replace(/\n/g,'<br/>').replace(/ /g, '&nbsp;'));
+		$(this).html($(this).html().replace(/\n/g,'<br/>'));
 		return this;
 	};
 
 	// Alternative method for focus without scrolling
-	$.fn.focusWithoutScrolling = function(typer){
-		$(typer).focus();
-		$(this).scrollTop($(this).prop("scrollHeight"));
+	$.fn.focusWithoutScrolling = function(){
+		var x = window.scrollX, y = window.scrollY;
+		$(this).focus();
+		window.scrollTo(x, y);
 	};
 })(jQuery);

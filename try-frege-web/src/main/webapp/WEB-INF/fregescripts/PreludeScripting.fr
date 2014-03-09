@@ -3,7 +3,16 @@ module scripting.PreludeScripting where
 import frege.Prelude hiding (print, println, trace, traceLn, printStr, printStrLn, traceStr, traceStrLn, stderr, stdout)
 
 stdoutWriter :: StringWriter
-stdoutWriter = IO.performUnsafe $ StringWriter.new ()
+stdoutWriter = IO.performUnsafe $ do
+  outWriter <- StringWriter.new ()
+  stdout <- runtimeStdOut
+  outWriter.printer >>= stdout.set
+  return outWriter
+
+data ThreadLocal a = native java.lang.ThreadLocal where
+  native set :: Mutable s (ThreadLocal a) -> a -> ST s ()
+
+native runtimeStdOut "frege.runtime.Runtime.stdout" :: Mutable s (ThreadLocal PrintWriter)
 
 stderrWriter :: StringWriter
 stderrWriter = IO.performUnsafe $ StringWriter.new ()
