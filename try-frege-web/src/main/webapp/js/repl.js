@@ -1,19 +1,13 @@
 $(document).ready(function(){
 
   var hwEditor =
-  CodeMirror.fromTextArea(document.getElementById("helloworldEditor"),
-  {
-        theme: 'blackboard',
-        lineNumbers: true,
-        readOnly: true,
-        mode: "text/x-haskell"
-  }).setValue(    "module helloworld.Main where\n\n" +
-                  "quicksort :: Ord a => [a] -> [a]\n" +
-                  "quicksort []     = []\n" +
-                  "quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater) where\n" +
-                  "  lesser  = filter (< p) xs\n" +
-                  "  greater = filter (>= p) xs\n\n" +
-                  "main _ = println $ quicksort [2,5,4,3,1,7,6]\n");
+    CodeMirror.fromTextArea(document.getElementById("helloworldEditor"),
+    {
+          theme: 'blackboard',
+          lineNumbers: true,
+          readOnly: true,
+          mode: "text/x-haskell"
+    });
 
   var javaSourceEditor =
     CodeMirror.fromTextArea(document.getElementById("javaSource"),
@@ -68,10 +62,19 @@ $(document).ready(function(){
                             autoOpen: false,
                             closeOnEscape: true,
                             "height": $(window).height() * 0.9,
-                           "width": $(window).width() * 0.6,
-                           "title": "Java Source",
-                           "position": { my: "right top", at: "right top", of: window }
+                            "width": $(window).width() * 0.6,
+                            "title": "Java Source",
+                            "position": { my: "right top", at: "right top", of: window }
                           });
+  $( "#stdinDialog" ).dialog({
+                              modal: true,
+                              autoOpen: false,
+                              closeOnEscape: true,
+                              "height": $(window).height() * 0.4,
+                              "width": $(window).width() * 0.5,
+                              "title": "Console Input",
+                              "position": { my: "right top", at: "right top", of: window }
+                             });
   $( "#helpDialog" ).dialog({
                           modal: false,
                           autoOpen: false,
@@ -80,6 +83,7 @@ $(document).ready(function(){
                           "width": $(window).width() * 0.6,
                           "position": { my: "right top", at: "right top", of: window }
                             });
+
 
   var pasteMode = false;
   var tutorialMode = false;
@@ -104,9 +108,9 @@ $(document).ready(function(){
                           if (!value) return
                           if (value.substr(0,1) !== "/") {
                               if (value.substr(0,2) == "..") {
-                                  value = window.location.pathname + "doc" + value.substr(2)
+                                  value = "http://www.frege-lang.org/doc/frege" + value.substr(2)
                               } else {
-                                  value = window.location.pathname + "doc" + value;
+                                  value = "http://www.frege-lang.org/doc/frege" + value;
                               }
                           }
                           return value;
@@ -164,9 +168,13 @@ $(document).ready(function(){
   function fregeEval(line, report) {
     if ($.trim(line) == '') {
       report("");
+    } else if ($.trim(line) == ':stdin') {
+      $("#stdinDialog" ).dialog("open")
+      report("")
     } else {
       document.body.style.cursor = 'wait';
-      $.post('eval/', {"cmd": line},
+      var stdin = $('#stdin').val();
+      $.post('eval/', {"cmd": line, "stdin": stdin},
           successHandler(line, report), "xml")
       .error(failureHandler(report))
     }
@@ -174,7 +182,7 @@ $(document).ready(function(){
   }
   
   function scrollDown() {
-    console.animate({"scrollTop": console[0].scrollHeight}, "slow");
+    console.animate({"scrollTop": $(console[0]).height()}, "slow");
   }
   
   
@@ -182,7 +190,7 @@ $(document).ready(function(){
    promptLabel: 'frege> ',
    continuedPromptLabel: '',
    autofocus: true,
-   commandHandle:function(line, report){
+   commandHandle:function(line, report) {
      var line = $.trim(line);
      if (pasteMode) {
        if (line.match(/:}\s*$/i)) {
@@ -213,16 +221,7 @@ $(document).ready(function(){
         } else {
           fregeEval(line, report);
         }
-     } /*
-         * else if (line.match(/^:tutorial/i)) { tutorialMode = true;
-         * $("div.console").parent().css({width:"50%"});
-         * $("#tutorial").parent().css({width:"50%"}, "slow");
-         * $("#tutorial").show(); navigateTutorial(tutPage); report("Entering
-         * tutorial... Type :q to exit.\n" + "You can browse through tutorial by
-         * typing :1 for tutorial 1,\n" + ":2 for tutorial 2 and so on or by
-         * typing :next and :prev.\n" + "On the right side, the tutorial
-         * contents will be displayed."); }
-         */ else {
+     } else {
        try {
          fregeEval(line, report);
        } catch (e) {
@@ -230,6 +229,17 @@ $(document).ready(function(){
        }
      }
      scrollDown();
+         /*
+          * else if (line.match(/^:tutorial/i)) { tutorialMode = true;
+          * $("div.console").parent().css({width:"50%"});
+          * $("#tutorial").parent().css({width:"50%"}, "slow");
+          * $("#tutorial").show(); navigateTutorial(tutPage); report("Entering
+          * tutorial... Type :q to exit.\n" + "You can browse through tutorial by
+          * typing :1 for tutorial 1,\n" + ":2 for tutorial 2 and so on or by
+          * typing :next and :prev.\n" + "On the right side, the tutorial
+          * contents will be displayed."); }
+          */
+
    },
    animateScroll:true,
    promptHistory:true,
@@ -272,19 +282,19 @@ function navigateTutorial(cmd) {
 }
 
 function metaStart(src) {
-    var lines = src.split("\n")
-    for (var i = 0; i < lines.length; i++) {
-      var metaStartIndex = lines[i].indexOf("@frege.runtime.Meta.FregePackage")
-      if (metaStartIndex != -1) return i - 1;
-    }
-    return -1;
+  var lines = src.split("\n")
+  for (var i = 0; i < lines.length; i++) {
+    var metaStartIndex = lines[i].indexOf("@frege.runtime.Meta.FregePackage")
+    if (metaStartIndex != -1) return i - 1;
   }
+  return -1;
+}
 
-  function metaEnd(src) {
-      var lines = src.split("\n")
-      for (var i = 0; i < lines.length; i++) {
-        var metaEndIndex = lines[i].indexOf("final public class")
-        if (metaEndIndex != -1) return i - 1;
-      }
-      return -1;
-    }
+function metaEnd(src) {
+  var lines = src.split("\n")
+  for (var i = 0; i < lines.length; i++) {
+    var metaEndIndex = lines[i].indexOf("final public class")
+    if (metaEndIndex != -1) return i - 1;
+  }
+  return -1;
+}

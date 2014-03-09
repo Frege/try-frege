@@ -6,7 +6,7 @@
 <meta name="Content-Type" content="text/html; charset=UTF-8">
 <link rel="icon" type="image/png"
 	href="http://code.google.com/p/frege/logo?cct=1332936855">
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script src="js/jquery.console.js"></script>
 <link rel="stylesheet"
 	href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
@@ -56,6 +56,10 @@
                             </textarea>
                         </div>
                         <div id="helpDialog"></div>
+                        <div id="stdinDialog">
+                            <textarea id="stdin" cols="80" rows="10">
+                            </textarea>
+                        </div>
 					</td>
 				</tr>
 			</table>
@@ -139,6 +143,15 @@
 								<div>
 									<div style="clear: both">
 										<textarea id="helloworldEditor">
+module helloworld.Main where
+
+quicksort :: Ord a => [a] -> [a]
+quicksort []     = []
+quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater) where
+  lesser  = filter (< p) xs
+  greater = filter (>= p) xs
+
+main _ = println $ quicksort [2,5,4,3,1,7,6]
                                        </textarea>
 									</div>
 								</div>
@@ -149,5 +162,6 @@
 			</table>
 		</div>
 	</div>
+<div></div>
 </body>
 </html>
