@@ -99,7 +99,7 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
                      lastJavaGenSrc = lastJavaGenSrc,
                      lastExternalScript = lastExternalScript,
                      prompt = "",
-                     config = InterpreterConfig.default.{predefs=predefs},
+                     config = InterpreterConfig predefs transformDefs,
                      state = InterpreterState classLoader
                    }
 
@@ -107,6 +107,27 @@ initClasses :: MutableIO ServletContext -> IOMutable (JMap String ByteArray)
 initClasses context = do
   preludeClassesMaybe <- context.getAttribute "classes"
   maybe (HashMap.new () :: STMutable s (JMap String ByteArray)) asClassesMap preludeClassesMaybe
+
+interpreterPreludeImport = ImpDcl {pos=Position.null, pack="tryfrege.interpreter.PreludeInterpreter", as=Nothing, imports = linkAll}
+
+preludeHidingImport = ImpDcl {
+  pos = Position.null,
+  pack = "frege.Prelude",
+  as = Nothing,
+  imports = Imports {
+              publik = false,
+              except = true,
+              items = [
+                fnImport "getLine", fnImport "getChar", fnImport "getContents"
+              ]
+            }
+} where
+  fnImport name = Item {publik = false, name = fn name, members = Nothing, alias=""}
+  fn name = Simple {id = Token VARID name 1 0 0 []}
+
+transformDefs defs = do
+  uniqdefs <- removeDuplicateDefs defs
+  return (interpreterPreludeImport : preludeHidingImport : uniqdefs)
 
 sessionAttr :: Mutable s HttpSession -> (Object -> ST s b) -> ST s b -> String -> ST s b
 sessionAttr session f default name = do
@@ -145,7 +166,18 @@ putStrArraySession session name arr = do
   arrObj <- strArrToObject arr
   session.setAttribute name arrObj
 
+pure native isControl java.lang.Character.isISOControl :: Char -> Bool
+
+removeControlChars :: String -> String
+removeControlChars s = packed . reverse $ go [] s.toList where
+  go acc [] = acc
+  go acc (x: xs) | wanted x = go (x:acc) xs
+  go acc (_: xs) = go acc xs
+  wanted x = not (isControl x) || x == '\n' || x == '\r' || x == '\t'
+
 native strArrToObject "(Object)" :: ArrayOf s String -> ST s Object
+
+pure native escapeXml org.apache.commons.lang3.StringEscapeUtils.escapeXml :: String -> String
 
 cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
             (":browse <module name>", "Display the names in a module if " ++
@@ -155,11 +187,12 @@ cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
                       "press ctrl+q to expand or collapse a line."),
             (":r", "Reload the last url source."),
             (":history", "Display the source history for definitions in the default REPL module."),
-            (":reset", "Reset the session discarding all evaluated scripts."),
             (":version", "Display Frege version."),
-            (":{", "Start multiline definitions."),
-            (":}", "End multiline defintions."),
+            (":{", "Start multiline snippets."),
+            (":}", "End multiline snippets."),
             (":stdin", "Edit Console Input."),
+            (":reset", "Reset the session discarding all evaluated scripts."),
+            (":clear", "Clear REPL window. Session will continue to be active."),
             (":help <name>", "Display the documentation for the given name." ++
                             " If the name is not provided, display this help message.")]
 
@@ -181,9 +214,9 @@ messagesToXml msgs = render [
                           "  <position>",
                                show $ msg.pos,
                           "  </position>",
-                          "  <text><![CDATA[",
-                               msg.text,
-                          "  ]]></text>",
+                          "  <text>",
+                               escapeXml . removeControlChars $ msg.text,
+                          "  </text>",
                           "</message>"
                         ]
 

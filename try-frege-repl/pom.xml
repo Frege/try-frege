@@ -6,7 +6,7 @@
     <parent>
         <groupId>frege</groupId>
         <artifactId>try-frege</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-snapshot</version>
     </parent>
     <artifactId>try-frege-repl</artifactId>
     <name>try-frege-repl</name>
@@ -54,5 +54,12 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+
     </dependencies>
 </project>
