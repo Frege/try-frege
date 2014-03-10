@@ -171,6 +171,8 @@ pure native isControl java.lang.Character.isISOControl :: Char -> Bool
 removeControlChars :: String -> String
 removeControlChars s = packed . reverse $ go [] s.toList where
   go acc [] = acc
+  go [] ('\b': xs) = go [] xs
+  go (y:ys) ('\b': xs) = go ys xs
   go acc (x: xs) | wanted x = go (x:acc) xs
   go acc (_: xs) = go acc xs
   wanted x = not (isControl x) || x == '\n' || x == '\r' || x == '\t'
