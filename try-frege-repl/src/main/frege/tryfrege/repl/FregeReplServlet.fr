@@ -214,7 +214,7 @@ messagesToXml msgs = render [
                                show $ msg.msgType,
                           "  </type>",
                           "  <position>",
-                               show $ msg.pos,
+                               if msg.pos == Position.null then "" else show $ msg.pos,
                           "  </position>",
                           "  <text>",
                                escapeXml . removeControlChars $ msg.text,

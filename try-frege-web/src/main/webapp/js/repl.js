@@ -140,7 +140,8 @@ $(document).ready(function(){
           className = "jquery-console-message-success";
         }
         if (text.length != 0) {
-          msgs.unshift({'msg':text, 'className': className});
+          var posPrefix = position.length != 0 ? position + ": " : ""
+          msgs.push({'msg': posPrefix + text, 'className': className});
         }
       });
       if (cmd == ":java") {
@@ -152,6 +153,8 @@ $(document).ready(function(){
       } else if (cmd.match(/\s*:help\s+.*/)) {
         showHelp(msgs[0].msg);
       } else {
+        // A blank line before starting a new prompt
+        msgs.push({'msg': '', 'className': 'jquery-console-message-info'});
         report(msgs);
       }
       scrollDown();
@@ -228,7 +231,7 @@ $(document).ready(function(){
          return e.toString();
        }
      }
-     scrollDown();
+     //scrollDown();
          /*
           * else if (line.match(/^:tutorial/i)) { tutorialMode = true;
           * $("div.console").parent().css({width:"50%"});
