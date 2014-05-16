@@ -151,7 +151,12 @@ $(document).ready(function(){
           report({'msg': '', 'className': 'jquery-console-message-info'})
         }
       } else if (cmd.match(/\s*:help\s+.*/)) {
-        showHelp(msgs[0].msg);
+        if (msgs[0] && msgs[0].msg && $.trim(msgs[0].msg).length != 0) {
+          showHelp(msgs[0].msg);
+        } else {
+          report({'msg': '', 'className': 'jquery-console-message-info'})
+        }
+
       } else {
         // A blank line before starting a new prompt
         msgs.push({'msg': '', 'className': 'jquery-console-message-info'});
@@ -185,7 +190,7 @@ $(document).ready(function(){
   }
   
   function scrollDown() {
-    console.animate({"scrollTop": $(console[0]).height()}, "slow");
+    console.animate({"scrollTop": console.prop("scrollHeight")}, "slow");
   }
   
   
