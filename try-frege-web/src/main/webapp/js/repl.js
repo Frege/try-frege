@@ -107,10 +107,10 @@ $(document).ready(function(){
                       $(this).attr('href', function(index, value) {
                           if (!value) return
                           if (value.substr(0,1) !== "/") {
-                              if (value.substr(0,2) == "..") {
-                                  value = "http://www.frege-lang.org/doc/frege" + value.substr(2)
+                              if (value.substr(0,1) == ".") {
+                                  value = "http://www.frege-lang.org/doc" + value.substr(1)
                               } else {
-                                  value = "http://www.frege-lang.org/doc/frege" + value;
+                                  value = "http://www.frege-lang.org/doc" + value;
                               }
                           }
                           return value;
