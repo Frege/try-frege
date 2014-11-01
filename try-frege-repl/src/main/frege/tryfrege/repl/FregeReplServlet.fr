@@ -1,10 +1,17 @@
 module tryfrege.repl.FregeReplServlet where
 
+import Compiler.Data hiding (Message, Severity)
+import Compiler.Data (Severity(), Message CompilerMessage)
+import Compiler.enums.TokenID(TokenID)
+import Compiler.types.ImportDetails
+import Compiler.types.SNames
+import Compiler.types.Positions
+import Compiler.types.Tokens
+import Compiler.types.QNames
+import Control.monad.State (evalState, execState)
+import Data.List
 import frege.Prelude hiding (print)
-import Compiler.Data (Symbol, linkAll, DefinitionT, ImportList, ImportItem, SName)
-import Compiler.BaseTypes (Position, TokenID, Token)
-import Compiler.Import
-import Data.List (intercalate)
+import Java.IO()
 import Interpreter.FregeInterpreter
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help)
 import tryfrege.repl.ServletSupport
@@ -33,7 +40,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
               stdoutWriter <- StringWriter.new ()
               stderrWriter <- StringWriter.new ()
               stdin <- fmap (maybe "" id) $ web.request.getParameter "stdin"
-              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym) stdin stdoutWriter stderrWriter env.state.classLoader
+              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state.classLoader
               out <- stdoutWriter.toString
               err <- stderrWriter.toString
               return $ maybe [Message.error "undefined"]

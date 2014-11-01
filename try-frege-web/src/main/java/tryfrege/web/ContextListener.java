@@ -57,7 +57,6 @@ public class ContextListener implements ServletContextListener {
                 final PreludeBase.TList msgs = toJavaValue(failure.mem1);
                 final String errorMsg = toJavaValue(
                     FregeInterpreter.TMessage.showMessages(FregeInterpreter.IShow_Message.it, msgs));
-                System.out.println(errorMsg);
             default:
                 classes = new HashMap<>();
                 break;

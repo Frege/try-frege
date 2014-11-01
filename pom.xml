@@ -10,7 +10,7 @@
     <url>https://github.com/Frege/try-frege</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frege.version>3.21.500-g88270a0</frege.version>
+        <frege.version>3.21.586-g026e8d7</frege.version>
         <frege.plugin.version>1.0.5</frege.plugin.version>
         <frege.interpreter.version>1.0.3-SNAPSHOT</frege.interpreter.version>
         <frege.repl.version>1.0.3-SNAPSHOT</frege.repl.version>
@@ -36,7 +36,7 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>frege</groupId>
+                <groupId>com.theoryinpractise.frege</groupId>
                 <artifactId>frege</artifactId>
                 <version>${frege.version}</version>
             </dependency>
@@ -56,4 +56,11 @@
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.theoryinpractise.frege</groupId>
+            <artifactId>frege</artifactId>
+            <version>${frege.version}</version>
+        </dependency>
+    </dependencies>
 </project>
