@@ -215,6 +215,9 @@ messagesToXml msgs = render [
                      ] where
   render = unlines
   msgsToXml = render $ map msgToXml msgs
+
+  msgToXml :: Message -> String
+  msgToXml msg | msg.text ~ ´unused import of  tryfrege\.interpreter\.PreludeInterpreter´ = ""
   msgToXml msg = render [
                           "<message>",
                           "  <type>",
