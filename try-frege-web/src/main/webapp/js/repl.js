@@ -1,4 +1,4 @@
-$(document).ready(function(){
+  $(document).ready(function(){
 
   var hwEditor =
     CodeMirror.fromTextArea(document.getElementById("helloworldEditor"),
