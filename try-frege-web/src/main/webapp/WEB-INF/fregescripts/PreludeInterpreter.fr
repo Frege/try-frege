@@ -1,4 +1,4 @@
-module tryfrege.interpreter.PreludeInterpreter where
+module frege.interpreter.PreludeInterpreter where
 
 import frege.Prelude hiding (getLine, getChar, getContents)
 import Java.IO(stdin)

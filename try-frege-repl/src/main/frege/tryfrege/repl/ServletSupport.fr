@@ -3,7 +3,7 @@ module tryfrege.repl.ServletSupport where
 data ServletRequest = native javax.servlet.ServletRequest where
   native getRequestDispatcher :: (MutableIO ServletRequest) -> String -> IO RequestDispatcher
 
-data ServletResponse = mutable native javax.servlet.ServletResponse where
+data ServletResponse = native javax.servlet.ServletResponse where
   native getWriter :: MutableIO ServletResponse -> IO PrintWriter throws IOException
   native setContentType :: MutableIO ServletResponse -> String -> IO ()
 
@@ -13,7 +13,7 @@ data HttpServletRequest = native javax.servlet.http.HttpServletRequest where
   native getSession :: (Mutable s HttpServletRequest) -> STMutable s HttpSession
   native getContextPath :: (Mutable s HttpServletRequest) -> ST s String
 
-data HttpServletResponse = mutable native javax.servlet.http.HttpServletResponse
+data HttpServletResponse = native javax.servlet.http.HttpServletResponse
 
 data HttpServlet = native javax.servlet.http.HttpServlet where
   native getServletContext :: Mutable s HttpServlet -> STMutable s ServletContext
@@ -28,6 +28,7 @@ data ServletContext = native javax.servlet.ServletContext where
   native getAttribute :: (Mutable s ServletContext) -> String -> ST s (Maybe Object)
   native setAttribute :: (Mutable s ServletContext) -> String -> Object -> ST s ()
   native getContextPath :: (Mutable s ServletContext) -> ST s String
+  native getResourceAsStream :: MutableIO ServletContext -> String -> IO (Maybe InputStream)
 
 data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
   native forward :: RequestDispatcher -> MutableIO ServletRequest -> MutableIO ServletResponse -> IO () throws ServletException, IOException
