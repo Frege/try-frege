@@ -1,8 +1,10 @@
 module tryfrege.repl.FregeReplServlet where
 
-import Compiler.Data hiding (Message, Severity)
-import Compiler.Data (Severity(), Message CompilerMessage)
+import Compiler.types.Global hiding (Message, Severity)
+import Compiler.types.Global (Message CompilerMessage, Severity())
 import Compiler.enums.TokenID(TokenID)
+import Compiler.enums.Flags
+import Compiler.types.SourceDefinitions
 import Compiler.types.ImportDetails
 import Compiler.types.SNames
 import Compiler.types.Positions
@@ -13,7 +15,7 @@ import Data.List
 import frege.Prelude hiding (print)
 import Java.IO()
 import Interpreter.FregeInterpreter
-import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help)
+import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport
 
 read :: Web -> ReplEnv -> IO ([Message] | Command)
@@ -40,7 +42,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
               stdoutWriter <- StringWriter.new ()
               stderrWriter <- StringWriter.new ()
               stdin <- fmap (maybe "" id) $ web.request.getParameter "stdin"
-              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state.classLoader
+              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state
               out <- stdoutWriter.toString
               err <- stderrWriter.toString
               return $ maybe [Message.error "undefined"]
@@ -50,20 +52,18 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
         let evalShow = do
                           let varDecl = variableDeclScript sym.name.base line
                           when (line /= sym.name.base) $
-                            Repl.modify ReplEnv.{config <- InterpreterConfig.{predefs <- ((:) varDecl)}}
+                            Repl.modify ReplEnv.{config <- InterpreterConfig.{predefs <- ((++) varDecl)}}
                           eval (Eval $ buildShowScript sym.name.base g sym)
-        let (res, newEnv) = Repl.run evalShow env
+        (res, newEnv) <- Repl.run evalShow env
         case res of
           CodeInfo{} -> print web cmd newEnv res
           _ -> return [Message.hint (":: " ++ (getSymbolType g sym))]
   Expression sym = return [Message.hint (":: " ++ (getSymbolType g sym))]
-  Definitions syms = do
+  Definitions syms markerSym = do
     let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) newSyms
         newSyms = filter (\sym -> sym.pos.line > lineStart) syms
-        lineStart = case env.config.predefs of
-                  [] -> 0
-                  (_:xs) -> fold (\z \x -> z + length (lines x)) 1 xs -- Ignore module line and import PreludeScripting
-    return (Message.hint (intercalate newLine symLabels) : filter (\msg -> msg.pos.line > lineStart) msgs)
+        lineStart = markerSym.pos.line
+    return (map Message.hint symLabels ++ filter (\msg -> msg.pos.line > lineStart) msgs)
   Module moduleName = return (Message.info ("Module " ++ moduleName) : msgs)
 print web (LoadExternal path script) env res = print web (Eval script) env res
 print _ _ _ _ = return []
@@ -80,11 +80,11 @@ doPost !servlet !request !response = do
   case input of
     Left msgs -> sendReplResult response msgs
     Right Reset -> clearSession session >> sendReplResult response []
-    Right Help -> sendReplResult response [Message.info (help cmdHelp)]
+    Right Help = sendReplResult response [Message.info (help cmdHelp)]
     Right cmd -> do
-       let (res, newEnv) = Repl.run (eval cmd) env
-       msgs <- print web cmd newEnv res
+       (res, newEnv) <- Repl.run (eval cmd) env
        saveSession newEnv session
+       msgs <- print web cmd newEnv res
        sendReplResult response msgs
 
 buildReplEnv :: Web -> IO ReplEnv
@@ -92,49 +92,38 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
   session <- request.getSession
   let strToMaybe "" = Nothing
       strToMaybe s = Just s
+      flags = Flags.fromList [WARNINGS, HINTS, INLINE]
   lastJavaGenSrc <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastJavaGenSrc"
   lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
-  let stringArrToList s = do
-                            sarr <- asStringArr s
-                            arr <- readonly id sarr
-                            return arr.toList
-  predefs <- sessionAttr session stringArrToList (return []) "predefs"
+  predefs <- sessionAttr session (return . asString) (return "") "predefs"
   context <- servlet.getServletContext
   classes <- sessionAttr session asClassesMap (initClasses context) "classes"
-  classLoader <- InterpreterClassLoader.new classes >>= Mutable.freeze
+  classLoader <- InterpreterClassLoader.new classes
   return $ ReplEnv {
                      lastJavaGenSrc = lastJavaGenSrc,
                      lastExternalScript = lastExternalScript,
-                     prompt = "",
-                     config = InterpreterConfig predefs transformDefs,
-                     state = InterpreterState classLoader
+                     opts = ReplOpts.default,
+                     config = InterpreterConfig predefs flags true,
+                     state = classLoader
                    }
 
 initClasses :: MutableIO ServletContext -> IOMutable (JMap String ByteArray)
 initClasses context = do
   preludeClassesMaybe <- context.getAttribute "classes"
-  maybe (HashMap.new () :: STMutable s (JMap String ByteArray)) asClassesMap preludeClassesMaybe
+  maybe (compilePreludeScript context) asClassesMap preludeClassesMaybe
 
-interpreterPreludeImport = ImpDcl {pos=Position.null, pack="tryfrege.interpreter.PreludeInterpreter", as=Nothing, imports = linkAll}
-
-preludeHidingImport = ImpDcl {
-  pos = Position.null,
-  pack = "frege.Prelude",
-  as = Nothing,
-  imports = Imports {
-              publik = false,
-              except = true,
-              items = [
-                fnImport "getLine", fnImport "getChar", fnImport "getContents"
-              ]
-            }
-} where
-  fnImport name = Item {publik = false, name = fn name, members = Nothing, alias=""}
-  fn name = Simple {id = Token VARID name 1 0 0 []}
-
-transformDefs defs = do
-  uniqdefs <- removeDuplicateDefs defs
-  return (interpreterPreludeImport : preludeHidingImport : uniqdefs)
+compilePreludeScript :: MutableIO ServletContext -> IOMutable (JMap String ByteArray)
+compilePreludeScript context = do
+  scriptStreamMaybe <- context.getResourceAsStream "/WEB-INF/fregescripts/PreludeInterpreter.fr"
+  let compile stream = do
+                          isr <- InputStreamReader.new stream "UTF-8"
+                          br <- BufferedReader.new isr
+                          script <- intercalate newLine <$> br.getLines
+                          env <- ReplEnv.default
+                          (_, newState) <- Interpreter.run (interpret script) env.config env.state
+                          newState.classes
+      newMap = HashMap.new () :: IOMutable (JMap String ByteArray)
+  maybe newMap compile scriptStreamMaybe
 
 sessionAttr :: Mutable s HttpSession -> (Object -> ST s b) -> ST s b -> String -> ST s b
 sessionAttr session f default name = do
@@ -146,9 +135,8 @@ saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
   let extScriptStr = maybe "" id replEnv.lastExternalScript
       lastJavaGenSrc = maybe "" id replEnv.lastJavaGenSrc
-  predefsArr <- StringArray.fromList replEnv.config.predefs
-  putStrArraySession session "predefs" predefsArr
-  putSession session "classes" replEnv.state.classLoader.classes
+  putSession session "predefs" replEnv.config.predefs
+  replEnv.state.classes >>= putSession session "classes"
   putSession session "lastExternalScript" extScriptStr
   putSession session "lastJavaGenSrc" lastJavaGenSrc
 
@@ -188,22 +176,6 @@ native strArrToObject "(Object)" :: ArrayOf s String -> ST s Object
 
 pure native escapeXml org.apache.commons.lang3.StringEscapeUtils.escapeXml :: String -> String
 
-cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
-            (":browse <module name>", "Display the names in a module if " ++
-                "a module name is provided otherwise display the names in the default REPL module."),
-            (":load <url>", "Load Frege code snippets from an URL."),
-            (":java", "View Java translation of last compiled Frege source. In the source window, " ++
-                      "press ctrl+q to expand or collapse a line."),
-            (":r", "Reload the last url source."),
-            (":history", "Display the source history for definitions in the default REPL module."),
-            (":version", "Display Frege version."),
-            (":{", "Start multiline snippets."),
-            (":}", "End multiline snippets."),
-            (":stdin", "Edit Console Input."),
-            (":reset", "Reset the session discarding all evaluated scripts."),
-            (":clear", "Clear REPL window. Session will continue to be active."),
-            (":help <name>", "Display the documentation for the given name." ++
-                            " If the name is not provided, display this help message.")]
 
 messagesToXml :: [Message] -> String
 messagesToXml msgs = render [
@@ -231,6 +203,22 @@ messagesToXml msgs = render [
                           "  </text>",
                           "</message>"
                         ]
+
+cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
+            (":browse <module name>", "Display the names in a module if " ++
+                "a module name is provided otherwise display the names in the default REPL module."),
+            (":load <url>", "Load Frege code snippets from an URL."),
+            (":java", "View Java translation of last compiled Frege source."),
+            (":r", "Reload the last url source."),
+            (":history", "Display the source history for definitions in the default REPL module."),
+            (":version", "Display Frege version."),
+            (":set <compilerOption>", "Set compiler options such as 'hints', 'nowarn', 'inline', 'O', 'comments',"
+                                      ++ "'ascii', 'greek', 'fraktur', 'latin'."),
+            (":unset compilerOption", "Unset compiler option."),
+            (":clear", "Clear the REPL window."),
+            (":reset", "Reset the session discarding all evaluated scripts."),
+            (":help <name>", "Display the documentation for the given name." ++
+                            " If the name is not provided, display this help message.")]
 
 type StringArray = JArray String
 

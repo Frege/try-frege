@@ -1,12 +1,57 @@
   $(document).ready(function(){
-
-  var hwEditor =
-    CodeMirror.fromTextArea(document.getElementById("helloworldEditor"),
+  var editor =
+    CodeMirror.fromTextArea(document.getElementById("editor"),
     {
-          theme: 'blackboard',
+          theme: 'mbo',
           lineNumbers: true,
-          readOnly: true,
-          mode: "text/x-haskell"
+          readOnly: false,
+          mode: "text/x-haskell",
+          autofocus: true,
+          scrollbarStyle: "simple",
+          extraKeys: {
+            "Ctrl-Enter": function(cm) {
+              var src = cm.getValue()
+              fregeEval(src, function(msgs) {
+                var count = msgs.length
+                $('#output').empty()
+                for (var i = 0; i < count; i++) {
+                  message(msgs[i].msg, msgs[i].className)
+                  }
+              })
+            },
+            "Shift-Enter": function(cm) {
+              fregeEval($.trim($('#replEditor').val()), function(msgs) {
+                var count = msgs.length
+                $('#output').empty()
+                for (var i = 0; i < count; i++) {
+                  message(msgs[i].msg, msgs[i].className)
+                  }
+              })
+            },
+            "F11": function(cm) {
+              cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            },
+            "Esc": function(cm) {
+              if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            }
+          }
+    });
+    editor.setSize('100%', '90%')
+
+    $( "#input" ).click(function() {
+      editor.focus();
+    });
+
+    $('#replEditor').keydown(function (e) {
+      if (e.keyCode == 13) {
+          fregeEval($('#replEditor').val(), function(msgs) {
+                    var count = msgs.length
+                    $('#output').empty()
+                    for (var i = 0; i < count; i++) {
+                      message(msgs[i].msg, msgs[i].className)
+                      }
+                  })
+      }
     });
 
   var javaSourceEditor =
@@ -44,6 +89,18 @@
           gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     })
 
+  function message(msg,className) {
+			var mesg = $('<div class="jquery-console-message">'
+			  + msg
+			      .replace(/</g, '&lt;')
+			      .replace(/>/g, '&gt;')
+			      .replace(/(?:\r\n|\r|\n)/g, '<br/>')
+			      .replace(/ /g, '&nbsp;')
+
+        + '</div>');
+			if (className) mesg.addClass(className);
+			$('#output').append(mesg);
+		};
 
   function collapseJavaSourceEditor(start, end) {
     javaSourceEditor.runtimeAnnMarker = javaSourceEditor.markText({line: start, ch: 0}, {line: end, ch: 0}, {
@@ -53,10 +110,10 @@
                       )
   }
 
-  $("#tabs" ).tabs();
+  /*$("#tabs" ).tabs();
   $("#tabs").height($(window).height() * 0.9);
   $("div.console").height($("#tabs").height() * 0.8);
-  $("div.input").height($("#tabs").height() * 0.8);
+  $("div.input").height($("#tabs").height() * 0.8);*/
   $( "#javaSourceDialog" ).dialog({
                             modal: true,
                             autoOpen: false,
@@ -75,6 +132,7 @@
                               "title": "Console Input",
                               "position": { my: "right top", at: "right top", of: window }
                              });
+
   $( "#helpDialog" ).dialog({
                           modal: false,
                           autoOpen: false,
@@ -84,11 +142,21 @@
                           "position": { my: "right top", at: "right top", of: window }
                             });
 
+  $("#compileButton").click(function() {
+    var src = editor.getValue();
+    fregeEval(src, function(msgs) {
+                      var count = msgs.length
+                      $('#output').empty()
+                      for (var i = 0; i < count; i++) {
+                        message(msgs[i].msg, msgs[i].className)
+                        }
+                   }
+    );
+  });
 
   var pasteMode = false;
   var tutorialMode = false;
   var tutPage = 1;
-  var console = $('div.console');
 
   function successHandler(cmd, report) {
     function showJavaSource(src) {
@@ -162,7 +230,7 @@
         msgs.push({'msg': '', 'className': 'jquery-console-message-info'});
         report(msgs);
       }
-      scrollDown();
+      //scrollDown();
     }
   }
         
@@ -188,16 +256,12 @@
     }
     
   }
-  
-  function scrollDown() {
-    console.animate({"scrollTop": console.prop("scrollHeight")}, "slow");
-  }
-  
-  
+
+ var console = $('div#console');
  var controller = console.console({
    promptLabel: 'frege> ',
    continuedPromptLabel: '',
-   autofocus: true,
+   autofocus: false,
    commandHandle:function(line, report) {
      var line = $.trim(line);
      if (pasteMode) {
@@ -215,20 +279,6 @@
        controller.continuedPrompt = true;
      } else if (line.match(/^:c/i)) {
        controller.reset();
-     } else if (tutorialMode && line.match(/^:.*/)) {
-       if (line.match(/:q.*/i)) {
-          tutorialMode = false;
-          tutPage = 1;
-          navigateTutorial('hide');
-          $("div.console").parent().animate({width:"100%"}, "slow");
-          report("Exiting tutorial!");
-        } else if (line.match(/^:\d+$/) || line == ":next" || line == ":prev") {
-          var tutorialCmd = line.substring(1);
-          navigateTutorial(tutorialCmd);
-          report("");
-        } else {
-          fregeEval(line, report);
-        }
      } else {
        try {
          fregeEval(line, report);
@@ -236,26 +286,17 @@
          return e.toString();
        }
      }
-     //scrollDown();
-         /*
-          * else if (line.match(/^:tutorial/i)) { tutorialMode = true;
-          * $("div.console").parent().css({width:"50%"});
-          * $("#tutorial").parent().css({width:"50%"}, "slow");
-          * $("#tutorial").show(); navigateTutorial(tutPage); report("Entering
-          * tutorial... Type :q to exit.\n" + "You can browse through tutorial by
-          * typing :1 for tutorial 1,\n" + ":2 for tutorial 2 and so on or by
-          * typing :next and :prev.\n" + "On the right side, the tutorial
-          * contents will be displayed."); }
-          */
-
    },
    animateScroll:true,
    promptHistory:true,
    welcomeMessage:'Welcome! Enter Frege code snippets at the prompt ' + 
      'to get them evaluated.\nType ":help" for more information.'
  });
- controller.promptText('');
-      
+
+  $("div.replSection").click(function() {
+      controller.focus();
+    });
+
   window.github = new Github({
          token: "", // Place a valid oauth token here
          auth: "oauth"
@@ -264,7 +305,13 @@
   
   window.repo = github.getRepo("frege", "try-frege");
   
-  consoleWindow = controller;
+  //consoleWindow = controller;
+
+  $("div.replSection").resizable({alsoResize: "div.editorSection"});
+  $("div.editorSection").resizable();
+  $("div.input").resizable(/*{alsoResize: "div.output"}*/)
+  //$("div.output").resizable();
+
 });
 
 function pasteCode(code) {

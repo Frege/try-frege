@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>frege</groupId>
+    <groupId>org.frege-lang</groupId>
     <artifactId>try-frege</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -10,10 +10,10 @@
     <url>https://github.com/Frege/try-frege</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frege.version>3.21.586-g026e8d7</frege.version>
+        <frege.version>3.22.524-gcc99d7e</frege.version>
         <frege.plugin.version>1.0.5</frege.plugin.version>
-        <frege.interpreter.version>1.0.3-SNAPSHOT</frege.interpreter.version>
-        <frege.repl.version>1.1.1-SNAPSHOT</frege.repl.version>
+        <frege.interpreter.version>1.1.2-SNAPSHOT</frege.interpreter.version>
+        <frege.repl.version>1.2.1-SNAPSHOT</frege.repl.version>
     </properties>
 
     <modules>
@@ -24,43 +24,44 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>3.8.1</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>servlet-api</artifactId>
                 <version>2.5</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.theoryinpractise.frege</groupId>
+                <groupId>org.frege-lang</groupId>
                 <artifactId>frege</artifactId>
                 <version>${frege.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.frege-lang</groupId>
+                <artifactId>frege-interpreter-core</artifactId>
+                <version>${frege.interpreter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.frege-lang</groupId>
+                <artifactId>frege-repl-core</artifactId>
+                <version>${frege.repl.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>1.7</source>
+                        <target>1.7</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
     </build>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.theoryinpractise.frege</groupId>
-            <artifactId>frege</artifactId>
-            <version>${frege.version}</version>
-        </dependency>
-    </dependencies>
 </project>

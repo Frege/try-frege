@@ -1,13 +1,22 @@
+html,body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  background: #000;
+}
+
 div.console {
-    background: #002B36;
+    background: #2c2c2c;
     color: #FFF;
     font-size: 14px;
-    font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
-    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
-    "Lucida Console", "Bitstream Vera Sans Mono",
-    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
-    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
-    "Courier New", Terminal, monospace;
+    font-family: Consolas, Inconsolata, "Lucida Console", Profont, Terminus,
+                  "DejaVu Sans Mono","Andale Mono", Monaco,
+                  "Courier New", Terminal, monospace,
+                  "Bitstream Vera Sans Mono", Freemono, "Liberation Mono",
+                  "Droid Sans Mono", "Inconsolata-g", Unifont, Lime, "ClearlyU PUA", Clean,
+                  Dina, Anka, "Anonymous Pro", "Proggy fonts", "Envy Code R", Gamow, Courier;
+    height: 100%;
     overflow: auto;
 }
 
@@ -53,16 +62,90 @@ div.console span.jquery-console-prompt-label {
     font-weight: bold
 }
 
-div.about {
+div.code {
     font-size: 14px;
-    font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
-    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
-    "Lucida Console", "Bitstream Vera Sans Mono",
-    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
-    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
-    "Courier New", Terminal, monospace;
+    font-family: Consolas, Inconsolata, "Lucida Console", Profont, Terminus,
+                  "DejaVu Sans Mono","Andale Mono", Monaco,
+                  "Courier New", Terminal, monospace,
+                  "Bitstream Vera Sans Mono", Freemono, "Liberation Mono",
+                  "Droid Sans Mono", "Inconsolata-g", Unifont, Lime, "ClearlyU PUA", Clean,
+                  Dina, Anka, "Anonymous Pro", "Proggy fonts", "Envy Code R", Gamow, Courier;
     
 }
+
+div.content {
+ height: 100%;
+ width: 100%;
+ float:right;
+ overflow: auto;
+}
+
+div.replSection {
+  height: 99%;
+  width: 49%;
+  background: #002B36;
+  float: left;
+}
+
+div.editorSection {
+  height: 99%;
+  width: 50%;
+  float: left;
+  border: 1px solid #fff;
+  background: #2c2c2c;
+}
+
+div.editorSubmit {
+  height: 10%;
+  width: 10%;
+  margin:0 auto;
+}
+
+div.inputHeader .inputRun {
+  float: right;
+  color: #fff;
+  font-size: 16px;
+}
+div.input {
+  height: 50%;
+  width: 100%
+  border: 1px solid #fff;
+}
+
+#editor {
+  height: 50%;
+  resize: none
+}
+
+div.output {
+  height: 50%;
+  width: 100%
+  background: #fff;
+  color: #FFF;
+  overflow: auto;
+  border: 1px solid #fff;
+}
+
+div h3.ui-widget-header {
+  text-align: center;
+  margin: 0;
+}
+
+#prompt {
+  height:100%;
+  color:#fff;
+  float:left;
+  font-size: 14px;
+  font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
+  Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
+  "Lucida Console", "Bitstream Vera Sans Mono",
+  Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
+  Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
+  "Courier New", Terminal, monospace;
+}
+
+
+
 
 #tutorial {
     border-left: 1px solid #6EA7D1;
@@ -82,20 +165,4 @@ ul.repolinks { list-style-type: none; margin: 0; padding: 0;  }
 ul.repolinks li { margin: 3px 3px 3px 0; padding: 6px; float: left; width: 80%; font-size: 16px; text-align: center; }
 ul.repolinks li a { margin: 0px; display: block; width: 100%; height: 100%; }
 
-table.features {
-  font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
-    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
-    "Lucida Console", "Bitstream Vera Sans Mono",
-    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
-    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
-    "Courier New", Terminal, monospace;
-}
 
-table.features tr td {
-  background: #cccccc;
-  text-align:center;
-}
-
-div.descfrege {
-  padding: 3px;
-}
