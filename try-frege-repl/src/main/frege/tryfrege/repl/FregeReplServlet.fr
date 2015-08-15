@@ -2,15 +2,9 @@ module tryfrege.repl.FregeReplServlet where
 
 import Compiler.types.Global hiding (Message, Severity)
 import Compiler.types.Global (Message CompilerMessage, Severity())
-import Compiler.enums.TokenID(TokenID)
 import Compiler.enums.Flags
-import Compiler.types.SourceDefinitions
-import Compiler.types.ImportDetails
-import Compiler.types.SNames
 import Compiler.types.Positions
-import Compiler.types.Tokens
 import Compiler.types.QNames
-import Control.monad.State (evalState, execState)
 import Data.List
 import frege.Prelude hiding (print)
 import Java.IO()
@@ -57,7 +51,10 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
         (res, newEnv) <- Repl.run evalShow env
         case res of
           CodeInfo{} -> print web cmd newEnv res
-          _ -> return [Message.hint (":: " ++ (getSymbolType g sym))]
+          _ -> do
+                  let typeCmd = Type line
+                  (res, newEnv) <- Repl.run (eval typeCmd) env
+                  print web typeCmd newEnv res
   Expression sym = return [Message.hint (":: " ++ (getSymbolType g sym))]
   Definitions syms markerSym = do
     let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) newSyms
