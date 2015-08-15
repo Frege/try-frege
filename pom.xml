@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <frege.version>3.22.524-gcc99d7e</frege.version>
         <frege.plugin.version>1.0.5</frege.plugin.version>
-        <frege.interpreter.version>1.1.2-SNAPSHOT</frege.interpreter.version>
+        <frege.interpreter.version>1.2.1-SNAPSHOT</frege.interpreter.version>
         <frege.repl.version>1.2.1-SNAPSHOT</frege.repl.version>
     </properties>
 
