@@ -3,6 +3,7 @@ module tryfrege.repl.FregeReplServlet where
 import Compiler.types.Global hiding (Message, Severity)
 import Compiler.types.Global (Message CompilerMessage, Severity())
 import Compiler.enums.Flags
+import Data.Bits (BitSet)
 import Compiler.types.Positions
 import Compiler.types.QNames
 import Data.List
@@ -15,9 +16,7 @@ import tryfrege.repl.ServletSupport
 read :: Web -> ReplEnv -> IO ([Message] | Command)
 read web state = do
    line <- fmap (maybe "" id) $ web.request.getParameter "cmd"
-   let readResource resource = do
-                                 res <- slurp resource
-                                 return $ either (\a -> Left [a]) Right res
+   let readResource resource = either (\a -> Left [a]) Right <$> slurp resource
    case Command.parse line of
      Left err -> return $ Left [Message.error err]
      Right Reload -> maybe err readResource state.lastExternalScript where
@@ -56,11 +55,9 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
                   (res, newEnv) <- Repl.run (eval typeCmd) env
                   print web typeCmd newEnv res
   Expression sym = return [Message.hint (":: " ++ (getSymbolType g sym))]
-  Definitions syms markerSym = do
-    let symLabels = map (showSymbol g) $ filter (not . Symbol.{alias?}) newSyms
-        newSyms = filter (\sym -> sym.pos.line > lineStart) syms
-        lineStart = markerSym.pos.line
-    return (map Message.hint symLabels ++ filter (\msg -> msg.pos.line > lineStart) msgs)
+  Definitions syms = do
+    let symLabels = map (showSymbol g) syms
+    return (map Message.hint symLabels ++ msgs)
   Module moduleName = return (Message.info ("Module " ++ moduleName) : msgs)
 print web (LoadExternal path script) env res = print web (Eval script) env res
 print _ _ _ _ = return []
@@ -77,32 +74,12 @@ doPost !servlet !request !response = do
   case input of
     Left msgs -> sendReplResult response msgs
     Right Reset -> clearSession session >> sendReplResult response []
-    Right Help = sendReplResult response [Message.info (help cmdHelp)]
+    Right Help = sendReplResult response $ map Message.info (help cmdHelp)
     Right cmd -> do
        (res, newEnv) <- Repl.run (eval cmd) env
        saveSession newEnv session
        msgs <- print web cmd newEnv res
        sendReplResult response msgs
-
-buildReplEnv :: Web -> IO ReplEnv
-buildReplEnv (Web{servlet=servlet,request=request}) = do
-  session <- request.getSession
-  let strToMaybe "" = Nothing
-      strToMaybe s = Just s
-      flags = Flags.fromList [WARNINGS, HINTS, INLINE]
-  lastJavaGenSrc <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastJavaGenSrc"
-  lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
-  predefs <- sessionAttr session (return . asString) (return "") "predefs"
-  context <- servlet.getServletContext
-  classes <- sessionAttr session asClassesMap (initClasses context) "classes"
-  classLoader <- InterpreterClassLoader.new classes
-  return $ ReplEnv {
-                     lastJavaGenSrc = lastJavaGenSrc,
-                     lastExternalScript = lastExternalScript,
-                     opts = ReplOpts.default,
-                     config = InterpreterConfig predefs flags true,
-                     state = classLoader
-                   }
 
 initClasses :: MutableIO ServletContext -> IOMutable (JMap String ByteArray)
 initClasses context = do
@@ -127,12 +104,36 @@ sessionAttr session f default name = do
   attrObj <- session.getAttribute name
   maybe default f attrObj
 
+buildReplEnv :: Web -> IO ReplEnv
+buildReplEnv (Web{servlet=servlet,request=request}) = do
+  session <- request.getSession
+  let strToMaybe "" = Nothing
+      strToMaybe s = Just s
+      defaultFlags = Flags.fromList [WARNINGS, HINTS, INLINE]
+  lastJavaGenSrc <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastJavaGenSrc"
+  lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
+  predefs <- sessionAttr session (return . asString) (return "") "predefs"
+  lineStart <- sessionAttr session (return . asInt) (return 2) "lineStart"
+  context <- servlet.getServletContext
+  classes <- sessionAttr session asClassesMap (initClasses context) "classes"
+  flags <- sessionAttr session (return . BitSet . asFlags) (return defaultFlags) "compilerFlags"
+  classLoader <- InterpreterClassLoader.new classes
+  return $ ReplEnv {
+                     lastJavaGenSrc = lastJavaGenSrc,
+                     lastExternalScript = lastExternalScript,
+                     opts = ReplOpts.default,
+                     lineStart = lineStart,
+                     config = InterpreterConfig predefs flags true,
+                     state = classLoader
+                   }
 
 saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
   let extScriptStr = maybe "" id replEnv.lastExternalScript
       lastJavaGenSrc = maybe "" id replEnv.lastJavaGenSrc
   putSession session "predefs" replEnv.config.predefs
+  putSession session "lineStart" replEnv.lineStart
+  putSession session "compilerFlags" replEnv.config.compilerFlags
   replEnv.state.classes >>= putSession session "classes"
   putSession session "lastExternalScript" extScriptStr
   putSession session "lastJavaGenSrc" lastJavaGenSrc
@@ -140,6 +141,8 @@ saveSession replEnv session = do
 clearSession :: MutableIO HttpSession -> IO ()
 clearSession session = do
   session.removeAttribute "predefs"
+  session.removeAttribute "compilerFlags"
+  session.removeAttribute "lineStart"
   session.removeAttribute "classes"
   session.removeAttribute "lastExternalScript"
   session.removeAttribute "lastJavaGenSrc"
@@ -186,7 +189,6 @@ messagesToXml msgs = render [
   msgsToXml = render $ map msgToXml msgs
 
   msgToXml :: Message -> String
-  msgToXml msg | msg.text ~ ´unused import of  tryfrege\.interpreter\.PreludeInterpreter´ = ""
   msgToXml msg = render [
                           "<message>",
                           "  <type>",
@@ -211,7 +213,7 @@ cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
             (":version", "Display Frege version."),
             (":set <compilerOption>", "Set compiler options such as 'hints', 'nowarn', 'inline', 'O', 'comments',"
                                       ++ "'ascii', 'greek', 'fraktur', 'latin'."),
-            (":unset compilerOption", "Unset compiler option."),
+            (":unset <compilerOption>", "Unset compiler option."),
             (":clear", "Clear the REPL window."),
             (":reset", "Reset the session discarding all evaluated scripts."),
             (":help <name>", "Display the documentation for the given name." ++
@@ -221,9 +223,11 @@ type StringArray = JArray String
 
 native asClassesMap "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArray)
 
-pure native asString "(java.lang.String)" :: Object -> String
+pure native asString "(String)" :: Object -> String
+pure native asInt "(Integer)" :: Object -> Int
+pure native asFlags "(Long)" :: Object -> Long
 
-native asStringArr "(java.lang.String[])" :: Object -> STMutable s (JArray String)
+native asStringArr "(String[])" :: Object -> STMutable s (JArray String)
 
 pure native asObject "(Object)" :: a -> Object
 
