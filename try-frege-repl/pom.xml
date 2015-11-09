@@ -10,21 +10,38 @@
     </parent>
     <artifactId>try-frege-repl</artifactId>
     <name>try-frege-repl</name>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>io.repaint.maven</groupId>
-                <artifactId>tiles-maven-plugin</artifactId>
-                <version>2.1</version>
-                <extensions>true</extensions>
+                <groupId>com.theoryinpractise.frege</groupId>
+                <artifactId>frege-maven-plugin</artifactId>
+                <version>1.0.7</version>
+                <executions>
+                    <execution>
+                        <id>frege-compile</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>frege-test-compile</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <tiles>
-                        <tile>com.theoryinpractise.frege:frege-maven-tile:xml:1.0.2</tile>
-                    </tiles>
+                    <inline>true</inline>
+                    <hints>true</hints>
+                    <includeStale>false</includeStale>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>org.frege-lang</groupId>
