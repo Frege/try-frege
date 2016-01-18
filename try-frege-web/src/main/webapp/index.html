@@ -45,12 +45,12 @@
     </p>
 </noscript>
 
-    <div id="replSection" class="replSection ui-widget-content">
-        <!--<h3 class="ui-widget-header">REPL</h3>-->
-        <div id="console" class="console"></div>
-    </div>
+<div id="replSection" class="replSection ui-widget-content">
+    <!--<h3 class="ui-widget-header">REPL</h3>-->
+    <div id="console" class="console"></div>
+</div>
 
-    <div class="editorSection">
+<div class="editorSection">
     <div id="input" class="input">
         <!--<div class="inputHeader">
         &lt;!&ndash;<h3 class="ui-widget-header">Editor</h3>&ndash;&gt;
@@ -62,6 +62,7 @@ module hello.HelloWorld where
 main = println "Hello World"
 
 </textarea>
+
         <div class="editorSubmit">
             <input type="button" title="Click to compile or Press Ctrl+Enter" value="Compile" id="compileButton"/>
         </div>
@@ -69,18 +70,18 @@ main = println "Hello World"
 
     <div id="output" class="output console">
         <div align="center"><a href="https://github.com/Frege/frege" target="_blank" style="color:#fff;font-size:24px">Frege</a>
-            <br><br><i>A</i> pure functional programming language for the <b>JVM</b>
-        in the spirit of <b>Haskell</b>.</div>
+            <br><br>A Haskell for the JVM
+        </div>
 
     </div>
-<div id="javaSourceDialog" title="Frege REPL">
+    <div id="javaSourceDialog" title="Frege REPL">
     <textarea id="javaSource">
     </textarea>
-</div>
-<div id="helpDialog"></div>
-<div id="stdinDialog">
-    <textarea id="stdin" cols="80" rows="10" placeholder="Type your input here. Press Esc to close."></textarea>
-</div>
+    </div>
+    <div id="helpDialog"></div>
+    <div id="stdinDialog">
+        <textarea id="stdin" cols="80" rows="10" placeholder="Type your input here. Press Esc to close."></textarea>
+    </div>
 
 
 </body>
