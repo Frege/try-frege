@@ -6,7 +6,6 @@ import Compiler.enums.Flags
 import Data.Bits (BitSet)
 import Compiler.types.Positions
 import Compiler.types.QNames
-import Data.List
 import frege.Prelude hiding (print)
 import Java.IO()
 import Interpreter.FregeInterpreter
@@ -26,7 +25,6 @@ read web state = do
 
 print :: Web -> Command -> ReplEnv -> ReplResult -> IO [Message]
 print _ Java _ (JavaSource src) = return [Message.info src]
-print _ (HelpDoc src) _ (DocHelp doc) = return [Message.info doc]
 print _ _ _ (ReplInfo msgs) = return msgs
 print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr of
   Expression sym | isVariable g sym =
@@ -39,7 +37,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
               out <- stdoutWriter.toString
               err <- stderrWriter.toString
               return $ maybe [Message.error "undefined"]
-                             (\m -> [Message.info m, Message.hint out, Message.error err]) valMaybe
+                             (\m -> [Message.info . toString $ m, Message.hint out, Message.error err]) valMaybe
            `catch` (\err -> return [Message.error $ showThrowableCause err])
       else do
         let evalShow = do
@@ -92,17 +90,17 @@ compilePreludeScript context = do
   let compile stream = do
                           isr <- InputStreamReader.new stream "UTF-8"
                           br <- BufferedReader.new isr
-                          script <- intercalate newLine <$> br.getLines
-                          env <- ReplEnv.default
-                          (_, newState) <- Interpreter.run (interpret script) env.config env.state
+                          script <- intercalateNewLine <$> br.getLines
+                          env <- ReplEnv.initialState
+                          (result, newState) <- Interpreter.run (interpret script) env.config env.state
                           newState.classes
       newMap = HashMap.new () :: IOMutable (JMap String ByteArray)
   maybe newMap compile scriptStreamMaybe
 
 sessionAttr :: Mutable s HttpSession -> (Object -> ST s b) -> ST s b -> String -> ST s b
-sessionAttr session f default name = do
+sessionAttr session f defaultValue name = do
   attrObj <- session.getAttribute name
-  maybe default f attrObj
+  maybe defaultValue f attrObj
 
 buildReplEnv :: Web -> IO ReplEnv
 buildReplEnv (Web{servlet=servlet,request=request}) = do
@@ -122,7 +120,7 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
   return $ ReplEnv {
                      lastJavaGenSrc = lastJavaGenSrc,
                      lastExternalScript = lastExternalScript,
-                     opts = ReplOpts.default.{showLimit = showLimit},
+                     opts = ReplOpts.initialState.{showLimit = showLimit},
                      lineStart = lineStart,
                      config = InterpreterConfig predefs flags true,
                      state = classLoader
@@ -178,7 +176,6 @@ removeControlChars s = packed . reverse $ go [] s.toList where
 native strArrToObject "(Object)" :: ArrayOf s String -> ST s Object
 
 pure native escapeXml org.apache.commons.lang3.StringEscapeUtils.escapeXml :: String -> String
-
 
 messagesToXml :: [Message] -> String
 messagesToXml msgs = render [
@@ -237,3 +234,24 @@ native asStringArr "(String[])" :: Object -> STMutable s (JArray String)
 pure native asObject "(Object)" :: a -> Object
 
 pure native toString :: Object -> String
+
+native module where {
+  public static class FregeReplController extends javax.servlet.http.HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected void doPost(final javax.servlet.http.HttpServletRequest request,
+        final javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException,
+        java.io.IOException {
+      frege.prelude.PreludeBase.TST.performUnsafe(
+        tryfrege.repl.FregeReplServlet.doPost(this, request, response)).call();
+    }
+
+    @Override
+    protected void doGet(final javax.servlet.http.HttpServletRequest request,
+        final javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException,
+        java.io.IOException {
+      doPost(request, response);
+    }
+  }
+}

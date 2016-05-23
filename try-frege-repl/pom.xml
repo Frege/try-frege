@@ -16,7 +16,7 @@
             <plugin>
                 <groupId>com.theoryinpractise.frege</groupId>
                 <artifactId>frege-maven-plugin</artifactId>
-                <version>1.0.7</version>
+                <version>1.0.8</version>
                 <executions>
                     <execution>
                         <id>frege-compile</id>
@@ -37,6 +37,7 @@
                     <inline>true</inline>
                     <hints>true</hints>
                     <includeStale>false</includeStale>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -48,9 +49,14 @@
             <artifactId>frege-repl-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.frege-lang</groupId>
+            <artifactId>frege</artifactId>
+            <version>${frege.version}</version>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

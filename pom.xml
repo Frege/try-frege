@@ -10,7 +10,7 @@
     <url>https://github.com/Frege/try-frege</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <frege.version>3.23.450-SNAPSHOT</frege.version>
+        <frege.version>3.24-7.100</frege.version>
         <frege.plugin.version>1.0.5</frege.plugin.version>
         <frege.interpreter.version>1.3-SNAPSHOT</frege.interpreter.version>
         <frege.repl.version>1.4-SNAPSHOT</frege.repl.version>
@@ -25,8 +25,8 @@
         <dependencies>
             <dependency>
                 <groupId>javax.servlet</groupId>
-                <artifactId>servlet-api</artifactId>
-                <version>2.5</version>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.0.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -55,12 +55,11 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.3</version>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
 </project>

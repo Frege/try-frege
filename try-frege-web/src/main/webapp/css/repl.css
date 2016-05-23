@@ -10,14 +10,7 @@ div.console {
     background: #2c2c2c;
     color: #FFF;
     font-size: 14px;
-    font-family: Consolas, Inconsolata, "Lucida Console", Profont, Terminus,
-                  "DejaVu Sans Mono","Andale Mono", Monaco,
-                  "Courier New", Terminal, monospace,
-                  "Bitstream Vera Sans Mono", Freemono, "Liberation Mono",
-                  "Droid Sans Mono", "Inconsolata-g", Unifont, Lime, "ClearlyU PUA", Clean,
-                  Dina, Anka, "Anonymous Pro", "Proggy fonts", "Envy Code R", Gamow, Courier;
-    height: 100%;
-    overflow: auto;
+    height: 95%;
 }
 
 div.console div.jquery-console-welcome {
@@ -62,17 +55,6 @@ div.console span.jquery-console-prompt-label {
     font-weight: bold
 }
 
-div.code {
-    font-size: 14px;
-    font-family: Consolas, Inconsolata, "Lucida Console", Profont, Terminus,
-                  "DejaVu Sans Mono","Andale Mono", Monaco,
-                  "Courier New", Terminal, monospace,
-                  "Bitstream Vera Sans Mono", Freemono, "Liberation Mono",
-                  "Droid Sans Mono", "Inconsolata-g", Unifont, Lime, "ClearlyU PUA", Clean,
-                  Dina, Anka, "Anonymous Pro", "Proggy fonts", "Envy Code R", Gamow, Courier;
-    
-}
-
 div.content {
  height: 100%;
  width: 100%;
@@ -82,21 +64,23 @@ div.content {
 
 div.replSection {
   height: 99%;
-  width: 49%;
-  background: #002B36;
+  width: 50%;
+  background: #2c2c2c;
   float: left;
+  overflow: auto;
 }
 
 div.editorSection {
   height: 99%;
-  width: 50%;
+  width: 49%;
   float: left;
   border: 1px solid #fff;
   background: #2c2c2c;
+  overflow: hidden;
 }
 
 div.editorSubmit {
-  height: 10%;
+  height: 2%;
   width: 10%;
   margin:0 auto;
 }
@@ -107,13 +91,13 @@ div.inputHeader .inputRun {
   font-size: 16px;
 }
 div.input {
-  height: 50%;
+  height: 100%;
   width: 100%
   border: 1px solid #fff;
 }
 
 #editor {
-  height: 50%;
+  height: 98%;
   resize: none
 }
 
@@ -129,35 +113,6 @@ div.output {
 div h3.ui-widget-header {
   text-align: center;
   margin: 0;
-}
-
-#prompt {
-  height:100%;
-  color:#fff;
-  float:left;
-  font-size: 14px;
-  font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
-  Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
-  "Lucida Console", "Bitstream Vera Sans Mono",
-  Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
-  Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
-  "Courier New", Terminal, monospace;
-}
-
-
-
-
-#tutorial {
-    border-left: 1px solid #6EA7D1;
-    font-size: 12px;
-    padding: 5px;
-    font-family: Consolas, Inconsolata, Profont, Terminus, "DejaVu Sans Mono","Andale Mono", Monaco,
-    Inconsolata-g, Unifont, Lime, "ClearlyU PUA", Clean,
-    "Lucida Console", "Bitstream Vera Sans Mono",
-    Freemono, "Liberation Mono", Dina, Anka, Droid Sans Mono,
-    Anonymous Pro, Proggy fonts, Envy Code R, Gamow, Courier,
-    "Courier New", Terminal, monospace;
-    overflow: auto;
 }
 
 ul.repolinks li:hover{background: #F39814; color: white;}

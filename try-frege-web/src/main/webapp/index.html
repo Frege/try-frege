@@ -11,6 +11,7 @@
     <link rel="stylesheet"
           href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css"/>
     <link rel="stylesheet" href="css/repl.css"/>
+    <link href="css/jquery.terminal.css" rel="stylesheet"/>
     <!-- Code mirror -->
     <link rel="stylesheet" href="js/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="js/codemirror/addon/scroll/simplescrollbars.css">
@@ -19,12 +20,10 @@
     <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
-    <script src="js/jquery.console.js"></script>
+    <script src="js/jquery.terminal-0.10.8.min.js"></script>
+
     <script src="js/repl.js"></script>
     <script src="js/underscore-min.js"></script>
-    <script src="js/base64.js"></script>
-    <script src="js/github.js"></script>
-    <script src="js/showdown.js"></script>
 
     <!--  CodeMirror -->
     <script src="js/codemirror/lib/codemirror.js"></script>
@@ -45,44 +44,134 @@
     </p>
 </noscript>
 
-<div id="replSection" class="replSection ui-widget-content">
-    <!--<h3 class="ui-widget-header">REPL</h3>-->
-    <div id="console" class="console"></div>
-</div>
-
 <div class="editorSection">
     <div id="input" class="input">
-        <!--<div class="inputHeader">
-        &lt;!&ndash;<h3 class="ui-widget-header">Editor</h3>&ndash;&gt;
-        &lt;!&ndash;<div class="inputRun">>&#X25B6;</div>&ndash;&gt;
-        </div>-->
         <textarea id="editor">
-module hello.HelloWorld where
+{-
 
-main = println "Hello World"
+ |   ____||   _  \   |   ____| /  _____||   ____|
+ |  |__   |  |_)  |  |  |__   |  |  __  |  |__
+ |   __|  |          |   __|  |  | |_ | |   __|
+ |  |     |  |\  \__ |  |____ |  |__| | |  |____
+ |__|     | _| `.___||_______| \______| |_______|
 
+ ************ A Haskell for the JVM *************
+
+ Here in the editor, you can edit Frege code and then run it by clicking the 'Evaluate' button at the bottom or
+ by pressing 'Ctrl + Enter'.
+
+ The following is an example program that converts between Frege types and JSON.
+ Click 'Evaluate' to load this snippet into the REPL on the right and then type 'main' in the REPL to run
+ the 'main' function or type some expression like 'take 2 vehicles'.
+-}
+
+module examples.JSONExample where
+
+import Data.JSON
+
+data Engine = Electric Double --- just performance in kW
+            | Combustion { fuel :: [Fuel], displacement :: Double, cyls :: Int }
+
+data Fuel = DIESEL | GASOLINE | NATURALGAS | LPG
+
+data Vehicle = Vehicle { wheels :: Int, engine :: Maybe Engine }
+
+derive Show Fuel
+derive Show Engine
+derive Show Vehicle
+
+instance ToJSON Fuel where
+    toJSON = String . show
+
+instance ToJSON Engine where
+    toJSON (Electric d)
+            = struct "Electric" d
+    toJSON Combustion{fuel, displacement, cyls}
+            = struct "Combustion" (fuel, displacement, cyls)
+
+instance ToJSON Vehicle where
+    {-- For illustration, we use a struct with record fields
+
+        The first clause is not strictly necessary,
+        but helps to reduce the generated json size
+        in the case that we have no engine, by just not
+        producing an association for "engine".
+
+        This assumes that the corresponding fromJSON takes care of that,
+        prefferably by extracting the "engine" field with 'optional'.
+    -}
+    toJSON Vehicle{wheels, engine=Nothing}
+            = Struct [ assoc "wheels" wheels ]   -- just leave out engine
+    toJSON Vehicle{wheels, engine}
+            = Struct [
+                    assoc "wheels" wheels,
+                    assoc "engine" (maybeToJSON engine),
+            ]
+
+bicycle = Vehicle { wheels = 2, engine = Nothing }
+ebike   = Vehicle { wheels = 2, engine = Just (Electric 0.9) }
+car     = Vehicle { wheels = 4,
+                    engine = Just Combustion {
+                                  fuel = [LPG, GASOLINE],
+                                  displacement = 2.0,
+                                  cyls = 4 }}
+vehicles = [car, bicycle, ebike]
+
+doubles = [1L .. 1_000_000L]
+
+derive Eq Vehicle
+derive Eq Engine
+derive Eq Fuel
+
+main = do
+    let json = show (toJSON vehicles)
+    println (toJSON vehicles)
+    print "Parsing the above string back ... "
+    let vs = parseJSON json :: Maybe [Vehicle]
+    println (maybe "failed." (const "succeeded!") vs)
+
+
+instance FromJSON Fuel where
+    fromJSON (String "DIESEL") = return DIESEL
+    fromJSON (String "GASOLINE") = return GASOLINE
+    fromJSON (String "NATURALGAS") = return NATURALGAS
+    fromJSON (String "LPG") = return LPG
+    fromJSON s = fail ("cannot decode fuel from " ++ show s)
+
+import Data.List(lookup)  -- for looking up associations
+instance FromJSON Engine where
+   fromJSON (Struct as)
+      | Just n   <- lookup "Electric" as   = Electric <$> fromJSON n
+      | Just fdc <- lookup "Combustion" as = do
+              (fuel, displacement, cyls) <- fromJSON fdc
+              return Combustion{fuel, displacement, cyls}
+   fromJSON x = fail ("invalid engine: " ++ show x)
+
+instance FromJSON Vehicle where
+   fromJSON (Struct as)  = do
+        engine <- optional "engine" as
+        wheels <- field    "wheels" as
+        pure Vehicle{wheels, engine}
+   fromJSON garbage = fail ("couldn't decode Vehicle from: " ++ show garbage)
 </textarea>
 
         <div class="editorSubmit">
-            <input type="button" title="Click to compile or Press Ctrl+Enter" value="Compile" id="compileButton"/>
+            <input type="button" title="Click to evaluate or press Ctrl+Enter" value="Evaluate" id="evaluateEditor"/>
         </div>
     </div>
 
-    <div id="output" class="output console">
-        <div align="center"><a href="https://github.com/Frege/frege" target="_blank" style="color:#fff;font-size:24px">Frege</a>
-            <br><br>A Haskell for the JVM
-        </div>
-
-    </div>
     <div id="javaSourceDialog" title="Frege REPL">
     <textarea id="javaSource">
     </textarea>
     </div>
     <div id="helpDialog"></div>
     <div id="stdinDialog">
-        <textarea id="stdin" cols="80" rows="10" placeholder="Type your input here. Press Esc to close."></textarea>
+        <textarea id="stdin" cols="112" rows="16" placeholder="Type your input here. Press Esc to close."></textarea>
     </div>
+</div>
 
-
+<div id="replSection" class="replSection ui-widget-content">
+    <div id="console" class="console"></div>
+</div>
 </body>
 </html>
