@@ -8,6 +8,7 @@ import Compiler.types.Positions
 import Compiler.types.QNames
 import frege.Prelude hiding (print)
 import Java.IO()
+import Java.Util (HashMap)
 import Interpreter.FregeInterpreter
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport

@@ -4,7 +4,6 @@ $(document).ready(function() {
           lineNumbers: true,
           readOnly: false,
           mode: 'text/x-haskell',
-          autofocus: true,
           scrollbarStyle: 'simple',
           extraKeys: {
             'Ctrl-Enter': evaluateEditor,
@@ -17,6 +16,12 @@ $(document).ready(function() {
           }
     });
     editor.setSize('100%', '97%');
+
+    editor.on('focus', pauseTerminal);
+
+  function pauseTerminal() {
+     terminal.pause();
+  }
 
   var javaSourceEditor = CodeMirror.fromTextArea(document.getElementById('javaSource'), {
       theme: 'mbo',
@@ -55,6 +60,7 @@ $(document).ready(function() {
     javaSourceEditor.setSize('100%', '95%');
 
     function evaluateEditor() {
+      terminal.resume();
       var cmd = ':load editor';
       terminal.exec(cmd);
     }
@@ -65,7 +71,7 @@ $(document).ready(function() {
     var terminal = replConsole.terminal(function(command, term) {
         var helpInputMatch;
 
-        function evaluate(cmd) {
+        function evaluate(cmd, done) {
           term.pause();
           fregeEval(cmd, function(msgs) {
             term.resume();
@@ -77,6 +83,9 @@ $(document).ready(function() {
               {raw: true}
             );
             term.echo('<div/>', {raw:true});
+            if (done) {
+              done();
+            }
           });
         }
 
@@ -98,7 +107,7 @@ $(document).ready(function() {
               showHelp(helpItem);
               term.echo('<div/>', {raw:true});
             } else if (command === ':load editor') {
-              evaluate(editor.getValue());
+              evaluate(editor.getValue(), pauseTerminal);
              } else {
               evaluate(command);
             }
@@ -107,7 +116,10 @@ $(document).ready(function() {
         greetings: 'Welcome! Enter Frege code snippets at the prompt ' +
                    'to get them evaluated.\nType ":help" for more information.\n',
         name: 'Frege REPL',
-        prompt: 'frege> '
+        prompt: 'frege> ',
+        onFocus: function () {
+          terminal.resume();
+        }
     });
 
   function collapseJavaSourceEditor(start, end) {
