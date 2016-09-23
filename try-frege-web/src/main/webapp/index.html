@@ -62,7 +62,7 @@
 
  The following is an example program that converts between Frege types and JSON.
  Click 'Evaluate' to load this snippet into the REPL on the right and then type 'main' in the REPL to run
- the 'main' function or type some expression like 'take 2 vehicles'.
+ the 'main' function or type some expression like 'Coordinate 3.2 4.3' or 'filter even [10..20]'.
 -}
 
 module examples.JSONExample where
@@ -70,12 +70,14 @@ module examples.JSONExample where
 import Data.JSON
 
 data Coordinate = Coordinate { lon :: Float, lat :: Float }
+derive Show Coordinate
 
 data Weather = Weather { loc :: Coordinate
                        , temp :: Int
                        , desc :: String
                        , alert :: Maybe String
                        }
+derive Show Weather
 
 instance ToJSON Coordinate where
   toJSON coord = Struct [ ("lon", toJSON coord.lon), ("lat", toJSON coord.lat) ]
@@ -93,6 +95,7 @@ main :: IO ()
 main = print . toJSON $ Weather location 98 "overcast clouds" (Just "Excessive heat")
   where
     location = Coordinate { lon = -122.09, lat = 37.39 }
+
 </textarea>
 
         <div class="editorSubmit">
