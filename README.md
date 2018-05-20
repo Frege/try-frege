@@ -1,8 +1,8 @@
-#Try Frege   [![Build Status](https://travis-ci.org/Frege/try-frege.svg)](https://travis-ci.org/Frege/try-frege)
+# Try Frege   [![Build Status](https://travis-ci.org/Frege/try-frege.svg)](https://travis-ci.org/Frege/try-frege)
 This is the online REPL for Frege available at this URL: http://try.frege-lang.org/.
 
 
-##Build from sources and run locally##
+## Build from sources and run locally ##
 
 1. Checkout this project and then from project root,
    
