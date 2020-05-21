@@ -37,22 +37,22 @@
                     <inline>true</inline>
                     <hints>true</hints>
                     <includeStale>false</includeStale>
-                    <target>1.7</target>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.frege-lang</groupId>
-            <artifactId>frege-repl-core</artifactId>
-        </dependency>
+<!--     frege-repl-core is no longer needed as a dependency since it is part of frege distro -->
         <dependency>
             <groupId>org.frege-lang</groupId>
             <artifactId>frege</artifactId>
-            <version>${frege.version}</version>
+            <version>3.24.405</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../try-frege-web/src/main/webapp/WEB-INF/lib/frege3.24.405.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
