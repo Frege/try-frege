@@ -1,14 +1,11 @@
 module tryfrege.repl.FregeReplServlet where
 
-import Compiler.types.Global hiding (Message, Severity)
-import Compiler.types.Global (Message CompilerMessage, Severity())
 import Compiler.enums.Flags
 import Data.Bits (BitSet)
 import Compiler.types.Positions
 import Compiler.types.QNames
-import frege.Prelude hiding (print)
+import frege.Prelude hiding (print, read)
 import Java.IO()
-import Java.Util (HashMap)
 import Interpreter.FregeInterpreter
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport
@@ -48,7 +45,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
                           eval (Eval $ buildShowScript sym.name.base env.opts.showLimit g sym)
         (res, newEnv) <- Repl.run evalShow env
         case res of
-          CodeInfo{} -> print web cmd newEnv res
+--          CodeInfo{} -> print web cmd newEnv res -- this leads to stack overflow, just removing it works. Needs review. (dk)
           _ -> do
                   let typeCmd = Type line
                   (res, newEnv) <- Repl.run (eval typeCmd) env
