@@ -92,7 +92,7 @@ div.inputHeader .inputRun {
 }
 div.input {
   height: 100%;
-  width: 100%
+  width: 100%;
   border: 1px solid #fff;
 }
 
@@ -103,7 +103,7 @@ div.input {
 
 div.output {
   height: 50%;
-  width: 100%
+  width: 100%;
   background: #fff;
   color: #FFF;
   overflow: auto;
