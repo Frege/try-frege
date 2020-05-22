@@ -28,5 +28,19 @@ How to build and run with jetty runner from https://repo1.maven.org/maven2/org/e
     
     Add --port 9999 to set the port when running jetty-runner.
 
+## dependency info
+
+This project depends on the frege distribution, which is put as a single jar in 
+`try-frege-web/src/main/webapp/WEB-INF/lib/`. The distro contains the repl and the interpreter.
+
+    try-frege-web                  (subdir) client side html, css, js, plus code to generate and package the web application
+        -> try-frege-repl          (subdir) the servlet that listens to client eval requests and returns eval results
+            -> frege distribution           https://github.com/Frege/frege/releases
+                -> frege language           https://github.com/Frege/frege/
+                -> frege repl               https://github.com/Frege/frege-repl/
+                    -> frege interpreter    https://github.com/Frege/frege-interpreter/
+                -> frege script engine      not needed here, just for completeness
+                    -> frege interpreter
+
 
    
