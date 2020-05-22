@@ -2,11 +2,15 @@ module tryfrege.repl.FregeReplServlet where
 
 import Compiler.enums.Flags
 import Data.Bits (BitSet)
-import Compiler.types.Positions
-import Compiler.types.QNames
+import Compiler.types.Positions (Position)
+--import Compiler.types.QNames -- todo dk: can this be removed? I triggers no "not used" warning when activated
 import frege.Prelude hiding (print, read)
 import Java.IO()
-import Interpreter.FregeInterpreter
+import Interpreter.FregeInterpreter (
+    Message, Module, Expression, Definitions, InterpreterConfig, InterpreterClassLoader, JMap, ByteArray, HashMap,
+    Interpreter, interpret, showSymbol, intercalateNewLine, buildShowScript,
+    getSymbolType, symbolClass, symbolVar, showThrowableCause, variableDeclScript,
+    isVariable, isString, sandboxFieldValue)
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport
 
@@ -97,33 +101,34 @@ compilePreludeScript context = do
 
 sessionAttr :: Mutable s HttpSession -> (Object -> ST s b) -> ST s b -> String -> ST s b
 sessionAttr session f defaultValue name = do
-  attrObj <- session.getAttribute name
+  attrObj <- session.getAttribute name              -- todo dk: reading and writing from/to a session should always be synchronized
   maybe defaultValue f attrObj
 
 buildReplEnv :: Web -> IO ReplEnv
 buildReplEnv (Web{servlet=servlet,request=request}) = do
   session <- request.getSession
   let strToMaybe "" = Nothing
-      strToMaybe s = Just s
-      defaultFlags = Flags.fromList [WARNINGS, HINTS, INLINE]
-  lastJavaGenSrc <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastJavaGenSrc"
-  lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing) "lastExternalScript"
-  predefs <- sessionAttr session (return . asString) (return "") "predefs"
-  lineStart <- sessionAttr session (return . asInt) (return 2) "lineStart"
-  showLimit <- sessionAttr session (return . asInt) (return 80) "showLimit"
-  context <- servlet.getServletContext
-  classes <- sessionAttr session asClassesMap (initClasses context) "classes"
-  flags <- sessionAttr session (return . BitSet . asFlags) (return defaultFlags) "compilerFlags"
-  classLoader <- InterpreterClassLoader.new classes
-  return $ ReplEnv {
-                     lastJavaGenSrc = lastJavaGenSrc,
-                     lastExternalScript = lastExternalScript,
-                     opts = ReplOpts.initialState.{showLimit = showLimit},
-                     lineStart = lineStart,
-                     config = InterpreterConfig predefs flags true,
-                     state = classLoader
-                   }
+      strToMaybe s  = Just s
+      stdFlags      = Flags.fromList [WARNINGS, HINTS, INLINE]
+  lastJavaGenSrc     <- sessionAttr session (return . strToMaybe . asString) (return Nothing)  "lastJavaGenSrc"
+  lastExternalScript <- sessionAttr session (return . strToMaybe . asString) (return Nothing)  "lastExternalScript"
+  predefs            <- sessionAttr session (return . asString)              (return "")       "predefs"
+  lineStart          <- sessionAttr session (return . asInt)                 (return  2)       "lineStart"
+  showLimit          <- sessionAttr session (return . asInt)                 (return 80)       "showLimit"
+  flags              <- sessionAttr session (return . BitSet . asFlags)      (return stdFlags) "compilerFlags"
+  context            <- servlet.getServletContext
+  classes            <- sessionAttr session asClassesMap                 (initClasses context) "classes"
+  classLoader        <- InterpreterClassLoader.new classes
+  return $ ReplEnv
+    { lastJavaGenSrc     = lastJavaGenSrc
+    , lastExternalScript = lastExternalScript
+    , opts               = ReplOpts.initialState.{showLimit = showLimit}
+    , lineStart          = lineStart
+    , config             = InterpreterConfig predefs flags true
+    , state              = classLoader
+    }
 
+-- todo dk: reading and writing from/to a session should always be synchronized
 saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
   let extScriptStr = maybe "" id replEnv.lastExternalScript
@@ -136,6 +141,7 @@ saveSession replEnv session = do
   putSession session "lastExternalScript" extScriptStr
   putSession session "lastJavaGenSrc" lastJavaGenSrc
 
+-- todo dk: reading and writing from/to a session should always be synchronized
 clearSession :: MutableIO HttpSession -> IO ()
 clearSession session = do
   session.removeAttribute "predefs"
@@ -152,9 +158,11 @@ sendReplResult response msgs = do
   out <- response.getWriter
   out.println $ messagesToXml msgs
 
+-- todo dk: reading and writing from/to a session should always be synchronized
 putSession :: Mutable s HttpSession -> String -> a -> ST s ()
 putSession session name value = session.setAttribute name (asObject value)
 
+-- todo dk: reading and writing from/to a session should always be synchronized
 putStrArraySession :: Mutable s HttpSession -> String -> ArrayOf s String -> ST s ()
 putStrArraySession session name arr = do
   arrObj <- strArrToObject arr
@@ -162,6 +170,7 @@ putStrArraySession session name arr = do
 
 pure native isControl java.lang.Character.isISOControl :: Char -> Bool
 
+-- todo dk: subject to pattern reordering. Why not just map?
 removeControlChars :: String -> String
 removeControlChars s = packed . reverse $ go [] s.toList where
   go acc [] = acc
@@ -219,19 +228,16 @@ cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
             (":help <name>", "Display the documentation for the given name." ++
                             " If the name is not provided, display this help message.")]
 
-type StringArray = JArray String
+type StringArray = JArray String                     -- todo dk: remove. appears to be never used.
 
-native asClassesMap "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArray)
+pure native asString "(String)"  :: Object -> String
+pure native asInt    "(Integer)" :: Object -> Int
+pure native asFlags  "(Long)"    :: Object -> Long
+pure native asObject "(Object)"  :: a      -> Object
+pure native toString             :: Object -> String
 
-pure native asString "(String)" :: Object -> String
-pure native asInt "(Integer)" :: Object -> Int
-pure native asFlags "(Long)" :: Object -> Long
-
-native asStringArr "(String[])" :: Object -> STMutable s (JArray String)
-
-pure native asObject "(Object)" :: a -> Object
-
-pure native toString :: Object -> String
+native asClassesMap  "(java.util.Map)" :: Object -> STMutable s (JMap String ByteArray)
+native asStringArr   "(String[])"      :: Object -> STMutable s (JArray String)
 
 native module where {
   public static class FregeReplController extends javax.servlet.http.HttpServlet {
