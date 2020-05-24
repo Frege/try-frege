@@ -48,9 +48,9 @@
         <dependency>
             <groupId>org.frege-lang</groupId>
             <artifactId>frege</artifactId>
-            <version>3.24.405</version>
+            <version>3.25.42</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../try-frege-web/src/main/webapp/WEB-INF/lib/frege3.24.405.jar</systemPath>
+            <systemPath>${project.basedir}/../try-frege-web/src/main/webapp/WEB-INF/lib/frege3.25.42.jar</systemPath>
         </dependency>
 
         <dependency>

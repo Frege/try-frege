@@ -10,7 +10,7 @@ import Interpreter.FregeInterpreter (
     Message, Module, Expression, Definitions, InterpreterConfig, InterpreterClassLoader, JMap, ByteArray, HashMap,
     Interpreter, interpret, showSymbol, intercalateNewLine, buildShowScript,
     getSymbolType, symbolClass, symbolVar, showThrowableCause, variableDeclScript,
-    isVariable, isString, sandboxFieldValue)
+    isVariable, isString, sandboxFieldValue, fieldValue)
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport
 
@@ -35,7 +35,9 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
               stdoutWriter <- StringWriter.new ()
               stderrWriter <- StringWriter.new ()
               stdin <- fmap (maybe "" id) $ web.request.getParameter "stdin"
-              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state
+--               version that tries to hook up stdio but doesn't work atm
+--               valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state
+              valMaybe <- fieldValue (symbolClass sym g) (symbolVar sym g) env.state
               out <- stdoutWriter.toString
               err <- stderrWriter.toString
               return $ maybe [Message.error "undefined"]
@@ -49,7 +51,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
                           eval (Eval $ buildShowScript sym.name.base env.opts.showLimit g sym)
         (res, newEnv) <- Repl.run evalShow env
         case res of
---          CodeInfo{} -> print web cmd newEnv res -- this leads to stack overflow, just removing it works. Needs review. (dk)
+          CodeInfo{} -> print web cmd newEnv res
           _ -> do
                   let typeCmd = Type line
                   (res, newEnv) <- Repl.run (eval typeCmd) env
@@ -131,11 +133,11 @@ buildReplEnv (Web{servlet=servlet,request=request}) = do
 -- todo dk: reading and writing from/to a session should always be synchronized
 saveSession :: ReplEnv -> MutableIO HttpSession -> IO ()
 saveSession replEnv session = do
-  let extScriptStr = maybe "" id replEnv.lastExternalScript
-      lastJavaGenSrc = maybe "" id replEnv.lastJavaGenSrc
-  putSession session "predefs" replEnv.config.predefs
-  putSession session "lineStart" replEnv.lineStart
-  putSession session "showLimit" replEnv.opts.showLimit
+  let extScriptStr   = maybe "" id   replEnv.lastExternalScript
+      lastJavaGenSrc = maybe "" id   replEnv.lastJavaGenSrc
+  putSession session "predefs"       replEnv.config.predefs
+  putSession session "lineStart"     replEnv.lineStart
+  putSession session "showLimit"     replEnv.opts.showLimit
   putSession session "compilerFlags" replEnv.config.compilerFlags
   replEnv.state.classes >>= putSession session "classes"
   putSession session "lastExternalScript" extScriptStr
@@ -170,15 +172,9 @@ putStrArraySession session name arr = do
 
 pure native isControl java.lang.Character.isISOControl :: Char -> Bool
 
--- todo dk: subject to pattern reordering. Why not just map?
 removeControlChars :: String -> String
-removeControlChars s = packed . reverse $ go [] s.toList where
-  go acc [] = acc
-  go [] ('\b': xs) = go [] xs
-  go (y:ys) ('\b': xs) = go ys xs
-  go acc (x: xs) | wanted x = go (x:acc) xs
-  go acc (_: xs) = go acc xs
-  wanted x = not (isControl x) || x == '\n' || x == '\r' || x == '\t'
+removeControlChars s = packed $ filter noControlChar s.toList where
+  noControlChar c = not $ (isControl c) || c == '\n' || c == '\r' || c == '\t' || c == '\b'
 
 native strArrToObject "(Object)" :: ArrayOf s String -> ST s Object
 

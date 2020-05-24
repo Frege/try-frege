@@ -4,7 +4,7 @@ data ServletRequest = native javax.servlet.ServletRequest where
   native getRequestDispatcher :: (MutableIO ServletRequest) -> String -> IO RequestDispatcher
 
 data ServletResponse = native javax.servlet.ServletResponse where
-  native getWriter      :: MutableIO ServletResponse -> IO PrintWriter throws IOException
+  native getWriter      :: Mutable s ServletResponse -> ST s (Mutable s PrintWriter) throws IOException
   native setContentType :: MutableIO ServletResponse -> String -> IO ()
 
 data HttpServletRequest = native javax.servlet.http.HttpServletRequest where
@@ -28,7 +28,7 @@ data ServletContext = native javax.servlet.ServletContext where
   native getAttribute           :: (Mutable s ServletContext) -> String -> ST s (Maybe Object)
   native setAttribute           :: (Mutable s ServletContext) -> String -> Object -> ST s ()
   native getContextPath         :: (Mutable s ServletContext) -> ST s String
-  native getResourceAsStream    :: (MutableIO ServletContext) -> String -> IO (Maybe InputStream)
+  native getResourceAsStream    :: (MutableIO ServletContext) -> String -> IO (Maybe (MutableIO InputStream))
 
 data RequestDispatcher = mutable native javax.servlet.RequestDispatcher where
   native forward :: RequestDispatcher -> MutableIO ServletRequest -> MutableIO ServletResponse -> IO () throws ServletException, IOException
