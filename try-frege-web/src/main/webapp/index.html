@@ -60,43 +60,32 @@
  clicking the 'Evaluate' button at the bottom or
  by pressing 'Ctrl + Enter'.
 
- The following is an example program that converts between Frege types and JSON.
- Click 'Evaluate' to load this snippet into the REPL on the right and then type 'run' in the REPL to evaluate
- the 'run' function or type some expression like 'Coordinate 3.2 4.3' or 'filter even [10..20]'.
-
- Please note that at the moment any printing to stdout does not lead to visible output.
- Only the value of the last evaluated expression is visible.
+ Try the lines below or find more inspiration under
+ https://github.com/Frege/frege/wiki/Online-REPL-Walkthrough
 -}
 
-module examples.JSONExample where
+module examples.NumbersExample where
 
-import Data.JSON
+--- Return a list of all factors of 'n' paired up.
 
-data Coordinate = Coordinate { lon :: Float, lat :: Float }
-derive Show Coordinate
+factors n = [ (x, y) |       -- make pairs of x and y, where
+			  x <- [1..n],   -- x's are drawn from a list of 1 to n
+              y <- [1..x],   -- y's are drawn from a list of 1 to x (!)
+              x * y == n     -- filter where x and y are pairwise factors
+              ]
 
-data Weather = Weather { loc :: Coordinate
-                       , temp :: Int
-                       , desc :: String
-                       , alert :: Maybe String
-                       }
-derive Show Weather
+isPrime n = factors n == [(n,1)]
 
-instance ToJSON Coordinate where
-  toJSON coord = Struct [ ("lon", toJSON coord.lon), ("lat", toJSON coord.lat) ]
+allPrimes = filter isPrime [1..]
 
-
-instance ToJSON Weather where
-  toJSON Weather{loc, temp, desc, alert}
-    = Struct [ ("loc", toJSON loc)
-             , ("temp", toJSON temp)
-             , ("desc", toJSON desc)
-             , ("alert", toJSON $ fromMaybe "null" alert)
-             ]
-
-run = toJSON $ Weather location 98 "overcast clouds" (Just "Excessive heat")
-  where
-    location = Coordinate { lon = -122.09, lat = 37.39 }
+{- Evaluate and then try these lines in the repl
+   :browse NumbersExample
+   factors 1729
+   isPrime 11
+   allPrimes
+   :set show-limit 200
+   allPrimes
+-}
 
 </textarea>
 
@@ -116,6 +105,11 @@ run = toJSON $ Weather location 98 "overcast clouds" (Just "Excessive heat")
 </div>
 
 <div id="replSection" class="replSection ui-widget-content">
+    <div id="replLink">
+        <a href="https://github.com/Frege/frege/wiki/Online-REPL-Walkthrough"
+           target="REPL-Walkthrough"
+        >Walk through examples</a>
+    </div>
     <div id="console" class="console"></div>
 </div>
 </body>
