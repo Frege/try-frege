@@ -10,7 +10,9 @@ import Interpreter.FregeInterpreter (
     Message, Module, Expression, Definitions, InterpreterConfig, InterpreterClassLoader, JMap, ByteArray, HashMap,
     Interpreter, interpret, showSymbol, intercalateNewLine, buildShowScript,
     getSymbolType, symbolClass, symbolVar, showThrowableCause, variableDeclScript,
-    isVariable, isString, sandboxFieldValue, fieldValue)
+    isVariable, isString)
+import Interpreter.FregeInterpreterNew (
+    sandboxFieldValue, fieldValue)
 import Repl.FregeRepl (eval, slurp, Repl, ReplResult, ReplEnv, Command, help, ReplOpts, ReplIO)
 import tryfrege.repl.ServletSupport
 
@@ -35,9 +37,7 @@ print web (cmd@(Eval line)) env (CodeInfo sourceRepr g msgs) = case sourceRepr o
               stdoutWriter <- StringWriter.new ()
               stderrWriter <- StringWriter.new ()
               stdin <- fmap (maybe "" id) $ web.request.getParameter "stdin"
---               version that tries to hook up stdio but doesn't work atm
---               valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) stdin stdoutWriter stderrWriter env.state
-              valMaybe <- fieldValue (symbolClass sym g) (symbolVar sym g) env.state
+              valMaybe <- sandboxFieldValue (symbolClass sym g) (symbolVar sym g) "\n" stdoutWriter stderrWriter env.state
               out <- stdoutWriter.toString
               err <- stderrWriter.toString
               return $ maybe [Message.error "undefined"]

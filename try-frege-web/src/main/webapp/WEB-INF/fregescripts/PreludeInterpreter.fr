@@ -9,7 +9,7 @@ Copied from frege/Prelude.fr so that stdin can be thread-local and reset for eac
 --- read a character from the standard input reader
 getChar = IO.stdin.getChar
 
---- read a line from the standard input reader, end of line charcters are removed.
+--- read a line from the standard input reader, end of line characters are removed.
 getLine = IO.stdin.getLine
 
 --- The 'getContents' operation returns all user input as a single string
