@@ -174,7 +174,7 @@ pure native isControl java.lang.Character.isISOControl :: Char -> Bool
 
 removeControlChars :: String -> String
 removeControlChars s = packed $ filter noControlChar s.toList where
-  noControlChar c = not $ (isControl c) || c == '\n' || c == '\r' || c == '\t' || c == '\b'
+  noControlChar c = not $ (isControl c) || c == '\r' || c == '\b'
 
 native strArrToObject "(Object)" :: ArrayOf s String -> ST s Object
 
@@ -182,29 +182,34 @@ pure native escapeXml org.apache.commons.lang3.StringEscapeUtils.escapeXml :: St
 
 messagesToXml :: [Message] -> String
 messagesToXml msgs = render [
-                      "<repl>",
-                      "  <messages>",
-                           msgsToXml,
-                      "  </messages>",
-                      "</repl>"
-                     ] where
+      "<repl>",
+      "  <messages>",
+           msgsToXml,
+      "  </messages>",
+      "</repl>"
+     ] where
   render = unlines
   msgsToXml = render $ map msgToXml msgs
 
   msgToXml :: Message -> String
-  msgToXml msg = render [
-                          "<message>",
-                          "  <type>",
-                               show $ msg.msgType,
-                          "  </type>",
-                          "  <position>",
-                               if msg.pos == Position.null then "" else show $ msg.pos,
-                          "  </position>",
-                          "  <text>",
-                               escapeXml . removeControlChars $ msg.text,
-                          "  </text>",
-                          "</message>"
-                        ]
+  msgToXml msg = render $ [
+    "<message>",
+    "  <type>",
+       show $ msg.msgType,
+    "  </type>",
+    "  <position>",
+       if msg.pos == Position.null then "" else show $ msg.pos,
+    "  </position>"
+    ] ++ textLines ++ [
+      "</message>"
+    ] where
+    -- the text may contain many lines, render each in extra tags
+    textLines = join $ map asText (lines msg.text)
+    asText line = [
+        "  <text>",
+             escapeXml . removeControlChars $ line,
+        "  </text>"
+        ]
 
 cmdHelp = [(":t or :type <expression>", "Display the type of an expression."),
             (":browse <module name>", "Display the names in a module if " ++
